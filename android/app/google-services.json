@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "849848670550",
+    "project_id": "uddipan-probe-app",
+    "storage_bucket": "uddipan-probe-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849848670550:android:3d1db6542e398de3219ef7",
+        "android_client_info": {
+          "package_name": "com.example.uddipan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChnlGjU16WoTRJN3Z2FVKkG4vbvwFQqbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

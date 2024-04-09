@@ -80,8 +80,6 @@ class AuthController extends GetxController {
     try {
       if (nameController.text.isEmpty) {
         CustomMessage.showSnackBar("Name Required");
-      } else if (emailController.text.isEmpty) {
-        CustomMessage.showSnackBar("Email Required");
       } else if (phoneController.text.isEmpty) {
         CustomMessage.showSnackBar("Phone Number Required");
       } else if (passwordController.text.isEmpty) {
@@ -106,7 +104,7 @@ class AuthController extends GetxController {
           'image': "",
           'user_pluck': 5121,
           'status': 'active',
-          'pin': 5451212,
+          'pin': 0000000,
         };
 
         var response = await networkApi.postApi(

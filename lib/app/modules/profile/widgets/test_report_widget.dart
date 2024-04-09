@@ -30,7 +30,7 @@ class TestReportWidget extends StatelessWidget {
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       physics: const ScrollPhysics(),
-                      itemCount: controller.labTests.length,
+                      itemCount: controller.bookTestLab.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
@@ -64,8 +64,7 @@ class TestReportWidget extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   Text(
-                                                    controller.labTests[index]
-                                                        .testName,
+                                                    "controller.labTests[index].testName",
                                                     style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 12,
@@ -84,8 +83,7 @@ class TestReportWidget extends StatelessWidget {
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
-                                                controller.labTests[index]
-                                                    .additionalDetails,
+                                                "controller.labTests[index]                          .additionalDetails",
                                                 style: GoogleFonts.raleway(
                                                   color: Colors.grey,
                                                   fontSize: 13,

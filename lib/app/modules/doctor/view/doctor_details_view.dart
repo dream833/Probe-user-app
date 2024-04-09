@@ -29,9 +29,9 @@ class _DoctorDetailViewState extends State<DoctorDetailView> {
     controller = Get.put(DoctorController());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
@@ -92,37 +92,6 @@ class _DoctorDetailViewState extends State<DoctorDetailView> {
                                 textColor: Colors.grey.shade700,
                               ),
                               const SizedBox(height: 5),
-                              FutureBuilder(
-                                  future: controller.getDoctorAverageRating(
-                                      doctorId: widget.doctorModel!.id!),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return horizantalShimmerLine(
-                                          height: 10, width: 50);
-                                    }
-                                    return Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.star_rate_rounded,
-                                          color: yellowColor,
-                                        ),
-                                        SmallText(
-                                          text: snapshot.data?['averageRating']
-                                                  .toString() ??
-                                              '',
-                                          fontSize: 12,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        SmallText(
-                                          text:
-                                              "(${snapshot.data?['totalReviews']} Reviews)",
-                                          fontSize: 12,
-                                          textColor: Colors.grey.shade700,
-                                        ),
-                                      ],
-                                    );
-                                  }),
                             ],
                           ),
                         ),
@@ -158,13 +127,15 @@ class _DoctorDetailViewState extends State<DoctorDetailView> {
                         // })
                         Obx(() => GestureDetector(
                               onTap: () {
-                                if (controller.favouriteDoctors
-                                    .any((p0) => p0?.id == widget.doctorModel?.id)) {
+                                if (controller.favouriteDoctors.any(
+                                    (p0) => p0?.id == widget.doctorModel?.id)) {
                                   controller.removeFavoriteDoctor(
-                                      doctor: widget.doctorModel, context: context);
+                                      doctor: widget.doctorModel,
+                                      context: context);
                                 } else {
                                   controller.saveFavoriteDoctor(
-                                      doctor: widget.doctorModel, context: context);
+                                      doctor: widget.doctorModel,
+                                      context: context);
                                 }
                               },
                               child: Container(
@@ -175,8 +146,8 @@ class _DoctorDetailViewState extends State<DoctorDetailView> {
                                   color: appColorPrimary,
                                 ),
                                 child: Icon(
-                                  controller.favouriteDoctors.any(
-                                          (p0) => p0?.id == widget.doctorModel?.id)
+                                  controller.favouriteDoctors.any((p0) =>
+                                          p0?.id == widget.doctorModel?.id)
                                       ? Icons.favorite
                                       : Icons.favorite_outline,
                                   color: Colors.white,
@@ -200,73 +171,57 @@ class _DoctorDetailViewState extends State<DoctorDetailView> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 20),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        // Container(
+                        //   height: 30,
+                        //   width: 1.5,
+                        //   color: Colors.black,
+                        // ),
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     SmallText(
+                        //       text: 'Rating',
+                        //       fontSize: 12,
+                        //       textColor: Colors.grey.shade700,
+                        //     ),
+                        //     const SizedBox(height: 5),
+                        //     FutureBuilder<Map<String, dynamic>?>(
+                        //         future: controller.getDoctorAverageRating(
+                        //             doctorId: widget.doctorModel!.id!),
+                        //         builder: (context, snapshot) {
+                        //           if (snapshot.connectionState ==
+                        //               ConnectionState.waiting) {
+                        //             return horizantalShimmerLine(
+                        //                 height: 10, width: 30);
+                        //           }
+                        //           return Row(
+                        //             mainAxisAlignment: MainAxisAlignment.start,
+                        //             children: [
+                        //               const Icon(Icons.star,
+                        //                   color: Colors.amber, size: 19),
+                        //               SmallText(
+                        //                 text:
+                        //                     '${snapshot.data?['averageRating'].toString() ?? ''} (${snapshot.data?['totalReviews']})',
+                        //                 fontSize: 12,
+                        //                 textColor: Colors.grey.shade700,
+                        //               ),
+                        //             ],
+                        //           );
+                        //         }),
+                        //   ],
+                        // ),
+                        // Container(
+                        //   height: 30,
+                        //   width: 1.5,
+                        //   color: Colors.black,
+                        // ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SmallText(
-                              text: 'Experience',
-                              fontSize: 12,
-                              textColor: Colors.grey.shade700,
-                            ),
-                            const SizedBox(height: 5),
-                            SmallText(
-                              text: "10+ Years",
-                              fontSize: 12,
-                              textColor: Colors.grey.shade700,
-                            ),
-                          ],
-                        ),
-                        Container(
-                          height: 30,
-                          width: 1.5,
-                          color: Colors.black,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SmallText(
-                              text: 'Rating',
-                              fontSize: 12,
-                              textColor: Colors.grey.shade700,
-                            ),
-                            const SizedBox(height: 5),
-                            FutureBuilder<Map<String, dynamic>?>(
-                                future: controller.getDoctorAverageRating(
-                                    doctorId: widget.doctorModel!.id!),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return horizantalShimmerLine(
-                                        height: 10, width: 30);
-                                  }
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Icon(Icons.star,
-                                          color: Colors.amber, size: 19),
-                                      SmallText(
-                                        text:
-                                            '${snapshot.data?['averageRating'].toString() ?? ''} (${snapshot.data?['totalReviews']})',
-                                        fontSize: 12,
-                                        textColor: Colors.grey.shade700,
-                                      ),
-                                    ],
-                                  );
-                                }),
-                          ],
-                        ),
-                        Container(
-                          height: 30,
-                          width: 1.5,
-                          color: Colors.black,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SmallText(
-                                text: "BMDC Number",
+                                text: "Registration No.",
                                 fontSize: 12,
                                 textColor: Colors.grey.shade700),
                             const SizedBox(height: 5),
@@ -313,7 +268,8 @@ class _DoctorDetailViewState extends State<DoctorDetailView> {
                             child: TabBarView(
                               children: [
                                 SlotSection(
-                                    doctorId: widget.doctorModel!.id.toString()),
+                                    doctorId:
+                                        widget.doctorModel!.id.toString()),
                                 AboutSection(doctorModel: widget.doctorModel!),
                                 ReviewSection(doctorModel: widget.doctorModel),
                               ],

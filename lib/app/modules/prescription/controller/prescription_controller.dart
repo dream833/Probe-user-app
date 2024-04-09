@@ -1,11 +1,17 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uddipan/constants/string_constant.dart';
 import 'package:uddipan/models/prescription_model.dart';
+import 'package:http/http.dart' as http;
 
 class PrescriptionController extends GetxController {
   final isLoading = false.obs;
   final controller = TextEditingController();
   final RxInt selectedTabIndex = 1.obs;
+  RxList<PrescriptionModel?> prescriptionList = <PrescriptionModel?>[].obs;
   changeTab(int index) {
     selectedTabIndex.value = index;
   }
@@ -133,11 +139,7 @@ class PrescriptionController extends GetxController {
       patientFullName: 'John Doe',
       patientDateOfBirth: '1990-05-15',
       patientGender: 'Male',
-      patientContactInformation: '+9103223111',
       doctorName: 'Dr. Smith',
-      medicalLicenseNumber: 'MD12345',
-      doctorContactInformation: '987-654-3210',
-      clinicOrHospitalName: 'ABC Clinic',
       medicines: [
         Medicine(
           description: 'Painkiller',
@@ -155,10 +157,37 @@ class PrescriptionController extends GetxController {
         ),
       ],
       diagnosis: 'Common Cold',
-      specialInstructions: 'Take plenty of rest.',
       followUpDate: '2024-01-20',
       followUpTime: '10:00 AM',
-      emergencyContact: '111-222-3333',
     ),
   ];
+
+  Future<void> getUserPrescriptions() async {
+    try {
+      isLoading.value = true;
+      String token = getbox.read(userToken);
+      int id = getbox.read(userId);
+
+      final uri = Uri.parse(
+          'https://api.esplshowcase.in/api/get/user_report?user_id=$id');
+      final response = await http.get(
+        uri,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> list = json.decode(response.body);
+        List<PrescriptionModel?> model =
+            list.map((json) => PrescriptionModel.fromJson(json)).toList();
+        prescriptionList.assignAll(model);
+        log('Report List ${prescriptionList.length.toString()}');
+        isLoading.value = false;
+      } else {
+        log('Error in catch prescription ${response.statusCode}');
+        isLoading.value = false;
+      }
+    } catch (e) {
+      log('Error in catch prescription ${e.toString()}');
+      isLoading.value = false;
+    }
+  }
 }

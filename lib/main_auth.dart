@@ -35,7 +35,7 @@ class MainAuth extends StatelessWidget {
 
 Future<String?> getToken() async {
   String? token = getbox.read(userToken);
-  print('token ${token}');
+  print('token $token');
   if (token == null) {
     return null;
   } else {

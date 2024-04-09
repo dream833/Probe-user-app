@@ -24,11 +24,12 @@ class AboutSection extends StatelessWidget {
               data: doctorModel.workExperience ?? '---',
             ),
             _doctorInfo(
+                title: 'Speciality',
+                data: doctorModel.specialist.toString() ?? ''),
+            _doctorInfo(
               title: 'Description',
-              data:
-                  doctorModel.biography??'',
+              data: doctorModel.biography ?? '',
             ),
-            
           ].expand((element) => [element, const SizedBox(height: 20)]).toList(),
         ),
       ),

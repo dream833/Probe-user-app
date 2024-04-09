@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,7 @@ import 'package:uddipan/constants/theme_constant.dart';
 import 'package:uddipan/models/appointment_model.dart';
 import 'package:uddipan/utils/snippet.dart';
 
+import '../../video/video_call_view.dart';
 
 class AppointmentDetailView extends StatelessWidget {
   final AppoinmentModel appointment;
@@ -31,6 +31,20 @@ class AppointmentDetailView extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+              onPressed: () {
+                controller.getAppointmentVideoId(appointmentId: appointment.id);
+                print('${controller.getVideoId.value} video id');
+                if (controller.getVideoId.value.isNotEmpty) {
+                  Get.to(() => VideoCallView(
+                      callId: controller.getVideoId.value,
+                      userId: appointment.id.toString(),
+                      userName: appointment.patientName.toString()));
+                }
+              },
+              icon: const Icon(Icons.video_call))
+        ],
         title: SmallText(
             text: 'Appointment Detail',
             fontSize: 16,
@@ -84,7 +98,7 @@ class AppointmentDetailView extends StatelessWidget {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800),
                           ),
-                           Icon(
+                          Icon(
                             Icons.remove_red_eye,
                             color: appPrimaryColor,
                           ),
@@ -92,8 +106,9 @@ class AppointmentDetailView extends StatelessWidget {
                       ),
                       const SizedBox(height: 15),
                       GestureDetector(
-                        onTap: (){
-                          Get.to(()=>TransactionDetailView(transaction: appointment.transationModel!));
+                        onTap: () {
+                          Get.to(() => TransactionDetailView(
+                              transaction: appointment.transationModel!));
                         },
                         child: Row(
                           children: [

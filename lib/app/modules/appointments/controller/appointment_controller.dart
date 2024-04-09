@@ -236,25 +236,33 @@ class AppointmentController extends GetxController {
     }
   }
 
-  Future<void> getAppointmentVideoId({required String appointmentId}) async {
+  Future<void> getAppointmentVideoId(
+      {required int appointmentId, int? videoId}) async {
     try {
       String token = getbox.read(userToken);
 
       final uri = Uri.parse(
         '$baseurl/get/video_id?appointment_id=$appointmentId',
       );
-
+      // print("appointment $appointmentId");
       final response = await http.get(
         uri,
         headers: {
           'Authorization': 'Bearer $token',
         },
       );
-      final result = jsonDecode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final result = jsonDecode(response.body);
 
-      getVideoId.value = result['video_id'];
+        getVideoId.value = result['video_id'];
+        print("video id value ${getVideoId.value}");
+      } else {
+        debugPrint("error is ${response.body}");
+      }
+
+      print(getVideoId.value);
     } catch (e) {
-      log("Error fetching getCurrentDateDayAppointments: $e");
+      log("Error fetching video id: $e");
     }
   }
 

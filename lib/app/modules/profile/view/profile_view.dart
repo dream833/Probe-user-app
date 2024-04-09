@@ -4,11 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:uddipan/app/modules/health/view/health_view.dart';
+import 'package:uddipan/app/modules/prescription/view/prescription_list_view.dart';
 import 'package:uddipan/app/modules/profile/view/consultation_view.dart';
 import 'package:uddipan/app/modules/profile/view/edit_profile_view.dart';
 import 'package:uddipan/app/modules/profile/view/members_view.dart';
 import 'package:uddipan/app/modules/profile/view/reports_view.dart';
 import 'package:uddipan/app/modules/profile/widgets/logout_popup.dart';
+import 'package:uddipan/app/modules/transactions/view/transaction_view.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
@@ -165,6 +167,22 @@ class ProfileView extends GetView<ProfileController> {
                       Get.to(() => const ReportsView());
                     },
                     text: 'Reports'),
+                const SizedBox(height: 10),
+                _buildListTile(
+                    icon: FontAwesomeIcons.kitMedical,
+                    iconSize: 19,
+                    onTap: () {
+                      Get.to(() => const PrescriptionListView());
+                    },
+                    text: 'Prescriptions'),
+                const SizedBox(height: 10),
+                _buildListTile(
+                    icon: FontAwesomeIcons.moneyBill,
+                    iconSize: 19,
+                    onTap: () {
+                      Get.to(() => const AllTransactionView());
+                    },
+                    text: 'Transactions'),
                 const SizedBox(height: 10),
                 _buildListTile(
                     icon: FontAwesomeIcons.handshakeSimple,

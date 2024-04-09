@@ -56,51 +56,51 @@ class EShopView extends GetView<EShopController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => const UploadPrescriptionView());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                      width: 150,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.deepOrange,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.15),
-                            offset: Offset(-1, 1),
-                            blurRadius: 10,
-                          )
-                        ],
-                      ),
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Icon(
-                              Icons.upload_file,
-                              color: Colors.white,
-                              size: 25,
-                            ),
-                            Text(
-                              'Upload \nPrescription',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Get.to(() => UploadPrescriptionView());
+                //   },
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(4.0),
+                //     child: Container(
+                //       width: 150,
+                //       height: 120,
+                //       decoration: BoxDecoration(
+                //         color: Colors.deepOrange,
+                //         borderRadius: BorderRadius.circular(16),
+                //         boxShadow: const [
+                //           BoxShadow(
+                //             color: Color.fromRGBO(0, 0, 0, 0.15),
+                //             offset: Offset(-1, 1),
+                //             blurRadius: 10,
+                //           )
+                //         ],
+                //       ),
+                //       child: const Padding(
+                //         padding:
+                //             EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                //         child: Column(
+                //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //           children: [
+                //             Icon(
+                //               Icons.upload_file,
+                //               color: Colors.white,
+                //               size: 25,
+                //             ),
+                //             Text(
+                //               'Upload \nPrescription',
+                //               textAlign: TextAlign.center,
+                //               style: TextStyle(
+                //                   fontSize: 13,
+                //                   color: Colors.white,
+                //                   fontWeight: FontWeight.bold),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 InkWell(
                   onTap: () {
                     Get.to(() => const LabTestView());

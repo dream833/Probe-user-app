@@ -21,13 +21,13 @@ class UserModel {
   // Factory constructor to create a UserModel from a map
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      name: map['name']??'',
-      image: map['image']??'',
-      phoneNumber: map['phone_number']??'',
-      email: map['email']??'',
-      pin: map['pin']??'',
-      presentAddress: map['present_address']??'',
-      permanentAddress: map['permanent_address']??'',
+      name: map['name'] ?? '',
+      image: map['image'] ?? '',
+      phoneNumber: map['phone_number'] ?? '',
+      email: map['email'] ?? '',
+      pin: map['pin'] ?? '',
+      presentAddress: map['present_address'] ?? '',
+      permanentAddress: map['permanent_address'] ?? '',
     );
   }
 

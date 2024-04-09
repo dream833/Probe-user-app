@@ -1,9 +1,12 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../app/data/local_data_sources.dart';
 import '../constants/string_constant.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkApiServices {
+  final client = http.Client();
   Future<Response<dynamic>> postApi({
     required String endpoint,
     Map<String, dynamic>? data,
@@ -87,5 +90,109 @@ class NetworkApiServices {
       log("Error is ===========> $e");
       rethrow;
     }
+  }
+
+  Future<dynamic> fetchZone() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(LocalDataSources.token);
+    final uri = Uri.parse('$baseurl/zones');
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final response = await client.get(
+      uri,
+      headers: headers,
+    );
+    return response;
+  }
+
+  /// Fetch Region based on Zone ID
+  Future<dynamic> fetchRegion(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(LocalDataSources.token);
+    final uri = Uri.parse('$baseurl/zones/$id');
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final response = await client.get(
+      uri,
+      headers: headers,
+    );
+    return response;
+  }
+
+  /// Fetch Branch based on Region ID
+  Future<dynamic> fetchBranch(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(LocalDataSources.token);
+    final uri = Uri.parse('$baseurl/regions/$id');
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final response = await client.get(
+      uri,
+      headers: headers,
+    );
+    return response;
+  }
+
+  /// Fetch District based on Branch ID
+  Future<dynamic> fetchDistrict(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(LocalDataSources.token);
+    final uri = Uri.parse('$baseurl/branches/$id');
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final response = await client.get(
+      uri,
+      headers: headers,
+    );
+    return response;
+  }
+
+  /// Fetch Division based on District ID
+  Future<dynamic> fetchDivision() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(LocalDataSources.token);
+    final uri = Uri.parse('$baseurl/districts/');
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final response = await client.get(
+      uri,
+      headers: headers,
+    );
+    return response;
+  }
+
+  /// Fetch Thana based on Division ID
+  Future<dynamic> fetchThana(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(LocalDataSources.token);
+    final uri = Uri.parse('$baseurl/divisions/$id');
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final response = await client.get(
+      uri,
+      headers: headers,
+    );
+    return response;
+  }
+
+  /// Fetch Union based on Thana ID
+  Future<dynamic> fetchUnion(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(LocalDataSources.token);
+    final uri = Uri.parse('$baseurl/thanas/$id');
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    final response = await client.get(
+      uri,
+      headers: headers,
+    );
+    return response;
   }
 }

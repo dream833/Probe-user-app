@@ -5,7 +5,7 @@ import 'package:uddipan/models/transaction_model.dart';
 import 'package:uddipan/models/user_report_model.dart';
 
 class AppoinmentModel {
-  int? id;
+  int id;
   String? patientName;
   String? gender;
   int? age;
@@ -14,7 +14,7 @@ class AppoinmentModel {
   String? clinic;
   String? clinicAddress;
   dynamic uploadDocs;
- 
+
   List<UserReportModel>? userReport;
   dynamic prescription;
   dynamic status;
@@ -29,7 +29,7 @@ class AppoinmentModel {
   bool isForYou;
   bool isForFamilyMember;
   AppoinmentModel({
-    this.id,
+    required this.id,
     this.patientName,
     this.gender,
     this.age,
@@ -49,12 +49,11 @@ class AppoinmentModel {
     this.doctorModel,
     this.memberModel,
     this.transationModel,
-   required this.isForYou,
-   required this.isForFamilyMember,
+    required this.isForYou,
+    required this.isForFamilyMember,
   });
 
   factory AppoinmentModel.fromJson(Map<String, dynamic> json) {
-    
     return AppoinmentModel(
       id: json["id"],
       patientName: json["patient_name"],

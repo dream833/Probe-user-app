@@ -1,17 +1,47 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uddipan/app/data/local_data_sources.dart';
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
-import 'package:uddipan/app/modules/e-shop/view/patient_view.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/loader_button.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
 import 'package:uddipan/models/lab_test_model.dart';
+import 'package:uddipan/utils/snippet.dart';
+import 'package:http/http.dart' as http;
+import '../../../../api/network_service_api.dart';
+import '../../../../constants/string_constant.dart';
+import '../../../../utils/custom_message.dart';
+import '../../bottom_navigation_bar/controllers/bottom_navigation_bar_controllers.dart';
+import '../../bottom_navigation_bar/view/bottom_navigation_bar_view.dart';
 
 class LabTestDetailView extends StatelessWidget {
-  final LabTestModel model;
-  const LabTestDetailView({super.key, required this.model});
+  final LabTestModel? model;
+  final String? name;
+  final String? method;
+  final int? rate;
+  final String? comments;
+  final String? timeframe;
+  final String? sample;
+  final int? homeCollection;
+  final String? preparation;
+  //final
+  const LabTestDetailView(
+      {super.key,
+      this.model,
+      this.name,
+      this.method,
+      this.rate,
+      this.comments,
+      this.timeframe,
+      this.sample,
+      this.homeCollection,
+      this.preparation});
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(EShopController());
@@ -29,7 +59,17 @@ class LabTestDetailView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const SizedBox(height: 20),
-          TestInfoWidget(model: model),
+          TestInfoWidget(
+            model: model,
+            name: name,
+            rate: rate,
+            sample: sample,
+            homeCollection: homeCollection,
+            method: method,
+            timeframe: timeframe,
+            comments: comments,
+            preparation: preparation,
+          ),
           const SizedBox(height: 20),
           Container(
             width: double.infinity,
@@ -57,19 +97,9 @@ class LabTestDetailView extends StatelessWidget {
                       SmallText(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
-                        text: "BDT ${model.testCost}",
+                        text: rate.toString(),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        'Discount',
-                        style: TextStyle(
-                            fontSize: 12, color: Colors.grey.shade600),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '40% Off',
-                        style: TextStyle(fontSize: 12, color: appPrimaryColor),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 15),
@@ -78,15 +108,20 @@ class LabTestDetailView extends StatelessWidget {
                       color: Colors.deepOrange,
                       btnText: 'Book',
                       onTap: () async {
-                        Get.to(() => const PatientView());
+                        try {
+                          Get.put(());
+                          final patientId = getbox.read(userId).toString();
+                          log('PatientId $patientId');
+                          await addLabTestToBooking(patientId, context);
+                        } catch (e) {
+                          return;
+                        }
                       })
                 ],
               ),
             ),
           ),
           const SizedBox(height: 20),
-        
-      
         ]),
       ),
       bottomNavigationBar: Container(
@@ -117,7 +152,7 @@ class LabTestDetailView extends StatelessWidget {
                   SmallText(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      text: "BDT ${model.testCost}"),
+                      text: rate.toString()),
                 ],
               ),
               Padding(
@@ -136,11 +171,73 @@ class LabTestDetailView extends StatelessWidget {
           )),
     );
   }
+
+  Future<void> addLabTestToBooking(
+      String patientId, BuildContext context) async {
+    try {
+      final data = {
+        "paitentId": patientId,
+        "name": name,
+        "rate": rate.toString(),
+        "sample": sample ?? 'No sample needed',
+        "homeCollection": homeCollection.toString(),
+        "method": method ?? 'No method specified',
+        "timeframe": timeframe ?? 'No timeframe specified',
+        "comments": comments ?? 'No additional comments',
+        "preparation": preparation ?? 'No preparation specified',
+      };
+      String token = getbox.read(userToken);
+      print("token $token");
+      var response = await http.post(
+          Uri.parse("https://api.esplshowcase.in/api/book-diagnostic-test"),
+          body: json.encode(data),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token'
+          });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        String url = response.body.toString();
+
+        await customLaunch(url);
+        Future.delayed(const Duration(milliseconds: 200), () {
+          final controller = Get.find<BottomNavigationBarControllers>();
+          controller.selectedIndex.value = 1;
+
+          Get.offAll(() => BottomNavigationBarView());
+        });
+      } else {
+        debugPrint("${response.body} ${response.request}");
+        CustomMessage.errorMessage(context, 'Error ${response.statusCode}');
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
+      CustomMessage.errorMessage(context, 'Error $ex');
+    }
+  }
 }
 
 class TestInfoWidget extends StatelessWidget {
-  final LabTestModel model;
-  const TestInfoWidget({super.key, required this.model});
+  final dynamic model;
+  final String? name;
+  final String? method;
+  final int? rate;
+  final String? comments;
+  final String? timeframe;
+  final String? sample;
+  int? homeCollection;
+  final String? preparation;
+  TestInfoWidget(
+      {super.key,
+      required this.model,
+      this.name,
+      this.method,
+      this.rate,
+      this.comments,
+      this.timeframe,
+      this.sample,
+      this.homeCollection,
+      this.preparation});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -148,11 +245,12 @@ class TestInfoWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(model.testName,
+                Text(name.toString(),
                     style: CustomFont.regularMediumText
                         .copyWith(fontWeight: FontWeight.w700, fontSize: 16)),
                 Container(
@@ -170,19 +268,6 @@ class TestInfoWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 5),
-            Row(
-              children: [
-                Icon(
-                  FontAwesomeIcons.chartLine,
-                  color: appPrimaryColor,
-                  size: 19,
-                ),
-                const SizedBox(width: 5),
-                Text('77,225 people booked this recently',
-                    style: CustomFont.regularTextRaleway
-                        .copyWith(fontWeight: FontWeight.w400, fontSize: 14)),
-              ],
-            ),
             const SizedBox(height: 10),
             Row(
               children: [
@@ -192,14 +277,17 @@ class TestInfoWidget extends StatelessWidget {
                   size: 19,
                 ),
                 const SizedBox(width: 5),
-                Text('Earliest report expected within 18 hours',
+                Text(
+                    timeframe != null
+                        ? timeframe.toString()
+                        : "No specified time frame ",
                     style: CustomFont.regularTextRaleway
                         .copyWith(fontWeight: FontWeight.w400, fontSize: 14)),
               ],
             ),
             const SizedBox(height: 20),
-            Text(info,
-                textAlign: TextAlign.justify,
+            Text(comments.toString(),
+                textAlign: TextAlign.start,
                 style: CustomFont.regularTextPoppins
                     .copyWith(fontWeight: FontWeight.w400, fontSize: 14)),
             const SizedBox(height: 20),
@@ -232,19 +320,22 @@ class TestInfoWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Blood',
+                      Text(sample != null ? sample.toString() : "No",
                           style: CustomFont.regularTextPoppins.copyWith(
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               color: Colors.grey.shade700)),
                       const SizedBox(height: 20),
-                      Text('No Special Preparation is required',
+                      Text(
+                          preparation != null
+                              ? preparation.toString()
+                              : 'No Special Preparation is required',
                           style: CustomFont.regularTextPoppins.copyWith(
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               color: Colors.grey.shade700)),
                       const SizedBox(height: 5),
-                      Text(model.isHomeCollection ? 'Yes' : 'No',
+                      Text(homeCollection == 1 ? 'Yes' : 'No',
                           style: CustomFont.regularTextPoppins.copyWith(
                               fontWeight: FontWeight.w400,
                               fontSize: 13,

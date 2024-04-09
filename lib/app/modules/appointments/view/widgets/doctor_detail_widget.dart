@@ -91,26 +91,26 @@ class DoctorDetailWidget extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Experience',
-                              style: CustomFont.regularTextPoppins.copyWith(
-                                  color: appColorPrimary,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w800),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              '10 years',
-                              style: CustomFont.regularTextPoppins.copyWith(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w900),
-                            )
-                          ],
-                        ),
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     Text(
+                        //       'Experience',
+                        //       style: CustomFont.regularTextPoppins.copyWith(
+                        //           color: appColorPrimary,
+                        //           fontSize: 13,
+                        //           fontWeight: FontWeight.w800),
+                        //     ),
+                        //     const SizedBox(height: 10),
+                        //     Text(
+                        //       '10 years',
+                        //       style: CustomFont.regularTextPoppins.copyWith(
+                        //           color: Colors.black,
+                        //           fontSize: 13,
+                        //           fontWeight: FontWeight.w900),
+                        //     )
+                        //   ],
+                        // ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -135,7 +135,7 @@ class DoctorDetailWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Old Patients',
+                              'Speciality',
                               style: CustomFont.regularTextPoppins.copyWith(
                                   color: appColorPrimary,
                                   fontSize: 13,
@@ -143,7 +143,7 @@ class DoctorDetailWidget extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              '150+',
+                              appointment.doctorModel!.specialist.toString(),
                               style: CustomFont.regularTextPoppins.copyWith(
                                   color: Colors.black,
                                   fontSize: 13,

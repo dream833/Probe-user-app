@@ -5,6 +5,7 @@ import 'package:restart_app/restart_app.dart';
 import 'package:uddipan/constants/string_constant.dart';
 // Package imports:
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+
 class VideoCallView extends StatefulWidget {
   final String userId;
   final String userName;
@@ -42,8 +43,7 @@ class _VideoCallViewState extends State<VideoCallView> {
                 backgroundColor: Colors.blue[900]!.withOpacity(0.9),
                 // title: const Text("This is your custom dialog",
                 //     style: TextStyle(color: Colors.white70)),
-                content: const Text(
-                    "Are you sure. you want to leave?",
+                content: const Text("Are you sure. you want to leave?",
                     style: TextStyle(color: Colors.white70)),
                 actions: [
                   ElevatedButton(
@@ -62,7 +62,7 @@ class _VideoCallViewState extends State<VideoCallView> {
                             color: Colors.black)),
                     onPressed: () {
                       Navigator.of(context).pop(true);
-                      Restart.restartApp();
+                      //Restart.restartApp();
                     },
                   ),
                 ],

@@ -15,7 +15,6 @@ class HealthView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HealthController());
-    final cController = Get.put(HealthController());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

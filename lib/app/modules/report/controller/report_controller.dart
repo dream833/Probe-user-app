@@ -16,6 +16,7 @@ class ReportController extends GetxController {
   final recordDateController = TextEditingController();
   Rx<PickedPDF?> pickPDF = Rx<PickedPDF?>(null);
   RxList<UserReportModel?> reportList = <UserReportModel?>[].obs;
+  RxList<AdminReportModel?> adminreportList = <AdminReportModel?>[].obs;
 
   Future<String?> upload(
       String fileName, File file, BuildContext context) async {
@@ -110,6 +111,35 @@ class ReportController extends GetxController {
             list.map((json) => UserReportModel.fromJson(json)).toList();
         reportList.assignAll(model);
         log('Report List ${reportList.length.toString()}');
+        isReportListLoading.value = false;
+      } else {
+        log('Error in catch getAllUserReports');
+        isReportListLoading.value = false;
+      }
+    } catch (e) {
+      log('Error in catch getAllUserReports ${e.toString()}');
+      isReportListLoading.value = false;
+    }
+  }
+
+  Future<void> getAllAdminReports() async {
+    try {
+      isReportListLoading.value = true;
+      String token = getbox.read(userToken);
+      int id = getbox.read(userId);
+
+      final uri =
+          Uri.parse('http://api.esplshowcase.in/api/app-user-reports/$id');
+      final response = await http.get(
+        uri,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> list = json.decode(response.body);
+        List<AdminReportModel?> model =
+            list.map((json) => AdminReportModel.fromJson(json)).toList();
+        adminreportList.assignAll(model);
+        log('Report List ${adminreportList.length.toString()}');
         isReportListLoading.value = false;
       } else {
         log('Error in catch getAllUserReports');

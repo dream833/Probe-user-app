@@ -33,8 +33,6 @@ class _SlotSectionState extends State<SlotSection> {
 
   @override
   Widget build(BuildContext context) {
-   
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -50,9 +48,8 @@ class _SlotSectionState extends State<SlotSection> {
                     .copyWith(color: Colors.black, fontSize: 16),
               ),
             ),
-            SizedBox(height: 12.h),
             SizedBox(
-              height: 75,
+              height: 100,
               child: DatePicker(
                 DateTime.now(),
                 initialSelectedDate: DateTime.now(),
@@ -66,7 +63,6 @@ class _SlotSectionState extends State<SlotSection> {
               ),
             ),
             SizedBox(height: 15.h),
-           
             Obx(
               () {
                 if (doctorController.isDoctorSlotLoading.value == true) {
@@ -127,10 +123,8 @@ class _SlotSectionState extends State<SlotSection> {
                                           ),
                                           const SizedBox(width: 4),
                                           SmallText(
-                                            text:
-                                                availabilityModel.status == '1'
-                                                    ? '(Online)'
-                                                    : '(Offline)',
+                                            text: availabilityModel.type
+                                                .toString(),
                                             fontSize: 10,
                                             fontWeight: FontWeight.w500,
                                             textColor: Colors.blueGrey,

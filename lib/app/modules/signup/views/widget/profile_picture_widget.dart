@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uddipan/constants/color_constant.dart';
@@ -17,18 +18,14 @@ class ProfilePictureWidget extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Obx(() => Container(
-              height: 100,
-              width: 100,
-              decoration: const BoxDecoration(shape: BoxShape.circle),
-              child: controller.profilePicture.value == null
-                  ? const CircleAvatar(
-                      backgroundImage: AssetImage(AppImage.avatar),
-                    )
-                  : CircleAvatar(
-                      backgroundImage:
-                          MemoryImage(controller.profilePicture.value!),
-                    ),
+        Container(
+            height: 100,
+            width: 100,
+            decoration: const BoxDecoration(shape: BoxShape.circle),
+            child: CircleAvatar(
+              backgroundImage: controller.profilePicture != null
+                  ? const AssetImage("assets/images/avatar.png")
+                  : const AssetImage("assets/images/avatar.png"),
             )),
         Positioned(
           bottom: -5,
@@ -96,7 +93,7 @@ void _showBottomSheet(BuildContext context) {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'camera',
+                    'Camera',
                     style: CustomFont.regularTextRaleway,
                   ),
                 ],
@@ -124,7 +121,7 @@ void _showBottomSheet(BuildContext context) {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'gallery',
+                    'Gallery',
                     style: CustomFont.regularTextRaleway,
                   ),
                 ],
@@ -141,9 +138,10 @@ void pickImage(BuildContext context, ImageSource source) async {
   final controller = Get.put(SignupController());
   final image = await ImagePicker().pickImage(source: source);
   if (image != null) {
-    final selectedImage = File(image.path).readAsBytesSync();
+    final selectedImage = File(image.path);
     controller.setProfilePicture(selectedImage);
     Get.back();
+    Fluttertoast.showToast(msg: "Image picked successfully");
   } else {
     Get.back();
   }

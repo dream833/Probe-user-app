@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:uddipan/app/modules/diagnostic_test/controller/diagnostic_controller.dart';
+import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/constants/color_constant.dart';
@@ -14,7 +15,7 @@ class PreviousBookedTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(DiagnosticController());
+    final controller = Get.put(EShopController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -32,9 +33,9 @@ class PreviousBookedTest extends StatelessWidget {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         physics: const ScrollPhysics(),
-                        itemCount: controller.labTests.length,
+                        itemCount: controller.bookTestLab.length,
                         itemBuilder: (context, index) {
-                          LabTestModel labTest = controller.labTests[index];
+                          //LabTestModel labTest = controller.bookTestLab[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             child: Container(
@@ -73,14 +74,14 @@ class PreviousBookedTest extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               SmallText(
-                                                text: labTest.testName,
+                                                text: "labTest.testName",
                                                 textColor: Colors.grey.shade700,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
-                                                labTest.additionalDetails,
+                                                "labTest.additionalDetails",
                                                 style: const TextStyle(
                                                     fontSize: 12),
                                               ),
@@ -122,7 +123,7 @@ class PreviousBookedTest extends StatelessWidget {
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w500,
                                                     text:
-                                                        "BDT ${labTest.testCost.toString()}",
+                                                        "BDT {labTest.testCost.toString()}",
                                                   ),
                                                 ],
                                               ),

@@ -114,8 +114,8 @@ class HealthController extends GetxController {
   Future<void> getMemberHealthCareList() async {
     log('Get Member Health Care');
     String token = getbox.read(userToken);
-    final uri = Uri.parse(
-        'https://doctor.suranjanbhattacharjee.tech/api/all-health-profiles');
+    final uri =
+        Uri.parse('https://api.esplshowcase.in/api/all-health-profiles');
     final response = await http.get(
       uri,
       headers: {'Authorization': 'Bearer $token'},

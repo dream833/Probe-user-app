@@ -43,7 +43,7 @@ class HomeView extends StatelessWidget {
               SizedBox(height: 30),
               TopRatedDoctorGridView(),
               SizedBox(height: 20),
-              RecentTransactionWidget(),
+              // RecentTransactionWidget(),
               SizedBox(height: 20),
             ],
           ),

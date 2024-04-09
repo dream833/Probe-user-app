@@ -17,96 +17,185 @@ class ReportsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ReportController());
-    controller.getAllUserReports();
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        title: const SmallText(
-            text: 'Reports ',
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            textColor: Colors.black),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(children: [
-            Obx(() {
-              if (controller.isReportListLoading.value == true) {
-                return shimmerListEffect();
-              }
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const ScrollPhysics(),
-                itemCount: controller.reportList.length,
-                itemBuilder: (context, index) {
-                  UserReportModel? report = controller.reportList[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Get.to(() => PDFViewerFromUrl(
-                            url: report!.file,
-                          ));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: boxShadow,
-                            borderRadius: BorderRadius.circular(12)),
+    // controller.getAllUserReports();
+    // controller.getAllAdminReports();
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          bottom: const TabBar(
+            tabs: [
+              Tab(
+                text: "User",
+              ),
+              Tab(
+                text: "Admin",
+              ),
+            ],
+          ),
+          centerTitle: true,
+          title: const SmallText(
+              text: 'Reports ',
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              textColor: Colors.black),
+        ),
+        body: TabBarView(children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(children: [
+                Obx(() {
+                  if (controller.isReportListLoading.value == true) {
+                    return shimmerListEffect();
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                    itemCount: controller.reportList.length,
+                    itemBuilder: (context, index) {
+                      UserReportModel? report = controller.reportList[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(() => PDFViewerFromUrl(
+                                url: report!.file,
+                              ));
+                        },
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(children: [
-                            Row(
-                              children: [
-                                const DisplayImageWidget(
-                                  color: Colors.red,
-                                  height: 60,
-                                  width: 60,
-                                  child: Icon(
-                                    FontAwesomeIcons.filePdf,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: boxShadow,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(children: [
+                                Row(
                                   children: [
-                                    Text(
-                                      report?.name ?? '',
-                                      style: CustomFont.regularTextPoppins,
+                                    const DisplayImageWidget(
+                                      color: Colors.red,
+                                      height: 60,
+                                      width: 60,
+                                      child: Icon(
+                                        FontAwesomeIcons.filePdf,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      report?.date ?? '',
-                                      style: CustomFont.regularTextPoppins
-                                          .copyWith(fontSize: 14),
-                                    ),
+                                    const SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          report?.name ?? '',
+                                          style: CustomFont.regularTextPoppins,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          report?.date ?? '',
+                                          style: CustomFont.regularTextPoppins
+                                              .copyWith(fontSize: 14),
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 )
-                              ],
-                            )
-                          ]),
+                              ]),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   );
-                },
-              );
-            }),
-          ]),
+                }),
+              ]),
+            ),
+          ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(children: [
+                Obx(() {
+                  if (controller.isReportListLoading.value == true) {
+                    return shimmerListEffect();
+                  }
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      itemCount: controller.adminreportList.length,
+                      itemBuilder: (context, index) {
+                        AdminReportModel? report =
+                            controller.adminreportList[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Get.to(() => PDFViewerFromUrl(
+                                  url: report!.file,
+                                ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: boxShadow,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(children: [
+                                  Row(
+                                    children: [
+                                      const DisplayImageWidget(
+                                        color: Colors.red,
+                                        height: 60,
+                                        width: 60,
+                                        child: Icon(
+                                          FontAwesomeIcons.filePdf,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            report?.name ?? '',
+                                            style:
+                                                CustomFont.regularTextPoppins,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            report?.date ?? '',
+                                            style: CustomFont.regularTextPoppins
+                                                .copyWith(fontSize: 14),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                ]),
+                              ),
+                            ),
+                          ),
+                        );
+                      });
+                }),
+              ]),
+            ),
+          ),
+        ]),
+        floatingActionButton: FloatingActionButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+          onPressed: () {
+            Get.to(() => const AddReportView());
+          },
+          backgroundColor: Colors.red,
+          child: const Icon(FontAwesomeIcons.plus, color: Colors.white),
         ),
       ),
-       floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-        onPressed: () {
-          Get.to(() => const AddReportView());
-        },
-        backgroundColor: Colors.red,
-        child: const Icon(FontAwesomeIcons.plus, color: Colors.white),
-      ),
-    
     );
   }
 }

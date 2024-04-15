@@ -40,6 +40,7 @@ class AppointmentController extends GetxController {
   final networkApi = NetworkApiServices();
   final locationController = TextEditingController();
   final patientController = TextEditingController();
+  final priceController = TextEditingController();
   final clinicController = TextEditingController();
   final clinicAddressController = TextEditingController();
   final ageController = TextEditingController();

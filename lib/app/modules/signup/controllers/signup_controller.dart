@@ -365,103 +365,71 @@ class SignupController extends GetxController {
   Future signup(BuildContext context) async {
     isLoading.value = true;
     try {
-      if (profilePicture == null) {
-        CustomMessage.errorMessage(context, 'Please Select Profile Photo');
-      } else if (nameController.text.isEmpty ||
-          emailController.text.isEmpty ||
-          phoneController.text.isEmpty ||
-          passwordController.text.isEmpty ||
-          confirmPasswordController.text.isEmpty ||
-          selectedZoneId.value == 0 ||
-          selectedRegionId.value == 0 ||
-          selectedBranchId.value == 0 ||
-          selectedDistrictId.value == 0 ||
-          pinController.text.isEmpty ||
-          selectedDivisionId.value == 0) {
-        CustomMessage.errorMessage(
-            context, 'Please fill in all the required fields');
-      } else if (passwordController.text.length < 8) {
-        CustomMessage.errorMessage(context, 'Minimum Password is 8');
-      } else if (confirmPasswordController.text != passwordController.text) {
-        CustomMessage.errorMessage(
-            context, 'Password and confirm Password should be same');
-      } else {
-        List<int> imageBytes = await profilePicture!.readAsBytes();
-        String base64Image = base64Encode(imageBytes);
+      // if (profilePicture == null) {
+      //   CustomMessage.errorMessage(context, 'Please Select Profile Photo');
+      // } else if (nameController.text.isEmpty ||
+      //     emailController.text.isEmpty ||
+      //     phoneController.text.isEmpty ||
+      //     passwordController.text.isEmpty ||
+      //     confirmPasswordController.text.isEmpty ||
+      //     selectedZoneId.value == 0 ||
+      //     selectedRegionId.value == 0 ||
+      //     selectedBranchId.value == 0 ||
+      //     selectedDistrictId.value == 0 ||
+      //     pinController.text.isEmpty ||
+      //     selectedDivisionId.value == 0) {
+      //   CustomMessage.errorMessage(
+      //       context, 'Please fill in all the required fields');
+      // } else if (passwordController.text.length < 8) {
+      //   CustomMessage.errorMessage(context, 'Minimum Password is 8');
+      // } else if (confirmPasswordController.text != passwordController.text) {
+      //   CustomMessage.errorMessage(
+      //       context, 'Password and confirm Password should be same');
+      // } else {
+      //   List<int> imageBytes = await profilePicture!.readAsBytes();
+      //   String base64Image = base64Encode(imageBytes);
 
-        final data = {
-          'name': nameController.text,
-          'email': emailController.text,
-          'password': passwordController.text,
-          'password_confirmation': confirmPasswordController.text,
-          'countryCode': selectedDigitalCode.value,
-          'digitalCode': selectedCountryCode.value,
-          'phone_number': phoneController.text,
-          'zone_id': selectedZoneId.toString(),
-          'region_id': selectedRegionId.toString(),
-          'branch_id': selectedBranchId.toString(),
-          'district_id': selectedDistrictId.toString(),
-          'division_id': selectedDivisionId.toString(),
-          'thana_id': selectedThanaId.toString(),
-          'union_id': selectedUnionId.toString(),
-          'user_type': 23.toString(),
-          'is_she': 0.toString(),
-          'permanent_address': addressController.text,
-          'present_address': addressController.text,
-          'image': base64Image,
-          'user_pluck': 1.toString(),
-          //'token': "12345678",
-          'pin': "12345678",
-        };
+      final uri = Uri.parse('https://api.esplshowcase.in/api/users');
+      var request = http.MultipartRequest('POST', uri);
+      isLoading.value = true;
 
-        //var response = await networkApi.postApi(endpoint: 'users', data: json.encode(data));
-        //log(data.toString());
-        // final token = getbox.read(userToken);
-        // print("token $token");
-        final dio = Dio();
-        final token = getbox.read(userToken);
-        print("token $token");
-        final response = await http.Client()
-            .post(Uri.parse('https://api.esplshowcase.in/api/users'), body: {
-          'name': nameController.text,
-          'email': emailController.text,
-          'password': passwordController.text,
-          'password_confirmation': confirmPasswordController.text,
-          'countryCode': selectedDigitalCode.value,
-          'digitalCode': selectedCountryCode.value,
-          'phone_number': phoneController.text,
-          'zone_id': selectedZoneId.toString(),
-          'region_id': selectedRegionId.toString(),
-          'branch_id': selectedBranchId.toString(),
-          'district_id': selectedDistrictId.toString(),
-          'division_id': selectedDivisionId.toString(),
-          'thana_id': selectedThanaId.toString(),
-          'union_id': selectedUnionId.toString(),
-          'user_type': 23.toString(),
-          'is_she': 0.toString(),
-          'permanent_address': addressController.text,
-          'present_address': addressController.text,
-          'image': base64Image,
-          'user_pluck': 1.toString(),
-          //'token': "12345678",
-          'pin': "12345678",
-        }, headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Accept": "application/json",
+      request.fields['name'] = nameController.text;
+      request.fields['email'] = emailController.text;
+      request.fields['password'] = passwordController.text;
+      request.fields['password_confirmation'] = confirmPasswordController.text;
+      request.fields['countryCode'] = selectedDigitalCode.value;
+      request.fields['digitalCode'] = selectedCountryCode.value;
+      request.fields['phone_number'] = phoneController.text;
+      request.fields['zone_id'] = selectedZoneId.toString();
+      request.fields['region_id'] = selectedRegionId.toString();
+      request.fields['branch_id'] = selectedBranchId.toString();
+      request.fields['district_id'] = selectedDistrictId.toString();
+      request.fields['division_id'] = selectedDivisionId.toString();
+      request.fields['thana_id'] = selectedThanaId.toString();
+      request.fields['union_id'] = selectedUnionId.toString();
+      request.fields['user_type'] = 23.toString();
+      request.fields['is_she'] = 0.toString();
+      request.fields['pin'] = pinController.text;
+      request.fields['permanent_address'] = addressController.text;
+      request.fields['present_address'] = addressController.text;
+      request.fields['user_pluck'] = 1.toString();
+      var pic =
+          await http.MultipartFile.fromPath('image', profilePicture!.path);
+      request.files.add(pic);
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          CustomMessage.showSuccessSnackBar("Registration Successful");
+          Get.offAllNamed(Routes.LOGIN);
         });
-
-        if (response.statusCode == 200) {
-          Future.delayed(const Duration(milliseconds: 100), () {
-            CustomMessage.showSuccessSnackBar("Registration Successful");
-            Get.offAllNamed(Routes.LOGIN);
-          });
-        } else {
-          Future.delayed(const Duration(milliseconds: 100), () {
-            CustomMessage.showSnackBar("Registration Failed");
-            log("${response.body} \n ${response.reasonPhrase} \n ${response.statusCode} ");
-          });
-        }
+      } else {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          CustomMessage.showSnackBar("Registration Failed");
+          log("${response.request} \n ${response.reasonPhrase} \n ${response.statusCode} ");
+        });
       }
+      // }
     } on DioException catch (e) {
       // ignore: use_build_context_synchronously
       log(e.response.toString());

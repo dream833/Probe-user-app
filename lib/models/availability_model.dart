@@ -7,6 +7,7 @@ class AvailabilityModel {
   int? maxPatients;
   String? location;
   String? phone;
+  int? price;
   String? address;
   String? status;
   DateTime? createdAt;
@@ -20,6 +21,7 @@ class AvailabilityModel {
     this.endTime,
     this.day,
     this.type,
+    this.price,
     this.maxPatients,
     this.location,
     this.phone,
@@ -40,6 +42,7 @@ class AvailabilityModel {
           type: json["type"],
           maxPatients: json["max_patients"],
           location: json["location"],
+          price: json["price"],
           phone: json["phone"],
           address: json["address"],
           status: json["status"],
@@ -60,6 +63,7 @@ class AvailabilityModel {
         "type": 'online',
         "max_patients": maxPatients,
         "location": location,
+        "price": price,
         "phone": phone,
         "address": address,
         "status": status,

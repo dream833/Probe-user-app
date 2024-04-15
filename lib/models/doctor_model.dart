@@ -28,6 +28,7 @@ class DoctorModel {
   int? regionId;
   int? branchId;
   int? districtId;
+  String? registrationNo;
   int? divisionId;
   int? thanaId;
   int? unionId;
@@ -48,6 +49,7 @@ class DoctorModel {
     this.workExperience,
     this.presentAddress,
     this.permanentAddress,
+    this.registrationNo,
     this.biography,
     this.specialist,
     this.educationalQualification,
@@ -78,6 +80,7 @@ class DoctorModel {
       department: json["department"],
       phoneNo: json["phone_no"],
       gender: json["gender"],
+      registrationNo: json["registration_no"],
       maritalStatus: json["marital_status"],
       bloodGroup: json["blood_group"],
       dob: json["dob"] != null ? DateTime.parse(json["dob"]) : null,
@@ -122,6 +125,7 @@ class DoctorModel {
         "gender": gender,
         "marital_status": maritalStatus,
         "blood_group": bloodGroup,
+        "registration_no": registrationNo,
         "dob": dob != null
             ? "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}"
             : null,

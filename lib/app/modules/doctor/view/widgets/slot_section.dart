@@ -139,6 +139,14 @@ class _SlotSectionState extends State<SlotSection> {
                                         fontWeight: FontWeight.w500,
                                         textColor: Colors.black,
                                       ),
+                                      const SizedBox(height: 7),
+                                      SmallText(
+                                        text:
+                                            "Price: ${availabilityModel.price.toString()}",
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                        textColor: Colors.black,
+                                      ),
                                     ],
                                   ),
                                   Obx(() => Icon(

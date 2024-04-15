@@ -139,7 +139,7 @@ class AppointmentDetailView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 Text(
-                                  "BDT ${100.toString()}",
+                                  "BDT ${appointment.payment}",
                                   style: CustomFont.regularTextPoppins.copyWith(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,

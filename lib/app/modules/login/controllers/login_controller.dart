@@ -38,7 +38,7 @@ class LoginController extends GetxController {
           'password': password.text,
         },
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         if (response.data['message'] == "Invalid phone no or password") {
           print(response.data['message']);
           Future.delayed(const Duration(milliseconds: 100), () {

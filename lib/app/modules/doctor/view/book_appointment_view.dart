@@ -18,13 +18,16 @@ import 'package:uddipan/app/widget/search_dropdown.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/string_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
+import 'package:uddipan/models/appointment_model.dart';
 import 'package:uddipan/models/member_model.dart';
 import 'package:uddipan/models/user_report_model.dart';
 import 'package:uddipan/utils/snippet.dart';
 import '../../appointments/controller/appointment_controller.dart';
 
 class BookAppointmentView extends StatefulWidget {
-  const BookAppointmentView({super.key});
+  final doctorId;
+  final AppoinmentModel? model;
+  const BookAppointmentView({super.key, required this.doctorId, this.model});
 
   @override
   State<BookAppointmentView> createState() => _BookAppointmentViewState();
@@ -401,22 +404,22 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SmallText(fontSize: 15, text: "Total Price"),
-                  SizedBox(height: 1),
-                  SmallText(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      text: "BDT 100"),
-                ],
-              ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     const SmallText(fontSize: 15, text: "Total Price"),
+              //     const SizedBox(height: 1),
+              //     SmallText(
+              //         fontSize: 18,
+              //         fontWeight: FontWeight.bold,
+              //         text: widget.model!.payment.toString()),
+              //   ],
+              // ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.8,
                     child: LoaderButton(
                         radius: 6,
                         color: appColorPrimary,

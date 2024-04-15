@@ -52,7 +52,7 @@ class ShowDoctorWiget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        '${doctorModel?.firstName} ',
+                        '${doctorModel?.firstName} ${doctorModel?.lastName}',
                         style: GoogleFonts.poppins(
                             fontWeight: FontWeight.w500,
                             fontSize: 13,
@@ -77,37 +77,36 @@ class ShowDoctorWiget extends StatelessWidget {
                       //   ],
                       // ),
                       const SizedBox(height: 5),
-                      Row(
-                        children: [
-                          RatingBar.builder(
-                            unratedColor: Colors.grey.shade300,
-                            initialRating: doctorModel?.averageRating ?? 0.0,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemSize: 15,
-                            itemPadding:
-                                const EdgeInsets.symmetric(horizontal: 0.0),
-                            itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              size: 30,
-                              color: Colors.amber,
-                            ),
-                            onRatingUpdate: (rating) {},
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            "(${doctorModel?.totalRatingLength}) ",
-                            style: CustomFont.regularTextRaleway.copyWith(
-                                fontSize: 13, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      )
+                      // Row(
+                      //   children: [
+                      //     RatingBar.builder(
+                      //       unratedColor: Colors.grey.shade300,
+                      //       initialRating: doctorModel?.averageRating ?? 0.0,
+                      //       minRating: 1,
+                      //       direction: Axis.horizontal,
+                      //       allowHalfRating: true,
+                      //       itemCount: 5,
+                      //       itemSize: 15,
+                      //       itemPadding:
+                      //           const EdgeInsets.symmetric(horizontal: 0.0),
+                      //       itemBuilder: (context, _) => const Icon(
+                      //         Icons.star,
+                      //         size: 30,
+                      //         color: Colors.amber,
+                      //       ),
+                      //       onRatingUpdate: (rating) {},
+                      //     ),
+                      //     const SizedBox(width: 5),
+                      //     Text(
+                      //       "(${doctorModel?.totalRatingLength}) ",
+                      //       style: CustomFont.regularTextRaleway.copyWith(
+                      //           fontSize: 13, fontWeight: FontWeight.w500),
+                      //     ),
+                      //   ],
+                      // )
                     ],
                   ),
                   const SizedBox(width: 10),
-                 
                 ],
               ),
             ],

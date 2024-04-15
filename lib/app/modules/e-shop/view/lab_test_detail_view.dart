@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uddipan/app/data/local_data_sources.dart';
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
+import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/loader_button.dart';
 import 'package:uddipan/constants/color_constant.dart';
@@ -174,45 +176,53 @@ class LabTestDetailView extends StatelessWidget {
 
   Future<void> addLabTestToBooking(
       String patientId, BuildContext context) async {
-    try {
-      final data = {
-        "paitentId": patientId,
-        "name": name,
-        "rate": rate.toString(),
-        "sample": sample ?? 'No sample needed',
-        "homeCollection": homeCollection.toString(),
-        "method": method ?? 'No method specified',
-        "timeframe": timeframe ?? 'No timeframe specified',
-        "comments": comments ?? 'No additional comments',
-        "preparation": preparation ?? 'No preparation specified',
-      };
-      String token = getbox.read(userToken);
-      print("token $token");
-      var response = await http.post(
-          Uri.parse("https://api.esplshowcase.in/api/book-diagnostic-test"),
-          body: json.encode(data),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $token'
-          });
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        String url = response.body.toString();
+    final profileController = Get.find<ProfileController>();
 
-        await customLaunch(url);
-        Future.delayed(const Duration(milliseconds: 200), () {
-          final controller = Get.find<BottomNavigationBarControllers>();
-          controller.selectedIndex.value = 1;
+    final data = {
+      "paitent_id": patientId,
+      "patient_name": profileController.userModel.value!.name.toString(),
+      "name": name,
+      "rate": rate.toString(),
+      "sample": sample ?? 'No sample needed',
+      "homeCollection": homeCollection.toString(),
+      "method": method ?? 'No method specified',
+      "timeframe": timeframe ?? 'No timeframe specified',
+      "comments": comments ?? 'No additional comments',
+      "preparation": preparation ?? 'No preparation specified',
+    };
+    print(data);
+    String token = getbox.read(userToken);
+    String url = "https://api.esplshowcase.in/api/book-diagnostic-testing";
+    print("token $token");
 
-          Get.offAll(() => BottomNavigationBarView());
-        });
-      } else {
-        debugPrint("${response.body} ${response.request}");
-        CustomMessage.errorMessage(context, 'Error ${response.statusCode}');
-      }
-    } catch (ex) {
-      debugPrint(ex.toString());
-      CustomMessage.errorMessage(context, 'Error $ex');
+    Dio dio = Dio();
+    var response = await dio.post(url,
+        data: json.encode(data),
+        options: Options(
+            followRedirects: false,
+            validateStatus: (status) {
+              return status! < 500;
+            },
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+              "Accept": "application/json"
+            }));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      String url = response.data.toString();
+
+      // await customLaunch(url);
+      Future.delayed(const Duration(milliseconds: 200), () {
+        final controller = Get.find<BottomNavigationBarControllers>();
+        controller.selectedIndex.value = 1;
+
+        Get.offAll(() => BottomNavigationBarView());
+      });
+      CustomMessage.showSuccessSnackBar("Booking was a success");
+    } else {
+      debugPrint("${response.data} ${response.statusMessage}");
+      CustomMessage.errorMessage(context, 'Error ${response.statusCode}');
     }
   }
 }

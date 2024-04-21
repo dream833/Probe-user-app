@@ -5,7 +5,9 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uddipan/app/modules/signup/views/signup_view.dart';
 import 'package:uddipan/routes/app_pages.dart';
 import '../../../../api/network_service_api.dart';
@@ -36,6 +38,9 @@ class SignupController extends GetxController {
   final isConfirmPasswordVisible = true.obs;
   var selectedRadio = 0.obs;
   final List<String> radioItems = ['Male', 'Female'];
+
+  final imagePath = ''.obs;
+  XFile? profilePic;
 
   // var selectedRegionValue = RxString('');
   var selectedBranchValue = RxString('');
@@ -131,20 +136,20 @@ class SignupController extends GetxController {
 
           if (regionModel.regions != null) {
             regionList.value = regionModel.regions!;
-            print(
+            debugPrint(
                 'Region Length is ====================> ${regionList.length}');
           }
         } else {
           throw Exception('Failed to load data');
         }
       } else {
-        print(response.statusCode);
-        print(response.body);
+        debugPrint(response.statusCode);
+        debugPrint(response.body);
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -164,7 +169,7 @@ class SignupController extends GetxController {
           if (branchModel.branches != null) {
             // Check if 'regions' in the model is not null
             branchList.value = branchModel.branches!;
-            print(
+            debugPrint(
                 'Branch Length is ====================> ${branchList.length}');
           }
         } else {
@@ -174,8 +179,8 @@ class SignupController extends GetxController {
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -183,7 +188,7 @@ class SignupController extends GetxController {
 
   Future fetchDistrict(int branchId) async {
     try {
-      print("Branch id is ======> $branchId");
+      debugPrint("Branch id is ======> $branchId");
       final response = await NetworkApiServices().fetchDistrict(1.toString());
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
@@ -193,20 +198,20 @@ class SignupController extends GetxController {
 
           if (districtModel.districts != null) {
             districtList.value = districtModel.districts!;
-            print(
+            debugPrint(
                 'District Length is ====================> ${districtList.length}');
           }
         } else {
           throw Exception('Failed to load data');
         }
       } else {
-        print(response.body);
-        print(response.statusCode);
+        debugPrint(response.body);
+        debugPrint(response.statusCode);
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -237,7 +242,7 @@ class SignupController extends GetxController {
   /// Fetch Thana
   Future fetchThana(int divisionId) async {
     try {
-      print("Division ID $divisionId");
+      debugPrint("Division ID $divisionId");
       final response =
           await NetworkApiServices().fetchThana(divisionId.toString());
       if (response.statusCode == 200) {
@@ -250,18 +255,18 @@ class SignupController extends GetxController {
           if (thanaModel.thanas != null) {
             // Check if 'regions' in the model is not null
             thanaList.value = thanaModel.thanas!;
-            print('Thana Length is ====================> ${thanaList.length}');
+            debugPrint('Thana Length is ====================> ${thanaList.length}');
           }
         } else {
           throw Exception('Failed to load data');
         }
       } else {
-        print("Code ${response.statusCode}");
+        debugPrint("Code ${response.statusCode}");
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -278,8 +283,8 @@ class SignupController extends GetxController {
 
           if (unionModel.unions != null) {
             unionList.value = unionModel.unions!;
-            print('Union Length is ====================> ${unionList.length}');
-            print(response.body);
+            debugPrint('Union Length is ====================> ${unionList.length}');
+            debugPrint(response.body);
           }
         } else {
           throw Exception('Failed to load data');
@@ -288,8 +293,8 @@ class SignupController extends GetxController {
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -344,21 +349,80 @@ class SignupController extends GetxController {
       if (response.statusCode == 200) {
         var responseBody = await response.stream.bytesToString();
         var parsedResponse = json.decode(responseBody);
-        print(parsedResponse);
+        debugPrint(parsedResponse);
         String? fileUrl = parsedResponse['data']['file'];
         log('file url $fileUrl');
         return fileUrl;
       } else {
         var responseBody = await response.stream.bytesToString();
         var parsedResponse = json.decode(responseBody);
-        print(parsedResponse);
+        debugPrint(parsedResponse);
         return '';
       }
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       CustomMessage.errorMessage(context, e.toString());
-      print(e);
       return '';
+    }
+  }
+
+  getImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      imagePath.value = image.path.toString();
+    }
+  }
+
+  userRegistration() async {
+    isLoading.value = true;
+    try {
+      final uri = Uri.parse('https://api.esplshowcase.in/api/users');
+      final request = http.MultipartRequest('POST', uri)
+        ..fields['name'] = nameController.text
+        ..fields['email'] = emailController.text
+        ..fields['password'] = passwordController.text
+        ..fields['password_confirmation'] = confirmPasswordController.text
+        ..fields['countryCode'] = selectedDigitalCode.value
+        ..fields['digitalCode'] = selectedCountryCode.value
+        ..fields['phone_number'] = phoneController.text
+        ..fields['zone_id'] = selectedZoneId.toString()
+        ..fields['region_id'] = selectedRegionId.toString()
+        ..fields['branch_id'] = selectedBranchId.toString()
+        ..fields['district_id'] = selectedDistrictId.toString()
+        ..fields['division_id'] = selectedDivisionId.toString()
+        ..fields['thana_id'] = selectedThanaId.toString()
+        ..fields['union_id'] = selectedUnionId.toString()
+        ..fields['user_type'] = 23.toString()
+        ..fields['is_she'] = 1.toString()
+        ..fields['pin'] = pinController.text
+        ..fields['permanent_address'] = addressController.text
+        ..fields['present_address'] = addressController.text
+        ..fields['user_pluck'] = 1.toString()
+        ..files.add(http.MultipartFile(
+            'image',
+            File(imagePath.value).readAsBytes().asStream(),
+            File(imagePath.value).lengthSync()))
+        ..headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        ..headers['Accept'] = 'application/json';
+
+      log(request.fields.toString());
+      final response = await http.Response.fromStream(await request.send());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          CustomMessage.showSuccessSnackBar("Registration Successful");
+          Get.offAllNamed(Routes.LOGIN);
+        });
+      } else {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          CustomMessage.showSnackBar("Registration Failed");
+          log("${response.body} \n ${response.reasonPhrase} \n ${response.statusCode} ");
+        });
+      }
+    } catch (ex) {
+      Fluttertoast.showToast(msg: ex.toString());
+      log(ex.toString());
     }
   }
 
@@ -417,6 +481,8 @@ class SignupController extends GetxController {
           await http.MultipartFile.fromPath('image', profilePicture!.path);
       request.files.add(pic);
       var response = await request.send();
+
+      debugPrint(response.toString());
 
       if (response.statusCode == 200) {
         Future.delayed(const Duration(milliseconds: 100), () {

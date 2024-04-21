@@ -38,6 +38,7 @@ class AppointmentDetailView extends StatelessWidget {
                 print('${controller.getVideoId.value} video id');
                 if (controller.getVideoId.value.isNotEmpty) {
                   Get.to(() => VideoCallView(
+                    
                       callId: controller.getVideoId.value,
                       userId: appointment.id.toString(),
                       userName: appointment.patientName.toString()));
@@ -97,10 +98,6 @@ class AppointmentDetailView extends StatelessWidget {
                                 color: appColorPrimary,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800),
-                          ),
-                          Icon(
-                            Icons.remove_red_eye,
-                            color: appPrimaryColor,
                           ),
                         ],
                       ),

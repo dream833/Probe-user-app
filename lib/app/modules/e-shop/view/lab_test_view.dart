@@ -89,9 +89,6 @@ class _LabTestViewState extends State<LabTestView> {
                   itemCount: diagnosticTests.length,
                   itemBuilder: (context, index) {
                     final test = diagnosticTests[index];
-                    // MedicineModel? medicine = eshopController.medicineList[index];
-                    //LabTestModel? labTest;
-                    // LabTestModel? labTest = eshopController.reportList[index];
                     return GestureDetector(
                       onTap: () {
                         Get.to(() => LabTestDetailView(

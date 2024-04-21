@@ -28,8 +28,8 @@ class DoctorDetailWidget extends StatelessWidget {
         SizedBox(height: 15.h),
         GestureDetector(
           onTap: () {
-            Get.to(
-                () => DoctorDetailView(doctorModel: appointment.doctorModel));
+            // Get.to(
+            //     () => DoctorDetailView(doctorModel: appointment.doctorModel));
           },
           child: Container(
             width: double.infinity,
@@ -67,20 +67,20 @@ class DoctorDetailWidget extends StatelessWidget {
                                 fontWeight: FontWeight.w800),
                           ),
                           const SizedBox(height: 3),
-                          Row(
-                            children: [
-                              CustomRatingWidget(
-                                  averageRating:
-                                      appointment.doctorModel?.averageRating ??
-                                          0.0),
-                              const SizedBox(width: 5),
-                              Text(
-                                "(${appointment.doctorModel?.totalRatingLength} reviews)",
-                                style: CustomFont.regularTextPoppins.copyWith(
-                                    fontSize: 13, fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          )
+                          // Row(
+                          //   children: [
+                          //     CustomRatingWidget(
+                          //         averageRating:
+                          //             appointment.doctorModel?.averageRating ??
+                          //                 0.0),
+                          //     const SizedBox(width: 5),
+                          //     Text(
+                          //       "(${appointment.doctorModel?.totalRatingLength} reviews)",
+                          //       style: CustomFont.regularTextPoppins.copyWith(
+                          //           fontSize: 13, fontWeight: FontWeight.w500),
+                          //     ),
+                          //   ],
+                          // )
                         ],
                       ),
                     ],

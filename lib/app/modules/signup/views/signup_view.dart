@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -48,8 +50,23 @@ class SignupView extends GetView<SignupController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 15.h),
-                  const Center(child: ProfilePictureWidget()),
-                  SizedBox(height: 15.h),
+                  // Obx(() => Center(
+                  //         child: Stack(clipBehavior: Clip.none, children: [
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           controller.getImage();
+                  //         },
+                  //         child: CircleAvatar(
+                  //             radius: 60,
+                  //             backgroundImage: controller
+                  //                     .imagePath.value.isNotEmpty
+                  //                 ? FileImage(File(
+                  //                     controller.imagePath.value.toString()))
+                  //                 : null),
+                  //       )
+                  //     ]))),
+                  const ProfilePictureWidget(),
+                   SizedBox(height: 15.h),
                   SmallText(text: 'Name', textColor: Colors.grey.shade700),
                   SizedBox(height: 10.h),
                   CustomTextField(

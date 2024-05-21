@@ -3,9 +3,9 @@ import 'package:get_storage/get_storage.dart';
 
 final getbox = GetStorage();
 var baseurl = "https://api.esplshowcase.in/api";
-const int zegoAppId = 336709738;
+const int zegoAppId = 702781200;
 const String zegoAppSignId =
-    '65c7a6d0809ad30d3e2cb40491dc3a55688270da37927af6b50d065e7cac8760';
+    '42300edc7dc70db65ae27bdb03fcaada2774a569558cdf70c1b30341e20d5b32';
 const String userId = "user_id";
 const String isUserLoggedIN = "IS_USER_LOGGED_IN";
 const String userToken = "TOKEN";

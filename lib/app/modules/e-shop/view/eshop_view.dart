@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
 import 'package:uddipan/app/modules/e-shop/view/categories_view.dart';
 import 'package:uddipan/app/modules/e-shop/view/lab_test_view.dart';
-import 'package:uddipan/app/modules/e-shop/view/products_view.dart';
-import 'package:uddipan/app/modules/e-shop/view/upload_prescription.dart';
-import 'package:uddipan/app/modules/e-shop/view/widgets/show_product_widget.dart';
 import 'package:uddipan/app/modules/home/controllers/home_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/cart_counter.dart';
 import 'package:uddipan/app/widget/custom_textfield.dart';
 import 'package:uddipan/constants/color_constant.dart';
-import 'package:uddipan/models/medicine_model.dart';
 
 class EShopView extends GetView<EShopController> {
   const EShopView({super.key});
@@ -231,45 +225,46 @@ class EShopView extends GetView<EShopController> {
                   }),
             ),
             const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SmallText(
-                      text: 'Explore Products',
-                      textColor: Colors.grey.shade700,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(() => const ProductsView());
-                    },
-                    child: SmallText(
-                        text: 'View All',
-                        fontWeight: FontWeight.w600,
-                        textColor: Colors.grey.shade700,
-                        fontSize: 15),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 300,
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const ScrollPhysics(),
-                padding: EdgeInsets.zero,
-                scrollDirection: Axis.horizontal,
-                itemCount: eshopController.medicineList.length,
-                itemBuilder: (context, innerIndex) {
-                  MedicineModel? medicine =
-                      eshopController.medicineList[innerIndex];
-                  return ShowProductWidget(medicine: medicine!);
-                },
-              ),
-            ),
+            //ecom products
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 6),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       SmallText(
+            //           text: 'Explore Products',
+            //           textColor: Colors.grey.shade700,
+            //           fontWeight: FontWeight.w600,
+            //           fontSize: 15),
+            //       GestureDetector(
+            //         onTap: () {
+            //           Get.to(() => const ProductsView());
+            //         },
+            //         child: SmallText(
+            //             text: 'View All',
+            //             fontWeight: FontWeight.w600,
+            //             textColor: Colors.grey.shade700,
+            //             fontSize: 15),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(height: 20),
+            // SizedBox(
+            //   height: 300,
+            //   child: ListView.builder(
+            //     shrinkWrap: true,
+            //     physics: const ScrollPhysics(),
+            //     padding: EdgeInsets.zero,
+            //     scrollDirection: Axis.horizontal,
+            //     itemCount: eshopController.medicineList.length,
+            //     itemBuilder: (context, innerIndex) {
+            //       MedicineModel? medicine =
+            //           eshopController.medicineList[innerIndex];
+            //       return ShowProductWidget(medicine: medicine!);
+            //     },
+            //   ),
+            // ),
             const SizedBox(height: 20),
           ]),
         ),

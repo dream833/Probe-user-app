@@ -5,8 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uddipan/app/data/local_data_sources.dart';
+import 'package:uddipan/app/modules/bottom_navigation_bar/view/bottom_navigation_bar_view.dart';
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
 import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
@@ -14,19 +13,17 @@ import 'package:uddipan/app/widget/loader_button.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
 import 'package:uddipan/models/lab_test_model.dart';
-import 'package:uddipan/utils/snippet.dart';
-import 'package:http/http.dart' as http;
-import '../../../../api/network_service_api.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../constants/string_constant.dart';
 import '../../../../utils/custom_message.dart';
 import '../../bottom_navigation_bar/controllers/bottom_navigation_bar_controllers.dart';
-import '../../bottom_navigation_bar/view/bottom_navigation_bar_view.dart';
 
 class LabTestDetailView extends StatelessWidget {
   final LabTestModel? model;
   final String? name;
   final String? method;
-  final int? rate;
+  final int? rates;
   final String? comments;
   final String? timeframe;
   final String? sample;
@@ -38,7 +35,7 @@ class LabTestDetailView extends StatelessWidget {
       this.model,
       this.name,
       this.method,
-      this.rate,
+      this.rates,
       this.comments,
       this.timeframe,
       this.sample,
@@ -64,7 +61,7 @@ class LabTestDetailView extends StatelessWidget {
           TestInfoWidget(
             model: model,
             name: name,
-            rate: rate,
+            rate: rates,
             sample: sample,
             homeCollection: homeCollection,
             method: method,
@@ -99,7 +96,7 @@ class LabTestDetailView extends StatelessWidget {
                       SmallText(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
-                        text: rate.toString(),
+                        text: rates.toString(),
                       ),
                       const SizedBox(width: 10),
                     ],
@@ -113,6 +110,7 @@ class LabTestDetailView extends StatelessWidget {
                         try {
                           Get.put(());
                           final patientId = getbox.read(userId).toString();
+
                           log('PatientId $patientId');
                           await addLabTestToBooking(patientId, context);
                         } catch (e) {
@@ -154,7 +152,7 @@ class LabTestDetailView extends StatelessWidget {
                   SmallText(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      text: rate.toString()),
+                      text: rates.toString()),
                 ],
               ),
               Padding(
@@ -177,22 +175,29 @@ class LabTestDetailView extends StatelessWidget {
   Future<void> addLabTestToBooking(
       String patientId, BuildContext context) async {
     final profileController = Get.find<ProfileController>();
+    final labtestcontroller = Get.find<EShopController>();
 
     final data = {
-      "paitent_id": patientId,
-      "patient_name": profileController.userModel.value!.name.toString(),
-      "name": name,
-      "rate": rate.toString(),
-      "sample": sample ?? 'No sample needed',
-      "homeCollection": homeCollection.toString(),
-      "method": method ?? 'No method specified',
-      "timeframe": timeframe ?? 'No timeframe specified',
-      "comments": comments ?? 'No additional comments',
-      "preparation": preparation ?? 'No preparation specified',
+      "user_id": getbox.read(userId).toString(),
+
+      "test_id": ["3"],
+      "price": "1200".toString(), //   "paitent_id": patientId,
+      //   "patient_name": profileController.userModel.value!.name.toString(),
+      //   "name": name,
+      //   "rate": rate.toString(),
+      //   "sample": sample ?? 'No sample needed',
+      //   "homeCollection": homeCollection.toString(),
+      //   "method": method ?? 'No method specified',
+      //   "timeframe": timeframe ?? 'No timeframe specified',
+      //   "comments": comments ?? 'No additional comments',
+      //   "preparation": preparation ?? 'No preparation specified',
+      // };
     };
+
     print(data);
     String token = getbox.read(userToken);
-    String url = "https://api.esplshowcase.in/api/book-diagnostic-testing";
+    // String url = "https://api.esplshowcase.in/api/book-diagnostic-testing";
+    String url = "https://api.esplshowcase.in/api/test-booking";
     print("token $token");
 
     Dio dio = Dio();
@@ -208,18 +213,25 @@ class LabTestDetailView extends StatelessWidget {
               'Authorization': 'Bearer $token',
               "Accept": "application/json"
             }));
+    Future<void> customLaunch(String url) async {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      String url = response.data.toString();
+      final url = response.data.toString();
 
-      // await customLaunch(url);
+      await customLaunch(url);
       Future.delayed(const Duration(milliseconds: 200), () {
         final controller = Get.find<BottomNavigationBarControllers>();
         controller.selectedIndex.value = 1;
 
         Get.offAll(() => BottomNavigationBarView());
       });
-      CustomMessage.showSuccessSnackBar("Booking was a success");
+      CustomMessage.showSuccessSnackBar("Redirecting to Payment");
     } else {
       debugPrint("${response.data} ${response.statusMessage}");
       CustomMessage.errorMessage(context, 'Error ${response.statusCode}');
@@ -263,18 +275,18 @@ class TestInfoWidget extends StatelessWidget {
                 Text(name.toString(),
                     style: CustomFont.regularMediumText
                         .copyWith(fontWeight: FontWeight.w700, fontSize: 16)),
-                Container(
-                  height: 40,
-                  width: 45,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.deepOrangeAccent,
-                  ),
-                  child: const Icon(
-                    Icons.share,
-                    color: Colors.white,
-                  ),
-                ),
+                // Container(
+                //   height: 40,
+                //   width: 45,
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(12),
+                //     color: Colors.deepOrangeAccent,
+                //   ),
+                //   // child: const Icon(
+                //   //   Icons.share,
+                //   //   color: Colors.white,
+                //   // ),
+                // ),
               ],
             ),
             const SizedBox(height: 5),

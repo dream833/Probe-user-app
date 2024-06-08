@@ -22,15 +22,13 @@ class SmallText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-
       maxLines: maxLine,
       overflow: TextOverflow.ellipsis,
       textAlign: textAlign,
       style: TextStyle(
-        fontWeight: fontWeight??FontWeight.w500,
-        color: textColor ?? Colors.white,
-        fontSize: fontSize??16
-      ),
+          fontWeight: fontWeight ?? FontWeight.w500,
+          color: textColor ?? Colors.white,
+          fontSize: fontSize ?? 16),
     );
   }
 }

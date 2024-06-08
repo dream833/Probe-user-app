@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:uddipan/api/network_service_api.dart';
 import 'package:uddipan/constants/string_constant.dart';
 import 'package:uddipan/models/availability_model.dart';
 import 'package:uddipan/models/doctor_model.dart';
-import 'package:http/http.dart' as http;
 import 'package:uddipan/models/review_model.dart';
 import 'package:uddipan/models/user_model.dart';
 import 'package:uddipan/utils/custom_message.dart';
@@ -236,8 +237,8 @@ class DoctorController extends GetxController {
   Future<Map<String, dynamic>?> getDoctorAverageRating(
       {required int doctorId}) async {
     try {
-      final uri = Uri.parse(
-          'https://doctor.suranjanbhattacharjee.tech/api/get/doctor_review/?doctor_id=$doctorId');
+      final uri =
+          Uri.parse('$baseurl/api/get/doctor_review/?doctor_id=$doctorId');
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
@@ -270,8 +271,8 @@ class DoctorController extends GetxController {
   Future<void> getDoctorReviewList({required int doctorId}) async {
     try {
       isDoctorReviewLoading.value = true;
-      final uri = Uri.parse(
-          'https://doctor.suranjanbhattacharjee.tech/api/get/doctor_review/?doctor_id=$doctorId');
+      final uri =
+          Uri.parse('$baseurl/api/get/doctor_review/?doctor_id=$doctorId');
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {

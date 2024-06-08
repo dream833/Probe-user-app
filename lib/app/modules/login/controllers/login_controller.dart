@@ -1,18 +1,19 @@
-import 'dart:convert';
 import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:uddipan/routes/app_pages.dart';
 import 'package:uddipan/utils/custom_message.dart';
+
 import '../../../../api/network_service_api.dart';
 import '../../../../constants/string_constant.dart';
-import 'package:http/http.dart' as http;
 
 class LoginController extends GetxController {
   final networkApi = NetworkApiServices();
-  final selectedCountryCode = "IN".obs;
-  final selectedDigitalCode = "91".obs;
+  final selectedCountryCode = "BD".obs;
+  final selectedDigitalCode = "880".obs;
 
   Rx<bool> isPasswordHidden = true.obs;
   var phone = TextEditingController();

@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:uddipan/app/modules/notification/controllers/notification_controller.dart';
 import 'package:uddipan/constants/string_constant.dart';
 import 'package:uddipan/models/banner_model.dart';
@@ -18,7 +19,6 @@ import '../../../../constants/image_contant.dart';
 class HomeController extends GetxController {
   final networkServices = NetworkApiServices();
   RxInt carousalIndex = 0.obs;
-
 
   RxList<BannerModel> bannerList = <BannerModel>[].obs;
   RxList<SpecializationCategory> specializationCategory =
@@ -114,6 +114,7 @@ class HomeController extends GetxController {
   Future<void> getSpecializationCategories() async {
     try {
       String token = getbox.read(userToken);
+      log(token);
       final uri = Uri.parse('$baseurl/get/user_category');
       final response = await http.get(
         uri,
@@ -141,7 +142,7 @@ class HomeController extends GetxController {
 
       FirebaseMessaging.onMessage.listen((message) async {
         final notificaitonController = Get.find<NotificationController>();
-      
+
         if (Platform.isAndroid) {
           notificaitonController.getUnReadNotificationCount();
           await LocalNotification.display(message);

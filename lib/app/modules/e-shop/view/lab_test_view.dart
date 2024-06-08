@@ -1,19 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:http/http.dart' as http;
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
-
 import 'package:uddipan/app/modules/e-shop/view/lab_test_detail_view.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/cart_counter.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
-
 import 'package:uddipan/models/lab_test_model.dart';
 import 'package:uddipan/utils/snippet.dart';
-import 'package:http/http.dart' as http;
 
 class LabTestView extends StatefulWidget {
   const LabTestView({super.key, this.model});
@@ -94,7 +90,7 @@ class _LabTestViewState extends State<LabTestView> {
                         Get.to(() => LabTestDetailView(
                               model: widget.model,
                               name: test['name'],
-                              rate: test['rate'],
+                              rates: test['rate'],
                               sample: test['sample'],
                               homeCollection: test['homeCollection'],
                               method: test['method'],

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:uddipan/app/modules/bottom_navigation_bar/controllers/bottom_navigation_bar_controllers.dart';
 import 'package:uddipan/app/modules/bottom_navigation_bar/view/bottom_navigation_bar_view.dart';
@@ -11,10 +13,7 @@ import 'package:uddipan/models/appointment_model.dart';
 import 'package:uddipan/models/availability_model.dart';
 import 'package:uddipan/models/member_model.dart';
 import 'package:uddipan/models/user_report_model.dart';
-
 import 'package:uddipan/utils/custom_message.dart';
-
-import 'package:http/http.dart' as http;
 
 import '../../../../api/network_service_api.dart';
 import '../../../../utils/snippet.dart';
@@ -299,7 +298,7 @@ class AppointmentController extends GetxController {
             "patient_id": patientId,
             "appointment_date": availabilityModel.slotDate,
             "availability": availabilityModel.toJson(),
-            'amount': '100',
+            'amount': availabilityModel.price,
             'isForYou': patientType.value == 0 ? '1' : '0',
             'isForFamilyMember': patientType.value == 1 ? '1' : '0',
             'family_member_id': patientType.value == 1
@@ -311,6 +310,7 @@ class AppointmentController extends GetxController {
 
         if (response.statusCode == 201) {
           String url = response.data.toString();
+          log(url);
 
           await customLaunch(url);
 

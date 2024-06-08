@@ -1,30 +1,22 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uddipan/app/data/local_data_sources.dart';
+import 'package:http/http.dart' as http;
 import 'package:uddipan/app/modules/prescription/controller/prescription_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
-import 'package:uddipan/app/widget/custom_textfield.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
-import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/image_contant.dart';
 import 'package:uddipan/constants/string_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
-import 'package:uddipan/models/prescription_model.dart';
-import 'package:uddipan/utils/snippet.dart';
-import 'package:http/http.dart' as http;
 
 class PrescriptionListView extends StatefulWidget {
   final int? index;
-  const PrescriptionListView(
-      {super.key,
-      this.index,
-      });
+  const PrescriptionListView({
+    super.key,
+    this.index,
+  });
 
   @override
   State<PrescriptionListView> createState() => _PrescriptionListViewState();
@@ -32,6 +24,7 @@ class PrescriptionListView extends StatefulWidget {
 
 class _PrescriptionListViewState extends State<PrescriptionListView> {
   List<dynamic> prescriptions = [];
+  @override
   void initState() {
     super.initState();
     fetchPrescriptions();
@@ -43,6 +36,7 @@ class _PrescriptionListViewState extends State<PrescriptionListView> {
       'Authorization': 'Bearer $token',
     };
     final patientId = getbox.read(userId).toString();
+    print('Patient ID: $patientId');
     final url = 'https://api.esplshowcase.in/api/user/prescriptions/$patientId';
     final response = await http.get(Uri.parse(url), headers: headers);
 
@@ -84,7 +78,6 @@ class _PrescriptionListViewState extends State<PrescriptionListView> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Column(children: [
-              
               // const SizedBox(height: 20),
               // Row(
               //   children: [
@@ -138,7 +131,7 @@ class _PrescriptionListViewState extends State<PrescriptionListView> {
                         .join(', ');
 
                     // String medicine_time = medicines.map((medicine) => medicine['duration']).join(', ');
-                      
+
                     return GestureDetector(
                       onTap: () {
                         showModalBottomSheet(
@@ -244,39 +237,69 @@ class _PrescriptionListViewState extends State<PrescriptionListView> {
                                     ),
                                     ListTile(
                                       onTap: () {
-                                           showModalBottomSheet(
-                            context: context,
-                            builder: ((context) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 20,),
-                                  const Center(child: Text("Appointment update",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)),
-                                  // ListTile(
-                                  //   leading: const Text("Doctor Name",style: TextStyle(fontWeight: FontWeight.bold)),
-                                  //   trailing: Text("${prescription['doctor']['first_name']} ${prescription['doctor']['last_name']}"),
-                                  // ),
-                                  ListTile(
-                                    leading: const Text("Case History",style: TextStyle(fontWeight: FontWeight.bold)),
-                                    trailing: Text(prescription['case_history']),
-                                  ),
-                                  ListTile(
-                                    leading: const Text("Vital Update",style: TextStyle(fontWeight: FontWeight.bold)),
-                                    trailing: Text(prescription['vital_update']),
-                                  ),
-                                  ListTile(
-                                    leading: const Text("Diagnosis",style: TextStyle(fontWeight: FontWeight.bold)),
-                                    trailing: Text(prescription['diagnosis']),
-                                  ),
-                                  // ListTile(
-                                  //   leading: const Text("Absorption",style: TextStyle(fontWeight: FontWeight.bold)),
-                                  //   trailing: Text(absorption.toString()),
-                                  // ),
-                                  const SizedBox(height: 20,),
-                                ],
-                              );
-                            }));
+                                        showModalBottomSheet(
+                                            context: context,
+                                            builder: ((context) {
+                                              return Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  const Center(
+                                                      child: Text(
+                                                    "Appointment update",
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )),
+                                                  // ListTile(
+                                                  //   leading: const Text("Doctor Name",style: TextStyle(fontWeight: FontWeight.bold)),
+                                                  //   trailing: Text("${prescription['doctor']['first_name']} ${prescription['doctor']['last_name']}"),
+                                                  // ),
+                                                  ListTile(
+                                                    leading: const Text(
+                                                        "Case History",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    trailing: Text(prescription[
+                                                        'case_history']),
+                                                  ),
+                                                  ListTile(
+                                                    leading: const Text(
+                                                        "Vital Update",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    trailing: Text(prescription[
+                                                        'vital_update']),
+                                                  ),
+                                                  ListTile(
+                                                    leading: const Text(
+                                                        "Diagnosis",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    trailing: Text(prescription[
+                                                        'diagnosis']),
+                                                  ),
+                                                  // ListTile(
+                                                  //   leading: const Text("Absorption",style: TextStyle(fontWeight: FontWeight.bold)),
+                                                  //   trailing: Text(absorption.toString()),
+                                                  // ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                ],
+                                              );
+                                            }));
                                       },
                                       leading: const Text("Appointment update",
                                           style: TextStyle(
@@ -377,8 +400,7 @@ class _PrescriptionListViewState extends State<PrescriptionListView> {
                         ),
                       ),
                     );
-                  }
-                  ),
+                  }),
             ]),
           ),
         ));

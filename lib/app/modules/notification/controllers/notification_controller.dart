@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:get/get.dart';
 import 'package:uddipan/constants/string_constant.dart';
 import 'package:uddipan/models/notification_model.dart';
 
@@ -13,8 +14,6 @@ class NotificationController extends GetxController {
   final isNoticationLoading = false.obs;
 
   RxList<NotificationModel?> notificationList = <NotificationModel?>[].obs;
-
- 
 
   Future<void> getNotificationList() async {
     try {
@@ -29,15 +28,15 @@ class NotificationController extends GetxController {
         List<dynamic> list = jsonDecode(response.body);
         List<NotificationModel?> notifications =
             list.map((json) => NotificationModel.fromJson(json)).toList();
-            
+
         notificationList.assignAll(notifications);
 
-         for (NotificationModel? notification in notifications) {
+        for (NotificationModel? notification in notifications) {
           if (notification?.isRead == false) {
             await updateIsReadNotification(notificationId: notification!.id);
           }
         }
-       await getUnReadNotificationCount();
+        await getUnReadNotificationCount();
       }
     } catch (e) {
       log('e ${e.toString()}');
@@ -48,8 +47,7 @@ class NotificationController extends GetxController {
   Future<void> updateIsReadNotification({required int notificationId}) async {
     try {
       String token = getbox.read(userToken);
-      final uri = Uri.parse(
-          'https://doctor.suranjanbhattacharjee.tech/api/user/isRead/notification');
+      final uri = Uri.parse('$baseurl/api/user/isRead/notification');
 
       final response = await http.post(
         uri,

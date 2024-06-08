@@ -46,6 +46,7 @@ dependencies:
   url_launcher: ^6.2.4
   date_picker_timeline: ^1.2.5
   flutter_cached_pdfview: ^0.4.2
+  uri: ^1.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

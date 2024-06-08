@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:uddipan/app/modules/signup/views/widget/profile_picture_widget.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/loader_button.dart';
 import 'package:uddipan/constants/color_constant.dart';
@@ -56,7 +55,7 @@ class SignupView extends GetView<SignupController> {
                   //                 : null),
                   //       )
                   //     ]))),
-                  const Center(child: ProfilePictureWidget()),
+                  // const Center(child: ProfilePictureWidget()),
                   SizedBox(height: 15.h),
                   SmallText(text: 'Name', textColor: Colors.grey.shade700),
                   SizedBox(height: 10.h),
@@ -109,8 +108,7 @@ class SignupView extends GetView<SignupController> {
                     ),
                   ),
                   SizedBox(height: 15.h),
-                  SmallText(
-                      text: 'Email(Optional)', textColor: Colors.grey.shade700),
+                  SmallText(text: 'Email', textColor: Colors.grey.shade700),
                   SizedBox(height: 10.h),
                   CustomTextField(
                       maxLine: 1,
@@ -128,10 +126,10 @@ class SignupView extends GetView<SignupController> {
                         .map((entry) => buildRadioTile(entry.key, entry.value))
                         .toList(),
                   ),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 20.h),
 
                   SmallText(text: 'Password', textColor: Colors.grey.shade700),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 15.h),
                   CustomTextField(
                     maxLine: 1,
                     hintText: 'Password',
@@ -142,7 +140,7 @@ class SignupView extends GetView<SignupController> {
                     prefixIconSize: 22,
                     isVisible: true,
                   ),
-                  SizedBox(height: 15.h),
+                  SizedBox(height: 20.h),
                   SmallText(
                       text: 'Confirm Password',
                       textColor: Colors.grey.shade700),
@@ -561,11 +559,11 @@ class SignupView extends GetView<SignupController> {
                   //                   : null,
                   //             ),
                   //     )),
-                  // SizedBox(height: 20.h),
+                  SizedBox(height: 20.h),
                   LoaderButton(
                       btnText: 'Sign Up',
                       onTap: () async {
-                        await controller.signup(context);
+                        await controller.userRegistration(context);
                       }),
                   SizedBox(height: 15.h),
                 ],

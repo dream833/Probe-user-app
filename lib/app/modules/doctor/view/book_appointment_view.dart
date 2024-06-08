@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +23,7 @@ import 'package:uddipan/models/appointment_model.dart';
 import 'package:uddipan/models/member_model.dart';
 import 'package:uddipan/models/user_report_model.dart';
 import 'package:uddipan/utils/snippet.dart';
+
 import '../../appointments/controller/appointment_controller.dart';
 
 class BookAppointmentView extends StatefulWidget {
@@ -52,7 +54,7 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         centerTitle: true,
         title: SmallText(

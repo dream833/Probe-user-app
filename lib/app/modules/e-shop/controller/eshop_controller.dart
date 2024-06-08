@@ -4,11 +4,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/models/lab_test_model.dart';
 import 'package:uddipan/models/medicine_model.dart';
 import 'package:uddipan/utils/custom_message.dart';
-import 'package:http/http.dart' as http;
 
 class EShopController extends GetxController {
   final isLabTestModelLoading = false.obs;

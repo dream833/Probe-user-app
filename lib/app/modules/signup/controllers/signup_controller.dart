@@ -1,18 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:uddipan/app/modules/signup/views/signup_view.dart';
 import 'package:uddipan/routes/app_pages.dart';
+
 import '../../../../api/network_service_api.dart';
-import 'package:http/http.dart' as http;
-import '../../../../constants/string_constant.dart';
 import '../../../../models/branch/branch_model.dart';
 import '../../../../models/district/district_model.dart';
 import '../../../../models/division/division_model.dart';
@@ -24,8 +23,8 @@ import '../../../../utils/custom_message.dart';
 
 class SignupController extends GetxController {
   final networkApi = NetworkApiServices();
-  final selectedCountryCode = "IN".obs;
-  final selectedDigitalCode = "91".obs;
+  final selectedCountryCode = "BD".obs;
+  final selectedDigitalCode = "880".obs;
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
@@ -255,7 +254,8 @@ class SignupController extends GetxController {
           if (thanaModel.thanas != null) {
             // Check if 'regions' in the model is not null
             thanaList.value = thanaModel.thanas!;
-            debugPrint('Thana Length is ====================> ${thanaList.length}');
+            debugPrint(
+                'Thana Length is ====================> ${thanaList.length}');
           }
         } else {
           throw Exception('Failed to load data');
@@ -283,7 +283,8 @@ class SignupController extends GetxController {
 
           if (unionModel.unions != null) {
             unionList.value = unionModel.unions!;
-            debugPrint('Union Length is ====================> ${unionList.length}');
+            debugPrint(
+                'Union Length is ====================> ${unionList.length}');
             debugPrint(response.body);
           }
         } else {
@@ -333,51 +334,64 @@ class SignupController extends GetxController {
     isConfirmPasswordHidden.value = !isPasswordHidden.value;
   }
 
-  Future<String?> uploadProfilePicture(
-      String fileName, Uint8List imageBytes, BuildContext context) async {
-    try {
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('https://api.esplshowcase.in/api/projectImages'));
+  // Future<String?> uploadProfilePicture(
+  //     String fileName, Uint8List imageBytes, BuildContext context) async {
+  //   try {
+  //     var request = http.MultipartRequest(
+  //         'POST', Uri.parse('https://api.esplshowcase.in/api/projectImages'));
 
-      request.fields['name'] = fileName;
+  //     request.fields['name'] = fileName;
 
-      request.files.add(http.MultipartFile.fromBytes('file', imageBytes,
-          filename: "$fileName.png"));
+  //     request.files.add(http.MultipartFile.fromBytes('file', imageBytes,
+  //         filename: "$fileName.png"));
 
-      var response = await request.send();
+  //     var response = await request.send();
 
-      if (response.statusCode == 200) {
-        var responseBody = await response.stream.bytesToString();
-        var parsedResponse = json.decode(responseBody);
-        debugPrint(parsedResponse);
-        String? fileUrl = parsedResponse['data']['file'];
-        log('file url $fileUrl');
-        return fileUrl;
-      } else {
-        var responseBody = await response.stream.bytesToString();
-        var parsedResponse = json.decode(responseBody);
-        debugPrint(parsedResponse);
-        return '';
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-      CustomMessage.errorMessage(context, e.toString());
-      return '';
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       var responseBody = await response.stream.bytesToString();
+  //       var parsedResponse = json.decode(responseBody);
+  //       debugPrint(parsedResponse);
+  //       String? fileUrl = parsedResponse['data']['file'];
+  //       log('file url $fileUrl');
+  //       return fileUrl;
+  //     } else {
+  //       var responseBody = await response.stream.bytesToString();
+  //       var parsedResponse = json.decode(responseBody);
+  //       debugPrint(parsedResponse);
+  //       return '';
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //     CustomMessage.errorMessage(context, e.toString());
+  //     return '';
+  //   }
+  // }
 
-  getImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final image = await _picker.pickImage(source: ImageSource.gallery);
+  // getImage() async {
+  //   final ImagePicker picker = ImagePicker();
+  //   final image = await picker.pickImage(source: ImageSource.gallery);
 
-    if (image != null) {
-      imagePath.value = image.path.toString();
-    }
-  }
+  //   if (image != null) {
+  //     imagePath.value = image.path.toString();
+  //   }
+  // }
 
-  userRegistration() async {
+  userRegistration(context) async {
     isLoading.value = true;
     try {
+      if (nameController.text.isEmpty ||
+          emailController.text.isEmpty ||
+          phoneController.text.isEmpty ||
+          passwordController.text.isEmpty ||
+          confirmPasswordController.text.isEmpty) {
+        CustomMessage.showSnackBar('Please fill in all the  fields');
+      } else if (passwordController.text.length < 8) {
+        CustomMessage.errorMessage(context, 'Minimum Password is 8');
+      } else if (confirmPasswordController.text != passwordController.text) {
+        CustomMessage.errorMessage(
+            context, 'Password and confirm Password should be same');
+      } else {}
+
       final uri = Uri.parse('https://api.esplshowcase.in/api/users');
       final request = http.MultipartRequest('POST', uri)
         ..fields['name'] = nameController.text
@@ -387,25 +401,26 @@ class SignupController extends GetxController {
         ..fields['countryCode'] = selectedDigitalCode.value
         ..fields['digitalCode'] = selectedCountryCode.value
         ..fields['phone_number'] = phoneController.text
-        ..fields['zone_id'] = selectedZoneId.toString()
-        ..fields['region_id'] = selectedRegionId.toString()
-        ..fields['branch_id'] = selectedBranchId.toString()
-        ..fields['district_id'] = selectedDistrictId.toString()
-        ..fields['division_id'] = selectedDivisionId.toString()
-        ..fields['thana_id'] = selectedThanaId.toString()
-        ..fields['union_id'] = selectedUnionId.toString()
+        // ..fields['zone_id'] = selectedZoneId.toString()
+        // ..fields['region_id'] = selectedRegionId.toString()
+        // ..fields['branch_id'] = selectedBranchId.toString()
+        // ..fields['district_id'] = selectedDistrictId.toString()
+        // ..fields['division_id'] = selectedDivisionId.toString()
+        // ..fields['thana_id'] = selectedThanaId.toString()
+        // ..fields['union_id'] = selectedUnionId.toString()
         ..fields['user_type'] = 23.toString()
         ..fields['is_she'] = 1.toString()
-        ..fields['pin'] = pinController.text
-        ..fields['permanent_address'] = addressController.text
-        ..fields['present_address'] = addressController.text
-        ..fields['user_pluck'] = 1.toString()
-        ..files.add(http.MultipartFile(
-            'image',
-            File(imagePath.value).readAsBytes().asStream(),
-            File(imagePath.value).lengthSync()))
-        ..headers['Content-Type'] = 'application/x-www-form-urlencoded'
-        ..headers['Accept'] = 'application/json';
+        ..fields['user_pluck'] = 100.toString();
+      // ..fields['pin'] = pinController.text
+      // ..fields['permanent_address'] = addressController.text
+      // ..fields['present_address'] = addressController.text
+
+      // ..files.add(http.MultipartFile(
+      //     'image',
+      //     File(imagePath.value).readAsBytes().asStream(),
+      //     File(imagePath.value).lengthSync()))
+      //  ..headers['Content-Type'] = 'application/x-www-form-urlencoded'
+      //  ..headers['Accept'] = 'application/json';
 
       log(request.fields.toString());
       final response = await http.Response.fromStream(await request.send());
@@ -481,6 +496,27 @@ class SignupController extends GetxController {
           await http.MultipartFile.fromPath('image', profilePicture!.path);
       request.files.add(pic);
       var response = await request.send();
+
+      log('Name: ${nameController.text}');
+      log('Email: ${emailController.text}');
+      log('Password: ${passwordController.text}');
+      log('Confirm Password: ${confirmPasswordController.text}');
+      log('Country Code: ${selectedDigitalCode.value}');
+      log('Digital Code: ${selectedCountryCode.value}');
+      log('Phone Number: ${phoneController.text}');
+      log('Zone ID: ${selectedZoneId.toString()}');
+      log('Region ID: ${selectedRegionId.toString()}');
+      log('Branch ID: ${selectedBranchId.toString()}');
+      log('District ID: ${selectedDistrictId.toString()}');
+      log('Division ID: ${selectedDivisionId.toString()}');
+      log('Thana ID: ${selectedThanaId.toString()}');
+      log('Union ID: ${selectedUnionId.toString()}');
+      log('User Type: ${23.toString()}');
+      log('Is She: ${0.toString()}');
+      log('PIN: ${pinController.text}');
+      log('Permanent Address: ${addressController.text}');
+      log('Present Address: ${addressController.text}');
+      log('User Pluck: ${1.toString()}');
 
       debugPrint(response.toString());
 

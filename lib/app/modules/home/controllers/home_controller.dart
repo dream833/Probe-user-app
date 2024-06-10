@@ -120,8 +120,10 @@ class HomeController extends GetxController {
         uri,
         headers: {'Authorization': 'Bearer $token'},
       );
+      log(response.body);
       if (response.statusCode == 200) {
         List<dynamic> list = json.decode(response.body);
+        log("list===>> $list");
         List<SpecializationCategory> categories =
             list.map((json) => SpecializationCategory.fromJson(json)).toList();
         specializationCategory.assignAll(categories);

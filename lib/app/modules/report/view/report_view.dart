@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -17,8 +19,8 @@ class ReportsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ReportController());
-    // controller.getAllUserReports();
-    // controller.getAllAdminReports();
+    controller.getAllUserReports();
+    controller.getAllAdminReports();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -50,6 +52,7 @@ class ReportsView extends StatelessWidget {
                   if (controller.isReportListLoading.value == true) {
                     return shimmerListEffect();
                   }
+
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),
@@ -124,15 +127,19 @@ class ReportsView extends StatelessWidget {
                   return ListView.builder(
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),
-                      itemCount: controller.adminreportList.length,
+                      itemCount: controller
+                              .adminReportsModel.value.userReports?.length ??
+                          0,
                       itemBuilder: (context, index) {
-                        AdminReportModel? report =
-                            controller.adminreportList[index];
+                        var myReport = controller
+                            .adminReportsModel.value.userReports?[index];
                         return GestureDetector(
                           onTap: () {
                             Get.to(() => PDFViewerFromUrl(
-                                  url: report!.file,
+                                  url:
+                                      "${controller.adminReportsModel.value.baseUrl}${myReport!.report!}",
                                 ));
+                            log("${controller.adminReportsModel.value.baseUrl}${myReport!.report!}");
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -161,16 +168,16 @@ class ReportsView extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            report?.name ?? '',
+                                            myReport?.reportName ?? "",
                                             style:
                                                 CustomFont.regularTextPoppins,
                                           ),
                                           const SizedBox(height: 5),
-                                          Text(
-                                            report?.date ?? '',
-                                            style: CustomFont.regularTextPoppins
-                                                .copyWith(fontSize: 14),
-                                          ),
+                                          // Text(
+                                          //   report?.date ?? '',
+                                          //   style: CustomFont.regularTextPoppins
+                                          //       .copyWith(fontSize: 14),
+                                          // ),
                                         ],
                                       )
                                     ],

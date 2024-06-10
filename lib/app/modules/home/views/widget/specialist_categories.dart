@@ -47,7 +47,6 @@ class ShowSpecialistCategories extends StatelessWidget {
           future: controller.getSpecializationCategories(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              
               return shimmerGridEffect(
                   itemAspectRatio: 1.1,
                   itemCount: 6,
@@ -70,7 +69,10 @@ class ShowSpecialistCategories extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Get.to(()=> DoctorListByCategory(categoryModel: controller.specializationCategory[index],));
+                        Get.to(() => DoctorListByCategory(
+                              categoryModel:
+                                  controller.specializationCategory[index],
+                            ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(2.0),
@@ -94,17 +96,22 @@ class ShowSpecialistCategories extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Image.network(
-                                  controller.specializationCategory[index].image??'',
-                                  height: 40,
-                                  width: 40,
-                                ),
+                                Builder(builder: (context) {
+                                  return Image.network(
+                                    "https://esplshowcase.in/public/${controller.specializationCategory[index].image}",
+                                    height: 40,
+                                    width: 40,
+                                  );
+                                }),
                                 Text(
-                                  controller.specializationCategory[index].name??'',
+                                  controller
+                                          .specializationCategory[index].name ??
+                                      '',
                                   style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
-                                      color: Colors.black),
+                                      color:
+                                          const Color.fromARGB(255, 1, 1, 1)),
                                 ),
                               ],
                             ),
@@ -120,5 +127,3 @@ class ShowSpecialistCategories extends StatelessWidget {
     );
   }
 }
-
-

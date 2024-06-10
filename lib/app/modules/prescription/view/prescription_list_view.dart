@@ -36,10 +36,13 @@ class _PrescriptionListViewState extends State<PrescriptionListView> {
       'Authorization': 'Bearer $token',
     };
     final patientId = getbox.read(userId).toString();
-    print('Patient ID: $patientId');
-    final url = 'https://api.esplshowcase.in/api/user/prescriptions/$patientId';
-    final response = await http.get(Uri.parse(url), headers: headers);
 
+    print('Patient ID: $patientId');
+    final url =
+        'https://api.esplshowcase.in/api/user/prescriptions/user?user_id=$patientId';
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+    print(response.body);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
@@ -257,8 +260,14 @@ class _PrescriptionListViewState extends State<PrescriptionListView> {
                                                             FontWeight.bold),
                                                   )),
                                                   // ListTile(
-                                                  //   leading: const Text("Doctor Name",style: TextStyle(fontWeight: FontWeight.bold)),
-                                                  //   trailing: Text("${prescription['doctor']['first_name']} ${prescription['doctor']['last_name']}"),
+                                                  //   leading: const Text(
+                                                  //       "Doctor Name",
+                                                  //       style: TextStyle(
+                                                  //           fontWeight:
+                                                  //               FontWeight
+                                                  //                   .bold)),
+                                                  //   trailing: Text(
+                                                  //       "${prescription['doctor']['first_name']} ${prescription['doctor']['last_name']}"),
                                                   // ),
                                                   ListTile(
                                                     leading: const Text(

@@ -5,7 +5,9 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:uddipan/api/dio_get.dart';
 import 'package:uddipan/constants/string_constant.dart';
+import 'package:uddipan/models/admin_reports_model.dart';
 import 'package:uddipan/models/user_report_model.dart';
 import 'package:uddipan/utils/custom_message.dart';
 import 'package:uddipan/utils/snippet.dart';
@@ -14,9 +16,11 @@ class ReportController extends GetxController {
   final isReportListLoading = false.obs;
   final nameController = TextEditingController();
   final recordDateController = TextEditingController();
+  var adminReportsModel = AdminReportsModel().obs;
   Rx<PickedPDF?> pickPDF = Rx<PickedPDF?>(null);
   RxList<UserReportModel?> reportList = <UserReportModel?>[].obs;
-  RxList<AdminReportModel?> adminreportList = <AdminReportModel?>[].obs;
+  // RxList<AdminReportModel?> adminreportList = <AdminReportModel?>[].obs;
+  RxList<AdminReportsModel?> adminreport = <AdminReportsModel?>[].obs;
 
   Future<String?> upload(
       String fileName, File file, BuildContext context) async {
@@ -100,6 +104,8 @@ class ReportController extends GetxController {
       isReportListLoading.value = true;
       String token = getbox.read(userToken);
       int id = getbox.read(userId);
+      const baseurl =
+          "https://esplshowcase.in/storage/app/public/uploads/appuserFiles/";
 
       final uri = Uri.parse(
           'https://api.esplshowcase.in/api/get/user_report?user_id=$id');
@@ -109,9 +115,10 @@ class ReportController extends GetxController {
         uri,
         headers: {'Authorization': 'Bearer $token'},
       );
-
+      log("Data ======>${response.body}");
       if (response.statusCode == 200) {
         List<dynamic> list = json.decode(response.body);
+        print("list=====> $list");
         List<UserReportModel?> model =
             list.map((json) => UserReportModel.fromJson(json)).toList();
         reportList.assignAll(model);
@@ -130,26 +137,12 @@ class ReportController extends GetxController {
   Future<void> getAllAdminReports() async {
     try {
       isReportListLoading.value = true;
-      String token = getbox.read(userToken);
-      int id = getbox.read(userId);
+      var reposne =
+          await dioGet("/get/app-user-reports/${getbox.read(userId)}");
+      var data = reposne.data;
 
-      final uri =
-          Uri.parse('http://api.esplshowcase.in/api/app-user-reports/$id');
-      final response = await http.get(
-        uri,
-        headers: {'Authorization': 'Bearer $token'},
-      );
-      if (response.statusCode == 200) {
-        List<dynamic> list = json.decode(response.body);
-        List<AdminReportModel?> model =
-            list.map((json) => AdminReportModel.fromJson(json)).toList();
-        adminreportList.assignAll(model);
-        log('Report List ${adminreportList.length.toString()}');
-        isReportListLoading.value = false;
-      } else {
-        log('Error in catch getAllUserReports');
-        isReportListLoading.value = false;
-      }
+      adminReportsModel(AdminReportsModel.fromJson(data));
+      log("DRM25 ${jsonEncode(adminReportsModel.toJson())}");
     } catch (e) {
       log('Error in catch getAllUserReports ${e.toString()}');
       isReportListLoading.value = false;

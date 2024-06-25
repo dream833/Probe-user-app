@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -334,47 +335,47 @@ class SignupController extends GetxController {
     isConfirmPasswordHidden.value = !isPasswordHidden.value;
   }
 
-  // Future<String?> uploadProfilePicture(
-  //     String fileName, Uint8List imageBytes, BuildContext context) async {
-  //   try {
-  //     var request = http.MultipartRequest(
-  //         'POST', Uri.parse('https://api.esplshowcase.in/api/projectImages'));
+  Future<String?> uploadProfilePicture(
+      String fileName, Uint8List imageBytes, BuildContext context) async {
+    try {
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('https://api.esplshowcase.in/api/projectImages'));
 
-  //     request.fields['name'] = fileName;
+      request.fields['name'] = fileName;
 
-  //     request.files.add(http.MultipartFile.fromBytes('file', imageBytes,
-  //         filename: "$fileName.png"));
+      request.files.add(http.MultipartFile.fromBytes('file', imageBytes,
+          filename: "$fileName.png"));
 
-  //     var response = await request.send();
+      var response = await request.send();
 
-  //     if (response.statusCode == 200) {
-  //       var responseBody = await response.stream.bytesToString();
-  //       var parsedResponse = json.decode(responseBody);
-  //       debugPrint(parsedResponse);
-  //       String? fileUrl = parsedResponse['data']['file'];
-  //       log('file url $fileUrl');
-  //       return fileUrl;
-  //     } else {
-  //       var responseBody = await response.stream.bytesToString();
-  //       var parsedResponse = json.decode(responseBody);
-  //       debugPrint(parsedResponse);
-  //       return '';
-  //     }
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     CustomMessage.errorMessage(context, e.toString());
-  //     return '';
-  //   }
-  // }
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        var parsedResponse = json.decode(responseBody);
+        debugPrint(parsedResponse);
+        String? fileUrl = parsedResponse['data']['file'];
+        log('file url $fileUrl');
+        return fileUrl;
+      } else {
+        var responseBody = await response.stream.bytesToString();
+        var parsedResponse = json.decode(responseBody);
+        debugPrint(parsedResponse);
+        return '';
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      CustomMessage.errorMessage(context, e.toString());
+      return '';
+    }
+  }
 
-  // getImage() async {
-  //   final ImagePicker picker = ImagePicker();
-  //   final image = await picker.pickImage(source: ImageSource.gallery);
+  getImage() async {
+    final ImagePicker picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.gallery);
 
-  //   if (image != null) {
-  //     imagePath.value = image.path.toString();
-  //   }
-  // }
+    if (image != null) {
+      imagePath.value = image.path.toString();
+    }
+  }
 
   userRegistration(context) async {
     isLoading.value = true;

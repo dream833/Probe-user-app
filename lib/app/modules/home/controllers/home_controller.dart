@@ -28,7 +28,9 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
+    getSpecializationCategories();
     super.onInit();
+
     await handleNotification();
   }
 

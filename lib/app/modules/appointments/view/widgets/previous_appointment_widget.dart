@@ -209,19 +209,25 @@ class PreviousAppointmentWidget extends StatelessWidget {
             () => controller.isDateWiseAppointmentLoading.value
                 ? shimmerListEffect(itemBorderRadius: 16, itemCount: 10)
                 : controller.datewiseAppointmentList.isEmpty
-                    ? const Text("Empty No Data Found")
+                    ? Container(
+                        alignment: Alignment.center,
+                        height: 400.h,
+                        child: const Text(
+                          "No Today's Appointment Found ",
+                        ),
+                      )
                     : ListView.builder(
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: controller.datewiseAppointmentList.length,
-                      itemBuilder: (context, index) {
-                        final appointment =
-                            controller.datewiseAppointmentList[index];
-                        return AppointmentCard(
-                          appointment: appointment!,
-                        );
-                      },
-                    ),
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: controller.datewiseAppointmentList.length,
+                        itemBuilder: (context, index) {
+                          final appointment =
+                              controller.datewiseAppointmentList[index];
+                          return AppointmentCard(
+                            appointment: appointment!,
+                          );
+                        },
+                      ),
           ),
 
           // const AppointmentCard(),

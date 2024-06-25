@@ -19,13 +19,22 @@ class UpcomingAppointmentWidget extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return shimmerListEffect(itemBorderRadius: 16, itemCount: 10);
           }
+          if (controller.upcommingAppointmentList.isEmpty) {
+            return Container(
+              alignment: Alignment.center,
+              width: Get.width,
+              height: Get.height / 1.2,
+              child: const Text(
+                "No Upcoming Appointment Found ",
+              ),
+            );
+          }
 
           return ListView.builder(
             shrinkWrap: true,
             primary: false,
             itemCount: controller.upcommingAppointmentList.length,
             itemBuilder: (context, index) {
-             
               final appointment = controller.upcommingAppointmentList[index];
               return AppointmentCard(appointment: appointment!);
             },

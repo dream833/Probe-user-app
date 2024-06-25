@@ -97,7 +97,7 @@ class EShopView extends GetView<EShopController> {
                 // ),
                 InkWell(
                   onTap: () {
-                    Get.to(() => const LabTestView());
+                    Get.to(() => LabTestView());
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),

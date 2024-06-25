@@ -33,22 +33,30 @@ class AppointmentDetailView extends StatelessWidget {
         backgroundColor: Colors.white,
         actions: [
           IconButton(
-              onPressed: () {
-                controller.getAppointmentVideoId(appointmentId: appointment.id);
-                print('${controller.getVideoId.value} video id');
-                if (controller.getVideoId.value.isNotEmpty) {
-                  Get.to(() => VideoCallView(
-                    
-                      callId: controller.getVideoId.value,
+            onPressed: () {
+              controller.getAppointmentVideoId(appointmentId: appointment.id);
+              print('${controller.getVideoId.value} video id');
+              String videoId = controller.getVideoId.value.toString();
+              if (videoId.isNotEmpty) {
+                Get.to(() => VideoCallView(
+                      callId: videoId,
                       userId: appointment.id.toString(),
-                      userName: appointment.patientName.toString()));
-                }
-              },
-              icon: const Icon(Icons.video_call))
+                      userName: appointment.patientName.toString(),
+                    ));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please Wait for Doctor to join'),
+                  ),
+                );
+              }
+            },
+            icon: const Icon(Icons.video_call),
+          )
         ],
         title: SmallText(
             text: 'Appointment Detail',
-            fontSize: 16,
+            fontSize: 16.w,
             fontWeight: FontWeight.w500,
             textColor: Colors.grey.shade700),
       ),

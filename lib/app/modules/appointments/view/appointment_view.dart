@@ -6,6 +6,7 @@ import 'package:uddipan/app/modules/appointments/view/widgets/today_appointment_
 import 'package:uddipan/app/modules/appointments/view/widgets/upcomming_appointment_widget.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/constants/color_constant.dart';
+
 import '../controller/appointment_controller.dart';
 
 class AppointmentView extends GetView<AppointmentController> {
@@ -29,7 +30,7 @@ class AppointmentView extends GetView<AppointmentController> {
         backgroundColor: Colors.white,
         title: SmallText(
             text: 'Appointment',
-            fontSize: 14,
+            fontSize: 14.r,
             fontWeight: FontWeight.w500,
             textColor: Colors.grey.shade700),
       ),
@@ -81,7 +82,7 @@ class AppointmentView extends GetView<AppointmentController> {
                                     color: index ==
                                             controller.selectedIndex.value
                                         ? appPrimaryColor
-                                        : Colors.white, // Bottom border color
+                                        : Colors.blue, // Bottom border color
                                     width: 2, // Border width
                                   ),
                                 ),

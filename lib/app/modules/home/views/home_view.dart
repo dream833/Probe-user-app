@@ -1,26 +1,23 @@
-import 'dart:developer';
-
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:badges/badges.dart' as badges;
-import 'package:uddipan/app/modules/home/views/widget/recent_transaction_widget.dart';
 import 'package:uddipan/app/modules/home/views/widget/specialist_categories.dart';
 import 'package:uddipan/app/modules/home/views/widget/top_rated_doctors_widget.dart';
 import 'package:uddipan/app/modules/notification/controllers/notification_controller.dart';
 import 'package:uddipan/app/modules/notification/view/notifiication_view.dart';
+import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart';
+import 'package:uddipan/app/widget/Text/big_text.dart';
+import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/app/widget/fast_cached_network_img.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/models/banner_model.dart';
 import 'package:uddipan/routes/app_pages.dart';
 import 'package:uddipan/utils/snippet.dart';
-import '../../../../constants/image_contant.dart';
-import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart';
-import 'package:uddipan/app/widget/Text/big_text.dart';
-import 'package:uddipan/app/widget/Text/small_text.dart';
+
 import '../controllers/home_controller.dart';
 
 class HomeView extends StatelessWidget {
@@ -171,7 +168,16 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                 height: 50,
                 width: 50,
                 color: Colors.white,
-                child: Image.asset(AppImage.avatar),
+                child:
+                    Get.find<ProfileController>().userModel.value?.image != null
+                        ? Image.network(
+                            Get.find<ProfileController>()
+                                .userModel
+                                .value!
+                                .image
+                                .toString(),
+                          )
+                        : const Icon(Icons.person),
               ),
             ),
             const SizedBox(width: 12),
@@ -182,7 +188,7 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                 children: [
                   Obx(
                     () => BigText(
-                      text: 'Hi, ${profileController.name.value}  ____ ,',
+                      text: 'Hi, ${profileController.name.value} ',
                       fontWeight: FontWeight.w800,
                       fontSize: 14,
                       textColor: appPrimaryColor,
@@ -193,7 +199,7 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                     textColor: Colors.grey.shade700,
                     fontSize: 13,
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                 ],
               ),
             ),

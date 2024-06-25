@@ -142,7 +142,6 @@ class ReportController extends GetxController {
       var data = reposne.data;
 
       adminReportsModel(AdminReportsModel.fromJson(data));
-      log("DRM25 ${jsonEncode(adminReportsModel.toJson())}");
     } catch (e) {
       log('Error in catch getAllUserReports ${e.toString()}');
       isReportListLoading.value = false;

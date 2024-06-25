@@ -1,7 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:uddipan/constants/string_constant.dart';
 // Package imports:
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
@@ -25,7 +24,8 @@ class _VideoCallViewState extends State<VideoCallView> {
 
   @override
   Widget build(BuildContext context) {
-    print('call id ${widget.callId} ${widget.userId} ${widget.userName}  $zegoAppId');
+    print(
+        'call id ${widget.callId} ${widget.userId} ${widget.userName}  $zegoAppId');
     return ZegoUIKitPrebuiltCall(
       appID: zegoAppId,
       appSign: zegoAppSignId,
@@ -62,7 +62,7 @@ class _VideoCallViewState extends State<VideoCallView> {
                             color: Colors.black)),
                     onPressed: () {
                       Navigator.of(context).pop(true);
-                      //Restart.restartApp();
+                      // Restart.restartApp();
                     },
                   ),
                 ],

@@ -1,49 +1,50 @@
 import 'package:get/get.dart';
-import 'package:uddipan/app/modules/report/bindings/test_report_binding.dart';
-import 'package:uddipan/app/modules/report/view/test_report_view.dart';
-import 'package:uddipan/app/modules/appointments/bindings/appointment_bindings.dart';
-import 'package:uddipan/app/modules/appointments/view/appointment_view.dart';
-import 'package:uddipan/app/modules/bottom_navigation_bar/bindings/bottom_navigation_bar_bindings.dart';
-import 'package:uddipan/app/modules/bottom_navigation_bar/view/bottom_navigation_bar_view.dart';
 
-import 'package:uddipan/app/modules/change-password/bindings/change-password-bindings.dart';
-import 'package:uddipan/app/modules/change-password/view/change_password_view.dart';
-import 'package:uddipan/app/modules/diagnostic_test/bindings/diagnostic_bindings.dart';
-import 'package:uddipan/app/modules/diagnostic_test/view/diagnostic_view.dart';
-import 'package:uddipan/app/modules/doctor/binding/doctor_binding.dart';
-import 'package:uddipan/app/modules/doctor/view/doctor_details_view.dart';
-import 'package:uddipan/app/modules/doctor/view/doctor_view.dart';
-import 'package:uddipan/app/modules/e-shop/bindings/eshop_bindings.dart';
-import 'package:uddipan/app/modules/e-shop/view/cart_view.dart';
-import 'package:uddipan/app/modules/e-shop/view/eshop_view.dart';
-import 'package:uddipan/app/modules/emergency/bindings/emergency_bindings.dart';
-import 'package:uddipan/app/modules/emergency/view/emergency_view.dart';
-import 'package:uddipan/app/modules/favourite/view/favourite_view.dart';
-import 'package:uddipan/app/modules/forget_password/bindings/forget_password_bindings.dart';
-import 'package:uddipan/app/modules/forget_password/view/forget_password_view.dart';
-import 'package:uddipan/app/modules/health/bindings/health_bindings.dart';
-import 'package:uddipan/app/modules/health/view/health_view.dart';
-import 'package:uddipan/app/modules/home/bindings/home_binding.dart';
-import 'package:uddipan/app/modules/home/views/home_view.dart';
-import 'package:uddipan/app/modules/hospital/bindings/hospital_bindings.dart';
-import 'package:uddipan/app/modules/hospital/view/hospital_view.dart';
-import 'package:uddipan/app/modules/index/bindings/index_binding.dart';
-import 'package:uddipan/app/modules/index/views/index_view.dart';
-import 'package:uddipan/app/modules/login/bindings/login_binding.dart';
-import 'package:uddipan/app/modules/login/views/login_view.dart';
-import 'package:uddipan/app/modules/personal/bindings/personal_bindings.dart';
-import 'package:uddipan/app/modules/personal/view/personal_view.dart';
-import 'package:uddipan/app/modules/profile/bindings/profile_binding.dart';
-import 'package:uddipan/app/modules/profile/view/profile_view.dart';
-import 'package:uddipan/app/modules/services/bindings/services_bindings.dart';
-import 'package:uddipan/app/modules/services/view/services_view.dart';
-import 'package:uddipan/app/modules/signup/bindings/signup_binding.dart';
-import 'package:uddipan/app/modules/signup/views/signup_view.dart';
-import 'package:uddipan/app/modules/splash/binding/splash_binding.dart';
-import 'package:uddipan/app/modules/video/create_meeting.dart';
-import 'package:uddipan/app/modules/video/video_call_view.dart';
-
+import '../app/modules/NewTestPage/bindings/new_test_page_binding.dart';
+import '../app/modules/NewTestPage/views/new_test_page_view.dart';
+import '../app/modules/appointments/bindings/appointment_bindings.dart';
+import '../app/modules/appointments/view/appointment_view.dart';
+import '../app/modules/bottom_navigation_bar/bindings/bottom_navigation_bar_bindings.dart';
+import '../app/modules/bottom_navigation_bar/view/bottom_navigation_bar_view.dart';
+import '../app/modules/change-password/bindings/change-password-bindings.dart';
+import '../app/modules/change-password/view/change_password_view.dart';
+import '../app/modules/diagnostic_test/bindings/diagnostic_bindings.dart';
+import '../app/modules/diagnostic_test/view/diagnostic_view.dart';
+import '../app/modules/doctor/binding/doctor_binding.dart';
+import '../app/modules/doctor/view/doctor_details_view.dart';
+import '../app/modules/doctor/view/doctor_view.dart';
+import '../app/modules/e-shop/bindings/eshop_bindings.dart';
+import '../app/modules/e-shop/view/cart_view.dart';
+import '../app/modules/e-shop/view/eshop_view.dart';
+import '../app/modules/emergency/bindings/emergency_bindings.dart';
+import '../app/modules/emergency/view/emergency_view.dart';
+import '../app/modules/favourite/view/favourite_view.dart';
+import '../app/modules/forget_password/bindings/forget_password_bindings.dart';
+import '../app/modules/forget_password/view/forget_password_view.dart';
+import '../app/modules/health/bindings/health_bindings.dart';
+import '../app/modules/health/view/health_view.dart';
+import '../app/modules/home/bindings/home_binding.dart';
+import '../app/modules/home/views/home_view.dart';
+import '../app/modules/hospital/bindings/hospital_bindings.dart';
+import '../app/modules/hospital/view/hospital_view.dart';
+import '../app/modules/index/bindings/index_binding.dart';
+import '../app/modules/index/views/index_view.dart';
+import '../app/modules/login/bindings/login_binding.dart';
+import '../app/modules/login/views/login_view.dart';
+import '../app/modules/personal/bindings/personal_bindings.dart';
+import '../app/modules/personal/view/personal_view.dart';
+import '../app/modules/profile/bindings/profile_binding.dart';
+import '../app/modules/profile/view/profile_view.dart';
+import '../app/modules/report/bindings/test_report_binding.dart';
+import '../app/modules/report/view/test_report_view.dart';
+import '../app/modules/services/bindings/services_bindings.dart';
+import '../app/modules/services/view/services_view.dart';
+import '../app/modules/signup/bindings/signup_binding.dart';
+import '../app/modules/signup/views/signup_view.dart';
+import '../app/modules/splash/binding/splash_binding.dart';
 import '../app/modules/splash/view/splash_view.dart';
+import '../app/modules/video/create_meeting.dart';
+import '../app/modules/video/video_call_view.dart';
 
 part 'app_routes.dart';
 
@@ -176,6 +177,14 @@ class AppPages {
     GetPage(
       name: _Paths.videocall,
       page: () => const VideoCallView(callId: '', userId: '', userName: ''),
+    ),
+    GetPage(
+      name: _Paths.NEW_TEST_PAGE,
+      page: () => const NewTestPageView(
+        diagnosticPeName: null,
+        diagnosticTestName: null,
+      ),
+      binding: NewTestPageBinding(),
     ),
   ];
 }

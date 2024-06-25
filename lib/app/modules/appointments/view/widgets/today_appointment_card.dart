@@ -22,6 +22,18 @@ class TodayAppointmentCard extends StatelessWidget {
               child: Text(snapshot.error.toString()),
             );
           }
+          if (controller.todayAppointmentList.isEmpty) {
+            return Container(
+              alignment: Alignment.center,
+              width: Get.width,
+              height: Get.height / 1.2,
+              child: const Text(
+                "No Today's Appointment Found ",
+              ),
+            );
+          }
+
+          print(snapshot.error.toString());
 
           return ListView.builder(
             shrinkWrap: true,

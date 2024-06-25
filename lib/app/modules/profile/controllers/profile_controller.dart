@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'dart:typed_data';
-import 'package:http/http.dart' as http;
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:http/http.dart' as http;
 import 'package:uddipan/app/modules/signup/views/signup_view.dart';
 import 'package:uddipan/constants/string_constant.dart';
 import 'package:uddipan/models/transaction_model.dart';
 import 'package:uddipan/models/user_model.dart';
 import 'package:uddipan/routes/app_pages.dart';
+
 import '../../../../api/network_service_api.dart';
 import '../../../../models/branch/branch_model.dart';
 import '../../../../models/district/district_model.dart';

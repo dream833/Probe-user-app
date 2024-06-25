@@ -52,6 +52,18 @@ class ReportsView extends StatelessWidget {
                   if (controller.isReportListLoading.value == true) {
                     return shimmerListEffect();
                   }
+                  if (controller.reportList.isEmpty) {
+                    return Container(
+                      alignment: Alignment.center,
+                      width: Get.width,
+                      height: Get.height / 1.2,
+                      child: const Text(
+                        "No User Report  Found ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    );
+                  }
 
                   return ListView.builder(
                     shrinkWrap: true,
@@ -124,6 +136,20 @@ class ReportsView extends StatelessWidget {
                   if (controller.isReportListLoading.value == true) {
                     return shimmerListEffect();
                   }
+                  if (controller.adminReportsModel.value.userReports == null ||
+                      controller.adminReportsModel.value.userReports!.isEmpty) {
+                    return Container(
+                      alignment: Alignment.center,
+                      width: Get.width,
+                      height: Get.height / 1.2,
+                      child: const Text(
+                        "No Admin Report  Found ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    );
+                  }
+
                   return ListView.builder(
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),

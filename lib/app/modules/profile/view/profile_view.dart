@@ -5,20 +5,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:uddipan/app/modules/health/view/health_view.dart';
 import 'package:uddipan/app/modules/prescription/view/prescription_list_view.dart';
+import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart';
 import 'package:uddipan/app/modules/profile/view/consultation_view.dart';
 import 'package:uddipan/app/modules/profile/view/edit_profile_view.dart';
 import 'package:uddipan/app/modules/profile/view/members_view.dart';
-import 'package:uddipan/app/modules/profile/view/reports_view.dart';
 import 'package:uddipan/app/modules/profile/widgets/logout_popup.dart';
 import 'package:uddipan/app/modules/transactions/view/transaction_view.dart';
+import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
 import 'package:uddipan/routes/app_pages.dart';
 import 'package:uddipan/utils/snippet.dart';
-import '../../../../constants/image_contant.dart';
-import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart';
-import 'package:uddipan/app/widget/Text/small_text.dart';
+
 import '../../../widget/CustomImage/customAssetImage.dart';
 import '../../report/view/report_view.dart';
 
@@ -290,13 +289,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onTap: () {
                   Get.toNamed(Routes.profilePage);
                 },
+                //profile image
                 child: DisplayImageWidget(
                   color: Colors.white,
                   height: 70.h,
                   width: 70.w,
-                  child: const Image(
-                    image: AssetImage(
-                      AppImage.avatar,
+                  child: Image(
+                    image: NetworkImage(
+                      Get.find<ProfileController>()
+                          .userModel
+                          .value!
+                          .image
+                          .toString(),
                     ),
                   ),
                 ),

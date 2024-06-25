@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uddipan/app/modules/appointments/view/appointment_view.dart';
@@ -11,7 +12,6 @@ import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart'
 import 'package:uddipan/app/modules/services/view/services_view.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
-import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 
 // ignore: must_be_immutable
 class BottomNavigationBarView extends GetView<BottomNavigationBarControllers> {
@@ -48,8 +48,7 @@ class BottomNavigationBarView extends GetView<BottomNavigationBarControllers> {
               backgroundColor: Colors.white,
               color: Colors.black,
               colorSelected: appColorPrimary,
-              indexSelected:
-                   controller.selectedIndex.value,
+              indexSelected: controller.selectedIndex.value,
               styleIconFooter: StyleIconFooter.dot,
               onTap: (index) {
                 routeIndex = 0;

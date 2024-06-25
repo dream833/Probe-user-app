@@ -27,7 +27,8 @@ abstract class Routes {
   static const testReportPage = _Paths.testReportPage;
   static const favouritePage = _Paths.favouritePage;
   static const createMeeting = _Paths.createMeeting;
-  static const videocall  = _Paths.videocall;
+  static const videocall = _Paths.videocall;
+  static const NEW_TEST_PAGE = _Paths.NEW_TEST_PAGE;
 }
 
 abstract class _Paths {
@@ -57,4 +58,5 @@ abstract class _Paths {
   static const favouritePage = '/favourite-page';
   static const createMeeting = '/create-meeting';
   static const videocall = '/video-call';
+  static const NEW_TEST_PAGE = '/new-test-page';
 }

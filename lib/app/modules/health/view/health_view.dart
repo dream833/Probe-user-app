@@ -36,6 +36,19 @@ class HealthView extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return shimmerListEffect();
                     }
+                    if (controller.healthCareList.isEmpty) {
+                      return Container(
+                        alignment: Alignment.center,
+                        width: Get.width,
+                        height: Get.height / 1.2,
+                        child: const Text(
+                          "No Health Profile Found ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      );
+                    }
+
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),

@@ -100,12 +100,12 @@ class LabTestView extends StatelessWidget {
                     ),
                   ),
                 ),
+                sectionTitle('Diagnostic Tests'),
+                testSection(tests.value.diagnosticTestNames),
                 sectionTitle('Diagnostic Packages'),
                 testSection(tests.value.diagnosticPackageNames),
                 sectionTitle('Diagnostic Profiles'),
                 testSection(tests.value.diagnosticProfileNames),
-                sectionTitle('Diagnostic Tests'),
-                testSection(tests.value.diagnosticTestNames),
               ],
             ),
           ),
@@ -137,6 +137,7 @@ class LabTestView extends StatelessWidget {
                 itemCount: testList.length,
                 itemBuilder: (context, index) {
                   var test = testList[index];
+                  var tests = test.value.diagnosticPackageNames![index];
                   return InkWell(
                     onTap: () {},
                     child: Container(
@@ -165,7 +166,7 @@ class LabTestView extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "sds",
+                            test.name ?? 'Demo',
                             style: TextStyle(
                               fontSize: 13.r,
                               color: AppColor.black.withOpacity(0.6),
@@ -174,7 +175,7 @@ class LabTestView extends StatelessWidget {
                           SizedBox(
                             width: 150.w,
                             child: Text(
-                              test.name ?? '',
+                              "",
                               maxLines: 2,
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
@@ -192,7 +193,6 @@ class LabTestView extends StatelessWidget {
                             children: [
                               Text(
                                 "",
-                                // ""\u{20B9} ${test.mrpPrice}","
                                 style: TextStyle(
                                   fontSize: 13,
                                   decoration: TextDecoration.lineThrough,
@@ -203,9 +203,8 @@ class LabTestView extends StatelessWidget {
                               Wrap(
                                 children: [
                                   RatingBarIndicator(
-                                    rating: double.tryParse(
-                                            (2 ?? "0").toString()) ??
-                                        0.0,
+                                    rating:
+                                        double.tryParse((2).toString()) ?? 0.0,
                                     itemBuilder: (context, index) => const Icon(
                                       Icons.star,
                                       color: Colors.amber,

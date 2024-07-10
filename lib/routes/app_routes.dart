@@ -29,6 +29,7 @@ abstract class Routes {
   static const createMeeting = _Paths.createMeeting;
   static const videocall = _Paths.videocall;
   static const NEW_TEST_PAGE = _Paths.NEW_TEST_PAGE;
+  static const SEARCH_VIEW = _Paths.SEARCH_VIEW;
 }
 
 abstract class _Paths {
@@ -59,4 +60,5 @@ abstract class _Paths {
   static const createMeeting = '/create-meeting';
   static const videocall = '/video-call';
   static const NEW_TEST_PAGE = '/new-test-page';
+  static const SEARCH_VIEW = '/search-view';
 }

@@ -37,6 +37,8 @@ import '../app/modules/profile/bindings/profile_binding.dart';
 import '../app/modules/profile/view/profile_view.dart';
 import '../app/modules/report/bindings/test_report_binding.dart';
 import '../app/modules/report/view/test_report_view.dart';
+import '../app/modules/search_view/bindings/search_view_binding.dart';
+import '../app/modules/search_view/views/search_view_view.dart';
 import '../app/modules/services/bindings/services_bindings.dart';
 import '../app/modules/services/view/services_view.dart';
 import '../app/modules/signup/bindings/signup_binding.dart';
@@ -185,6 +187,11 @@ class AppPages {
         diagnosticTestName: null,
       ),
       binding: NewTestPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEARCH_VIEW,
+      page: () => const SearchViewView(),
+      binding: SearchViewBinding(),
     ),
   ];
 }

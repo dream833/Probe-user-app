@@ -24,7 +24,7 @@ class _VideoCallViewState extends State<VideoCallView> {
 
   @override
   Widget build(BuildContext context) {
-    print(
+    debugPrint(
         'call id ${widget.callId} ${widget.userId} ${widget.userName}  $zegoAppId');
     return ZegoUIKitPrebuiltCall(
       appID: zegoAppId,

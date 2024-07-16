@@ -317,9 +317,7 @@ class _DoctorDetailViewState extends State<DoctorDetailView> {
 
                   try {
                     if (doctorController.selectedAvailability.value != null) {
-                      Get.to(() => BookAppointmentView(
-                            doctorId: widget.doctorModel!.toString(),
-                          ));
+                      Get.to(() => const BookAppointmentView());
                     } else {
                       CustomMessage.showSnackBar('Please select slot',
                           backgroundColor: Colors.red);

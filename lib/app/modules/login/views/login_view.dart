@@ -23,7 +23,7 @@ class LoginView extends GetView<LoginController> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
@@ -121,11 +121,11 @@ class LoginView extends GetView<LoginController> {
                     onTap: () async {
                       if (controller.phone.text.isEmpty) {
                         return CustomMessage.errorMessage(
-                            context, 'Please Enter Phone No');
+                            'Please Enter Phone No');
                       }
                       if (controller.password.text.isEmpty) {
                         return CustomMessage.errorMessage(
-                            context, 'Please Enter Password');
+                            'Please Enter Password');
                       }
                       await controller.login(context);
                     }),

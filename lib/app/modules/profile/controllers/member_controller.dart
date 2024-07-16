@@ -36,7 +36,7 @@ class MemberController extends GetxController {
     if (nameController.value.text.isEmpty ||
         relationShipController.value.text.isEmpty ||
         ageController.value.text.isEmpty) {
-      CustomMessage.errorMessage(context, 'Please Enter All the Fields');
+      CustomMessage.errorMessage('Please Enter All the Fields');
       return;
     }
     String token = getbox.read(userToken);
@@ -53,7 +53,7 @@ class MemberController extends GetxController {
       body: data,
       headers: {'Authorization': 'Bearer $token'},
     );
-    print(response.statusCode.toString());
+    debugPrint(response.statusCode.toString());
 
     if (response.statusCode == 201) {
       await getUserFamilyMember();

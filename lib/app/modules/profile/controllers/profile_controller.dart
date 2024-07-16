@@ -117,32 +117,22 @@ class ProfileController extends GetxController {
   }
 
   Future fetchRegion(int zoneId) async {
-    try {
-      final response =
-          await NetworkApiServices().fetchRegion(zoneId.toString());
-      if (response.statusCode == 200) {
-        // await Future.delayed(const Duration(seconds: 1));
-        final Map<String, dynamic> data = json.decode(response.body);
+    final response = await NetworkApiServices().fetchRegion(zoneId.toString());
+    if (response.statusCode == 200) {
+      // await Future.delayed(const Duration(seconds: 1));
+      final Map<String, dynamic> data = json.decode(response.body);
 
-        if (data['regions'] != null) {
-          final regionModel = RegionModel.fromJson(data);
+      if (data['regions'] != null) {
+        final regionModel = RegionModel.fromJson(data);
 
-          if (regionModel.regions != null) {
-            regionList.value = regionModel.regions!;
-            print(
-                'Region Length is ====================> ${regionList.length}');
-          }
-        } else {
-          throw Exception('Failed to load data');
+        if (regionModel.regions != null) {
+          regionList.value = regionModel.regions!;
         }
       } else {
-        print(response.statusCode);
-        print(response.body);
         throw Exception('Failed to load data');
       }
-    } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+    } else {
+      throw Exception('Failed to load data');
     }
   }
 
@@ -162,7 +152,7 @@ class ProfileController extends GetxController {
           if (branchModel.branches != null) {
             // Check if 'regions' in the model is not null
             branchList.value = branchModel.branches!;
-            print(
+            debugPrint(
                 'Branch Length is ====================> ${branchList.length}');
           }
         } else {
@@ -172,8 +162,8 @@ class ProfileController extends GetxController {
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -181,7 +171,7 @@ class ProfileController extends GetxController {
 
   Future fetchDistrict(int branchId) async {
     try {
-      print("Branch id is ======> $branchId");
+      debugPrint("Branch id is ======> $branchId");
       final response = await NetworkApiServices().fetchDistrict(1.toString());
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
@@ -191,20 +181,20 @@ class ProfileController extends GetxController {
 
           if (districtModel.districts != null) {
             districtList.value = districtModel.districts!;
-            print(
+            debugPrint(
                 'District Length is ====================> ${districtList.length}');
           }
         } else {
           throw Exception('Failed to load data');
         }
       } else {
-        print(response.body);
-        print(response.statusCode);
+        debugPrint(response.body);
+        debugPrint(response.statusCode);
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -235,7 +225,7 @@ class ProfileController extends GetxController {
   /// Fetch Thana
   Future fetchThana(int divisionId) async {
     try {
-      print("Division ID $divisionId");
+      debugPrint("Division ID $divisionId");
       final response =
           await NetworkApiServices().fetchThana(divisionId.toString());
       if (response.statusCode == 200) {
@@ -248,18 +238,19 @@ class ProfileController extends GetxController {
           if (thanaModel.thanas != null) {
             // Check if 'regions' in the model is not null
             thanaList.value = thanaModel.thanas!;
-            print('Thana Length is ====================> ${thanaList.length}');
+            debugPrint(
+                'Thana Length is ====================> ${thanaList.length}');
           }
         } else {
           throw Exception('Failed to load data');
         }
       } else {
-        print("Code ${response.statusCode}");
+        debugPrint("Code ${response.statusCode}");
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -276,8 +267,9 @@ class ProfileController extends GetxController {
 
           if (unionModel.unions != null) {
             unionList.value = unionModel.unions!;
-            print('Union Length is ====================> ${unionList.length}');
-            print(response.body);
+            debugPrint(
+                'Union Length is ====================> ${unionList.length}');
+            debugPrint(response.body);
           }
         } else {
           throw Exception('Failed to load data');
@@ -286,8 +278,8 @@ class ProfileController extends GetxController {
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -326,7 +318,7 @@ class ProfileController extends GetxController {
         userModel.value = UserModel.fromMap(response.data);
         name.value = userModel.value!.name.toString();
         image.value = userModel.value!.image.toString();
-        print('---------------------- ${image.value}--');
+        debugPrint('---------------------- ${image.value}--');
         phoneNumber.value = userModel.value!.phoneNumber.toString();
         nameController.value.text = userModel.value!.name.toString();
         emailController.value.text = userModel.value!.email.toString();
@@ -368,7 +360,7 @@ class ProfileController extends GetxController {
       'union_id': selectedUnionId.toString(),
       'digitalCode': selectedDigitalCode.value,
       'present_address': addressController.value.text,
-      'pin': pinController.value.text ?? '',
+      'pin': pinController.value.text,
       'image': imgUrl ?? image.value
     };
 
@@ -435,18 +427,18 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200) {
         var responseBody = await response.stream.bytesToString();
         var parsedResponse = json.decode(responseBody);
-        print(parsedResponse);
+        debugPrint(parsedResponse);
         String? fileUrl = parsedResponse['data']['file'];
         log('file url $fileUrl');
         return fileUrl;
       } else {
         var responseBody = await response.stream.bytesToString();
         var parsedResponse = json.decode(responseBody);
-        print(parsedResponse);
+        debugPrint(parsedResponse);
         return '';
       }
     } catch (e) {
-      CustomMessage.errorMessage(context, 'Please Enter Name');
+      CustomMessage.errorMessage('Please Enter Name');
       return '';
     }
   }
@@ -474,7 +466,7 @@ class ProfileController extends GetxController {
       }
     } catch (e) {
       // ignore: use_build_context_synchronously
-      CustomMessage.errorMessage(context, e.toString());
+      CustomMessage.errorMessage(e.toString());
     }
   }
 }

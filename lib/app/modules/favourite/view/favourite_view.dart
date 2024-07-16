@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uddipan/app/modules/favourite/controller/favourite_controller.dart';
+
 import 'package:uddipan/app/modules/favourite/favourite_doctor_list.dart';
 import 'package:uddipan/app/modules/favourite/view/fav_hospital_list.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
@@ -14,7 +13,6 @@ class FavouriteView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(FavouriteController());
     return DefaultTabController(
       length: 2,
       child: Scaffold(

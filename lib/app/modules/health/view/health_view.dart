@@ -76,7 +76,7 @@ class HealthView extends StatelessWidget {
                                       child: Icon(
                                         model.member.gender == 'Male'
                                             ? Icons.person
-                                            : FontAwesomeIcons.female,
+                                            : FontAwesomeIcons.personDress,
                                         color: Colors.white,
                                       ),
                                     ),
@@ -89,7 +89,7 @@ class HealthView extends StatelessWidget {
                                           Row(
                                             children: [
                                               Text(
-                                                model.member.name ?? '',
+                                                model.member.name,
                                                 style: CustomFont
                                                     .regularTextPoppins,
                                               ),

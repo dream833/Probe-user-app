@@ -77,8 +77,7 @@ class DoctorController extends GetxController {
     favouriteDoctors.removeWhere((element) => element?.id == doctor?.id);
     box.write(favoritesKey,
         favouriteDoctors.map((doctor) => doctor?.toJson()).toList());
-    CustomMessage.errorMessage(
-        context, 'Doctor is removed from your favourite list.');
+    CustomMessage.errorMessage('Doctor is removed from your favourite list.');
     update();
   }
 

@@ -1,10 +1,13 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class CustomAssetImage extends StatelessWidget {
   final String assetPath;
   final double? height;
   final double? width;
-  const CustomAssetImage({super.key, required this.assetPath, this.height = 24, this.width = 24});
+  const CustomAssetImage(
+      {super.key, required this.assetPath, this.height = 24, this.width = 24});
 
   @override
   Widget build(BuildContext context) {

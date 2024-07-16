@@ -15,7 +15,6 @@ class CreateMeeting extends StatefulWidget {
 }
 
 class _CreateMeetingState extends State<CreateMeeting> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
   final _nameController = TextEditingController();
   final _callIdController = TextEditingController();
 
@@ -24,13 +23,6 @@ class _CreateMeetingState extends State<CreateMeeting> {
     _nameController.dispose();
     _callIdController.dispose();
     super.dispose();
-  }
-
-  void _generateCallId() {
-    final value = Random().nextInt(1000) + 1;
-    setState(() {
-      _callIdController.text = value.toString();
-    });
   }
 
   @override
@@ -57,12 +49,13 @@ class _CreateMeetingState extends State<CreateMeeting> {
                 CustomTextField(hintText: 'Name', controller: _nameController),
                 const SizedBox(height: 20),
                 CustomTextField(
-                    hintText: 'Meeting Id', controller: _callIdController,
-                    inputType: TextInputType.name,
-                    onChanged: (val){
-                      return null;
-                    },
-                    ),
+                  hintText: 'Meeting Id',
+                  controller: _callIdController,
+                  inputType: TextInputType.name,
+                  onChanged: (val) {
+                    return null;
+                  },
+                ),
                 const SizedBox(height: 30),
                 LoaderButton(
                     btnText: 'Video Call',

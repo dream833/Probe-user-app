@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
 import 'package:uddipan/models/lab_test_models.dart';
 
 import '../../../../api/dio_get.dart';
@@ -25,14 +24,13 @@ class LabTestView extends StatelessWidget {
         log("DRM255 $element");
       }
     } catch (e) {
-      print('Error in catch: $e');
+      // debugPrint('Error in catch: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     getTest();
-    final eshopController = Get.put(EShopController());
     final data = Get.arguments ?? {};
 
     return SafeArea(
@@ -137,7 +135,6 @@ class LabTestView extends StatelessWidget {
                 itemCount: testList.length,
                 itemBuilder: (context, index) {
                   var test = testList[index];
-                  var tests = test.value.diagnosticPackageNames![index];
                   return InkWell(
                     onTap: () {},
                     child: Container(

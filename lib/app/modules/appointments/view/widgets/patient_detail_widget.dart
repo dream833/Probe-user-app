@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/constants/color_constant.dart';
@@ -14,8 +13,6 @@ class PatientDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('------------');
-    print(appointment.userReport?.length);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

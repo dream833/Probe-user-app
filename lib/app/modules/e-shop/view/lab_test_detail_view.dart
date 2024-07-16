@@ -7,7 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:uddipan/app/modules/bottom_navigation_bar/view/bottom_navigation_bar_view.dart';
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
-import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/loader_button.dart';
 import 'package:uddipan/constants/color_constant.dart';
@@ -174,9 +173,6 @@ class LabTestDetailView extends StatelessWidget {
 
   Future<void> addLabTestToBooking(
       String patientId, BuildContext context) async {
-    final profileController = Get.find<ProfileController>();
-    final labtestcontroller = Get.find<EShopController>();
-
     final data = {
       "user_id": getbox.read(userId).toString(),
 
@@ -194,11 +190,9 @@ class LabTestDetailView extends StatelessWidget {
       // };
     };
 
-    print(data);
     String token = getbox.read(userToken);
     // String url = "https://api.esplshowcase.in/api/book-diagnostic-testing";
     String url = "https://api.esplshowcase.in/api/test-booking";
-    print("token $token");
 
     Dio dio = Dio();
     var response = await dio.post(url,
@@ -214,8 +208,8 @@ class LabTestDetailView extends StatelessWidget {
               "Accept": "application/json"
             }));
     Future<void> customLaunch(String url) async {
-      if (await canLaunch(url)) {
-        await launch(url);
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
       } else {
         throw 'Could not launch $url';
       }
@@ -234,7 +228,7 @@ class LabTestDetailView extends StatelessWidget {
       CustomMessage.showSuccessSnackBar("Redirecting to Payment");
     } else {
       debugPrint("${response.data} ${response.statusMessage}");
-      CustomMessage.errorMessage(context, 'Error ${response.statusCode}');
+      CustomMessage.errorMessage('Error ${response.statusCode}');
     }
   }
 }

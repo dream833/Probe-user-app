@@ -8,7 +8,6 @@ import 'package:uddipan/app/modules/bottom_navigation_bar/controllers/bottom_nav
 import 'package:uddipan/app/modules/e-shop/view/eshop_view.dart';
 import 'package:uddipan/app/modules/emergency/view/emergency_view.dart';
 import 'package:uddipan/app/modules/home/views/home_view.dart';
-import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart';
 import 'package:uddipan/app/modules/services/view/services_view.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
@@ -21,7 +20,6 @@ class BottomNavigationBarView extends GetView<BottomNavigationBarControllers> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(BottomNavigationBarControllers());
-    final profileController = Get.put(ProfileController());
     if (routeIndex != null) controller.changeTabIndex(routeIndex!);
     return Obx(
       () {

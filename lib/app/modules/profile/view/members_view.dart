@@ -33,66 +33,65 @@ class MembersView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(children: [
             Obx(() {
-              if(controller.isFamilyMemberLoading.value==true){
+              if (controller.isFamilyMemberLoading.value == true) {
                 return shimmerListEffect();
               }
               return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const ScrollPhysics(),
-                    itemCount: controller.memberList.length,
-                    itemBuilder: (context, index) {
-                      MemberModel? member = controller.memberList[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: boxShadow,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(children: [
-                              Row(
+                shrinkWrap: true,
+                physics: const ScrollPhysics(),
+                itemCount: controller.memberList.length,
+                itemBuilder: (context, index) {
+                  MemberModel? member = controller.memberList[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: boxShadow,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(children: [
+                          Row(
+                            children: [
+                              DisplayImageWidget(
+                                color: member?.gender == 'Male'
+                                    ? appColorBlue
+                                    : appColorPrimary,
+                                height: 60,
+                                width: 60,
+                                child: Icon(
+                                  member?.gender == 'Male'
+                                      ? Icons.person
+                                      : FontAwesomeIcons.personDress,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  DisplayImageWidget(
-                                    color: member?.gender == 'Male'
-                                        ? appColorBlue
-                                        : appColorPrimary,
-                                    height: 60,
-                                    width: 60,
-                                    child: Icon(
-                                      member?.gender == 'Male'
-                                          ? Icons.person
-                                          : FontAwesomeIcons.female,
-                                      color: Colors.white,
-                                    ),
+                                  Text(
+                                    member?.name ?? '',
+                                    style: CustomFont.regularTextPoppins,
                                   ),
-                                  const SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        member?.name ?? '',
-                                        style: CustomFont.regularTextPoppins,
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        member?.relationship ?? '',
-                                        style: CustomFont.regularTextPoppins.copyWith(fontSize: 14),
-                                      ),
-                                    ],
-                                  )
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    member?.relationship ?? '',
+                                    style: CustomFont.regularTextPoppins
+                                        .copyWith(fontSize: 14),
+                                  ),
                                 ],
                               )
-                            ]),
-                          ),
-                        ),
-                      );
-                    },
+                            ],
+                          )
+                        ]),
+                      ),
+                    ),
                   );
+                },
+              );
             }),
-          
           ]),
         ),
       ),

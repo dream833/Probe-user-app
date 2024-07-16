@@ -104,7 +104,8 @@ class PatientView extends StatelessWidget {
                                                 child: Icon(
                                                   member.gender == 'Male'
                                                       ? Icons.person
-                                                      : FontAwesomeIcons.female,
+                                                      : FontAwesomeIcons
+                                                          .personDress,
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -278,8 +279,7 @@ class AddPatientView extends StatelessWidget {
                         "${controller.selectedDigitalCode.value}${controller.phoneController.value.text}";
 
                     if (name.isEmpty || phone.isEmpty || formatedDate.isEmpty) {
-                      CustomMessage.errorMessage(
-                          context, 'Please Fill the fields');
+                      CustomMessage.errorMessage('Please Fill the fields');
                       return;
                     } else {
                       // MemberModel model = MemberModel(

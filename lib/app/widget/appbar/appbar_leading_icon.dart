@@ -25,16 +25,13 @@ class AppBarLeadingIcon extends StatelessWidget {
           Platform.isAndroid
               ? AppImage.arrowBackAndroid
               : AppImage.arrowBackIos,
-          // height: 20,
-          // width: 10,
-          color: iconColor,
+
           // color: isSelected ? AppColor.secondaryGreen : Colors.blue,
         ),
       ),
     );
   }
 }
-
 
 class AppBarLeadingIcon2 extends StatelessWidget {
   final Color? iconColor;
@@ -48,7 +45,7 @@ class AppBarLeadingIcon2 extends StatelessWidget {
         Get.back();
       },
       child: Container(
-        margin: EdgeInsets.only(left: 10.w, top: 5.h ),
+        margin: EdgeInsets.only(left: 10.w, top: 5.h),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
@@ -58,7 +55,6 @@ class AppBarLeadingIcon2 extends StatelessWidget {
           Platform.isAndroid
               ? AppImage.arrowBackAndroid
               : AppImage.arrowBackIos,
-          color: iconColor,
         ),
       ),
     );

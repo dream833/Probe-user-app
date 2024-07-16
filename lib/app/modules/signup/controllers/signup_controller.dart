@@ -302,12 +302,6 @@ class SignupController extends GetxController {
 
   final isLoading = false.obs;
 
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
-  }
-
   void setProfilePicture(File? newProfilePicture) {
     profilePicture = newProfilePicture;
     update();
@@ -363,7 +357,7 @@ class SignupController extends GetxController {
       }
     } catch (e) {
       debugPrint(e.toString());
-      CustomMessage.errorMessage(context, e.toString());
+      CustomMessage.errorMessage(e.toString());
       return '';
     }
   }
@@ -387,10 +381,10 @@ class SignupController extends GetxController {
           confirmPasswordController.text.isEmpty) {
         CustomMessage.showSnackBar('Please fill in all the  fields');
       } else if (passwordController.text.length < 8) {
-        CustomMessage.errorMessage(context, 'Minimum Password is 8');
+        CustomMessage.errorMessage('Minimum Password is 8');
       } else if (confirmPasswordController.text != passwordController.text) {
         CustomMessage.errorMessage(
-            context, 'Password and confirm Password should be same');
+            'Password and confirm Password should be same');
       } else {}
 
       final uri = Uri.parse('https://api.esplshowcase.in/api/users');
@@ -446,7 +440,7 @@ class SignupController extends GetxController {
     isLoading.value = true;
     try {
       // if (profilePicture == null) {
-      //   CustomMessage.errorMessage(context, 'Please Select Profile Photo');
+      //   CustomMessage.errorMessage('Please Select Profile Photo');
       // } else if (nameController.text.isEmpty ||
       //     emailController.text.isEmpty ||
       //     phoneController.text.isEmpty ||
@@ -461,7 +455,7 @@ class SignupController extends GetxController {
       //   CustomMessage.errorMessage(
       //       context, 'Please fill in all the required fields');
       // } else if (passwordController.text.length < 8) {
-      //   CustomMessage.errorMessage(context, 'Minimum Password is 8');
+      //   CustomMessage.errorMessage('Minimum Password is 8');
       // } else if (confirmPasswordController.text != passwordController.text) {
       //   CustomMessage.errorMessage(
       //       context, 'Password and confirm Password should be same');
@@ -537,7 +531,7 @@ class SignupController extends GetxController {
       // ignore: use_build_context_synchronously
       log(e.response.toString());
       log(e.type.toString());
-      CustomMessage.errorMessage(context, e.toString());
+      CustomMessage.errorMessage(e.toString());
     }
   }
 }

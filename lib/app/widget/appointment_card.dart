@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uddipan/app/modules/appointments/view/appoinment_detail_view.dart';
-import 'package:uddipan/app/modules/doctor/controller/doctor_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/app/widget/show_status_widget.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/models/appointment_model.dart';
-import 'package:uddipan/models/doctor_model.dart';
+
 import 'package:uddipan/utils/snippet.dart';
 
 class AppointmentCard extends StatelessWidget {
@@ -20,12 +19,7 @@ class AppointmentCard extends StatelessWidget {
         formatTime(appointment.availability?.startTime ?? '');
     String endTimeFormatted =
         formatTime(appointment.availability?.endTime ?? '');
-    final controller = Get.put(DoctorController());
-    DoctorModel? doctorModel = controller.doctorList.firstWhere(
-      (doctor) => doctor?.id == 30,
-      orElse: () => null,
-    );
-    print(appointment.availability?.type);
+
     return GestureDetector(
       onTap: () {
         Get.to(() => AppointmentDetailView(appointment: appointment));
@@ -77,11 +71,10 @@ class AppointmentCard extends StatelessWidget {
                                     """( $startTimeFormatted to $endTimeFormatted )"""),
                           ],
                         ),
-                       
-                     
+
                         // Row(
                         //   children: [
-                             
+
                         //     SmallText(
                         //         fontSize: 12,
                         //         textColor: Colors.black,

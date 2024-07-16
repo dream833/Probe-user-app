@@ -12,7 +12,6 @@ class TransactionDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -103,7 +102,7 @@ class TransactionDetailView extends StatelessWidget {
                     if (transaction.receiptUrl.isNotEmpty)
                       GestureDetector(
                         onTap: () async {
-                          // print(transaction.receiptUrl);
+                          // debugPrint(transaction.receiptUrl);
                           await customLaunch(transaction.receiptUrl);
                         },
                         child: Container(

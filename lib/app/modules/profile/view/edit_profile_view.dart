@@ -204,7 +204,7 @@ class EditProfileView extends StatelessWidget {
                                 Region region = controller.regionList
                                     .where((e) => e.regionName == newValue)
                                     .first;
-                                print(region);
+
                                 controller.selectedRegionId.value =
                                     region.id ?? 0;
                                 log('Selected Region ID is =================> ${controller.selectedRegionId.value}');
@@ -424,7 +424,7 @@ class EditProfileView extends StatelessWidget {
                                     .first;
                                 controller.selectedThanaId.value =
                                     thana.id ?? 0;
-                                print(
+                                debugPrint(
                                     'Selected Thana ID is =============>  ${controller.selectedThanaId.value}');
 
                                 /// This code is for call the next drop down

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:uddipan/app/modules/doctor/controller/doctor_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
-import 'package:uddipan/app/widget/custom_textfield.dart';
+
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
 import 'package:uddipan/models/availability_model.dart';

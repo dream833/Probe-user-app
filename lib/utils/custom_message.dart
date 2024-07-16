@@ -15,10 +15,13 @@ class CustomMessage {
     );
   }
 
-  static errorMessage(BuildContext context, String title) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(title,style: const TextStyle(color: Colors.white),),
+  static errorMessage(String title) {
+    Get.showSnackbar(
+      GetSnackBar(
+        messageText: Text(
+          title,
+          style: const TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.red,
         duration: const Duration(milliseconds: 1000),
       ),

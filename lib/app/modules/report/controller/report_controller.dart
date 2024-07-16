@@ -65,11 +65,11 @@ class ReportController extends GetxController {
   Future<void> addReport(BuildContext context) async {
     try {
       if (pickPDF.value == null) {
-        CustomMessage.errorMessage(context, 'Please Select PDF');
+        CustomMessage.errorMessage('Please Select PDF');
         return;
       }
       if (nameController.text.isEmpty || recordDateController.text.isEmpty) {
-        CustomMessage.errorMessage(context, 'Please fill all the fields');
+        CustomMessage.errorMessage('Please fill all the fields');
         return;
       }
       final url =
@@ -104,8 +104,6 @@ class ReportController extends GetxController {
       isReportListLoading.value = true;
       String token = getbox.read(userToken);
       int id = getbox.read(userId);
-      const baseurl =
-          "https://esplshowcase.in/storage/app/public/uploads/appuserFiles/";
 
       final uri = Uri.parse(
           'https://api.esplshowcase.in/api/get/user_report?user_id=$id');
@@ -118,7 +116,6 @@ class ReportController extends GetxController {
       log("Data ======>${response.body}");
       if (response.statusCode == 200) {
         List<dynamic> list = json.decode(response.body);
-        print("list=====> $list");
         List<UserReportModel?> model =
             list.map((json) => UserReportModel.fromJson(json)).toList();
         reportList.assignAll(model);

@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:uddipan/app/modules/prescription/controller/prescription_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/constants/image_contant.dart';
@@ -37,36 +36,24 @@ class _PrescriptionListViewState extends State<PrescriptionListView> {
     };
     final patientId = getbox.read(userId).toString();
 
-    print('Patient ID: $patientId');
     final url =
         'https://api.esplshowcase.in/api/user/prescriptions/user?user_id=$patientId';
 
     final response = await http.get(Uri.parse(url), headers: headers);
-    print(response.body);
+
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
         prescriptions = data;
       });
-      print("Fetch success $data");
       return data;
     } else {
-      print(
-          'Error: ${response.statusCode} ${response.reasonPhrase.toString()}');
       throw Exception('Failed to Fetch');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(PrescriptionController());
-
-    onRefresh() async {
-      await Future.delayed(const Duration(milliseconds: 1000), () {
-        return const CircularProgressIndicator();
-      });
-    }
-
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

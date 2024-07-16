@@ -4,8 +4,6 @@ import 'package:uddipan/app/modules/forget_password/controller/forget_password_c
 class ForgetPasswordBinding extends Bindings {
   @override
   void dependencies() {
-    // TODO: implement dependencies
     Get.lazyPut<ForgetPasswordController>(() => ForgetPasswordController());
   }
-
 }

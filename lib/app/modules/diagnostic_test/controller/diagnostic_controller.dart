@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:uddipan/models/lab_test_model.dart';
 
 class DiagnosticController extends GetxController {
   // List<LabTestModel> labTests = [

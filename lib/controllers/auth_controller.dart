@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:uddipan/routes/app_pages.dart';

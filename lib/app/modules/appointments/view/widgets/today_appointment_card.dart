@@ -33,7 +33,7 @@ class TodayAppointmentCard extends StatelessWidget {
             );
           }
 
-          print(snapshot.error.toString());
+          debugPrint(snapshot.error.toString());
 
           return ListView.builder(
             shrinkWrap: true,

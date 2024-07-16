@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:uddipan/app/modules/login/views/login_view.dart';
@@ -35,7 +33,7 @@ class MainAuth extends StatelessWidget {
 
 Future<String?> getToken() async {
   String? token = getbox.read(userToken);
-  print('token $token');
+
   if (token == null) {
     return null;
   } else {

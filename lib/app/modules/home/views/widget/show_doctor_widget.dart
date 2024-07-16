@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uddipan/app/modules/doctor/controller/doctor_controller.dart';
 import 'package:uddipan/constants/image_contant.dart';
-import 'package:uddipan/constants/theme_constant.dart';
 import 'package:uddipan/models/doctor_model.dart';
 
 import '../../../doctor/view/doctor_details_view.dart';
@@ -16,7 +13,6 @@ class ShowDoctorWiget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(DoctorController());
     return GestureDetector(
       onTap: () {
         Get.to(() => DoctorDetailView(doctorModel: doctorModel));

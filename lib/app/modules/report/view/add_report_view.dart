@@ -52,7 +52,7 @@ class AddReportView extends StatelessWidget {
                     }
                   } catch (e) {
                     // ignore: use_build_context_synchronously
-                    CustomMessage.errorMessage(context, 'Please Select PDF');
+                    CustomMessage.errorMessage('Please Select PDF');
                   }
                 },
                 child: Container(

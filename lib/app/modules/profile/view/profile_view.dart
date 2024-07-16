@@ -1,4 +1,4 @@
-import 'package:audioplayers/src/source.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,7 +29,7 @@ class ProfileView extends GetView<ProfileController> {
     final controller = Get.put(ProfileController());
 
     Future<void> playAudioFromAsset(String assetPath) async {
-      await controller.audioPlayer.play(UrlSource(assetPath));
+      await controller.audioPlayer.play(AssetSource(assetPath));
     }
 
     onRefresh() async {
@@ -241,24 +241,6 @@ class ProfileView extends GetView<ProfileController> {
       trailing: Icon(
         Icons.arrow_forward_ios,
         size: 16.sp,
-      ),
-    );
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      backgroundColor: AppColor.mainBackgroundColor,
-      title: Text(
-        'Profile',
-        style: TextStyle(
-          color: AppColor.black,
-        ),
-      ),
-      // backgroundColor: AppColor.white,
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      iconTheme: IconThemeData(
-        color: AppColor.black,
       ),
     );
   }

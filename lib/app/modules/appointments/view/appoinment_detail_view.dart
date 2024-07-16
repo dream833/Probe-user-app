@@ -35,7 +35,7 @@ class AppointmentDetailView extends StatelessWidget {
           IconButton(
             onPressed: () {
               controller.getAppointmentVideoId(appointmentId: appointment.id);
-              print('${controller.getVideoId.value} video id');
+
               String videoId = controller.getVideoId.value.toString();
               if (videoId.isNotEmpty) {
                 Get.to(() => VideoCallView(
@@ -261,7 +261,7 @@ class AppointmentDetailView extends StatelessWidget {
                       onTap: () async {
                         await controller.getAppointmentVideoId(
                             appointmentId: appointment.id.toString());
-                        print('${controller.getVideoId.value} video id');
+                        debugPrint('${controller.getVideoId.value} video id');
                         if (controller.getVideoId.value.isNotEmpty) {
                           Get.to(() => VideoCallView(
                               callId: controller.getVideoId.value,

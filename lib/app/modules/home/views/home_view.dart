@@ -53,18 +53,17 @@ class CustomAppBarWidget extends StatefulWidget {
 
 class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
   late NotificationController controller;
-  late ProfileController profileController;
 
   @override
   void initState() {
     controller = Get.put(NotificationController());
     controller.getUnReadNotificationCount();
-    profileController = Get.put(ProfileController());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var profileController = Get.put(ProfileController());
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -81,16 +80,15 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                 height: 50,
                 width: 50,
                 color: Colors.white,
-                child:
-                    Get.find<ProfileController>().userModel.value?.image != null
-                        ? Image.network(
-                            Get.find<ProfileController>()
-                                .userModel
-                                .value!
-                                .image
-                                .toString(),
-                          )
-                        : const Icon(Icons.person),
+                child: (profileController.image.value == "null")
+                    ? Image.network(
+                        profileController.image.value,
+                        fit: BoxFit.cover,
+                      )
+                    : const Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      ),
               ),
             ),
             const SizedBox(width: 12),

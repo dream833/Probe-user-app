@@ -40,7 +40,7 @@ class ProfileView extends GetView<ProfileController> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const CustomAppBar(),
+      appBar: CustomAppBar(),
       body: RefreshIndicator(
         onRefresh: onRefresh,
         child: ListView(
@@ -247,10 +247,11 @@ class ProfileView extends GetView<ProfileController> {
 }
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  CustomAppBar({super.key});
 
   @override
   Size get preferredSize => Size.fromHeight(130.h);
+  var profileController = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -276,15 +277,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Colors.white,
                   height: 70.h,
                   width: 70.w,
-                  child: Image(
-                    image: NetworkImage(
-                      Get.find<ProfileController>()
-                          .userModel
-                          .value!
-                          .image
-                          .toString(),
-                    ),
-                  ),
+                  child: (profileController.image.value == "null")
+                      ? Image.network(
+                          profileController.image.value,
+                          fit: BoxFit.cover,
+                        )
+                      : const Icon(
+                          Icons.person,
+                          color: Colors.black,
+                        ),
                 ),
               ),
               const SizedBox(

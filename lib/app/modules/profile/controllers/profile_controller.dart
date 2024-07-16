@@ -7,6 +7,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:uddipan/app/modules/signup/views/signup_view.dart';
 import 'package:uddipan/constants/string_constant.dart';
 import 'package:uddipan/models/transaction_model.dart';
@@ -31,7 +32,9 @@ class ProfileController extends GetxController {
   final selectedDigitalCode = "".obs;
   final isProfileLoading = false.obs;
   final image = "".obs;
-  File? profilePicture; // = Rx<Uint8List?>(null);
+  var profileImage = File("").obs;
+  final ImagePicker picker = ImagePicker();
+
   final nameController = TextEditingController().obs;
   final emailController = TextEditingController().obs;
   final addressController = TextEditingController().obs;
@@ -59,6 +62,7 @@ class ProfileController extends GetxController {
   var selectedRegion = RxString('');
   final regionModel = RegionModel().obs;
   final regionList = <Region>[].obs;
+  var isLoading = false.obs;
 
   /// Branch
   final isBranchLoading = false.obs;
@@ -301,9 +305,12 @@ class ProfileController extends GetxController {
     getUserInfo();
   }
 
-  void setProfilePicture(File? newProfilePicture) {
-    profilePicture = newProfilePicture;
-    update();
+  void pcikProfilePicture() async {
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      profileImage(File(image.path));
+      uploadImage(profileImage.value);
+    }
   }
 
   AudioPlayer audioPlayer = AudioPlayer();
@@ -315,7 +322,7 @@ class ProfileController extends GetxController {
       var response = await networkApiServices.getApi(endpoint: 'users/profile');
 
       if (response.statusCode == 200) {
-        userModel.value = UserModel.fromMap(response.data);
+        userModel(UserModel.fromMap(response.data));
         name.value = userModel.value!.name.toString();
         image.value = userModel.value!.image.toString();
         debugPrint('---------------------- ${image.value}--');
@@ -339,29 +346,58 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> updateUserProfile({required BuildContext context}) async {
+  Future<String?> uploadImage(File imageFile) async {
+    isLoading(true);
+    const uploadUrl = 'https://api.esplshowcase.in/api/upload/files';
+    var request = http.MultipartRequest('POST', Uri.parse(uploadUrl));
+    request.files
+        .add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+    var response = await request.send();
+    isLoading(false);
+
+    if (response.statusCode == 200) {
+      var responseData = await response.stream.bytesToString();
+      var jsonResponse = jsonDecode(responseData);
+      log("DRM25 ${jsonResponse['url']}");
+      if (jsonResponse['url'].toString() != "null") {
+        CustomMessage.showSuccessSnackBar("Image Uploaded");
+        updateUserProfile();
+      } else {
+        CustomMessage.showSnackBar("Image Upload Failed",
+            backgroundColor: Colors.red.withOpacity(0.7));
+      }
+
+      return jsonResponse['url'];
+    } else {
+      print('Failed to upload image: ${response.statusCode}');
+      return null;
+    }
+  }
+
+  Future<void> updateUserProfile() async {
     final apiUrl = '$baseurl/users/profile';
     final token = getbox.read(userToken);
+    final controller = Get.find<ProfileController>();
     String? imgUrl;
-    const url = 'https://api.esplshowcase.in/api/upload/files';
-    if (profilePicture != null) {
-      imgUrl = '$url/${nameController.value.text}';
-    }
+
+    imgUrl = await uploadImage(profileImage.value);
+
     Map<String, String> requestBody = {
-      'name': nameController.value.text,
-      'phone_number': phoneController.value.text,
-      'countryCode': selectedCountryCode.value,
-      'zone_id': selectedZoneId.toString(),
-      'region_id': selectedRegionId.toString(),
-      'branch_id': selectedBranchId.toString(),
-      'district_id': selectedDistrictId.toString(),
-      'division_id': selectedDivisionId.toString(),
-      'thana_id': selectedThanaId.toString(),
-      'union_id': selectedUnionId.toString(),
-      'digitalCode': selectedDigitalCode.value,
-      'present_address': addressController.value.text,
-      'pin': pinController.value.text,
-      'image': imgUrl ?? image.value
+      'name': controller.nameController.value.text,
+      'phone_number': controller.phoneController.value.text,
+      'countryCode': controller.selectedCountryCode.value,
+      'zone_id': controller.selectedZoneId.toString(),
+      'region_id': controller.selectedRegionId.toString(),
+      'branch_id': controller.selectedBranchId.toString(),
+      'district_id': controller.selectedDistrictId.toString(),
+      'division_id': controller.selectedDivisionId.toString(),
+      'thana_id': controller.selectedThanaId.toString(),
+      'union_id': controller.selectedUnionId.toString(),
+      'digitalCode': controller.selectedDigitalCode.value,
+      'present_address': controller.addressController.value.text,
+      'pin': controller.pinController.value.text,
+      'image': imgUrl ?? controller.image.value
     };
 
     try {

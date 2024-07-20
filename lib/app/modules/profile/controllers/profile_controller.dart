@@ -370,7 +370,6 @@ class ProfileController extends GetxController {
 
       return jsonResponse['url'];
     } else {
-      print('Failed to upload image: ${response.statusCode}');
       return null;
     }
   }

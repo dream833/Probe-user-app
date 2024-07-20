@@ -20,7 +20,7 @@ import '../../../../models/region/region_model.dart';
 import '../../../../models/thana/thana_model.dart';
 import '../../../../models/zone/zone_model.dart';
 import '../../../widget/display_image_widget.dart';
-import '../../../widget/image_picker_widget.dart';
+
 import '../../../widget/search_dropdown.dart';
 
 class EditProfileView extends StatelessWidget {

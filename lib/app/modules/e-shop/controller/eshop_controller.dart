@@ -41,7 +41,7 @@ class EShopController extends GetxController {
     bookTestLab.add(model);
   }
 
-  Future<void> addLabTestToCart(LabTestModel? model) async {
+  Future<void> addLabTestToCart(dynamic model) async {
     if (cartLabTest.contains(model)) {
       CustomMessage.showSnackBar('LabTest is already added',
           backgroundColor: Colors.red);

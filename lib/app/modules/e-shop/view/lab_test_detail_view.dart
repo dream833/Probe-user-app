@@ -19,7 +19,7 @@ import '../../../../utils/custom_message.dart';
 import '../../bottom_navigation_bar/controllers/bottom_navigation_bar_controllers.dart';
 
 class LabTestDetailView extends StatelessWidget {
-  final LabTestModel? model;
+  final dynamic model;
   final String? name;
   final String? method;
   final int? rates;
@@ -70,6 +70,8 @@ class LabTestDetailView extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Container(
+            padding: const EdgeInsets.all(20.0),
+            margin: const EdgeInsets.only(left: 16, right: 16),
             width: double.infinity,
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -81,43 +83,33 @@ class LabTestDetailView extends StatelessWidget {
                 )
               ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Price',
-                      style: CustomFont.regularMediumText
-                          .copyWith(fontWeight: FontWeight.w500, fontSize: 16)),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      SmallText(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        text: rates.toString(),
-                      ),
-                      const SizedBox(width: 10),
-                    ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Price',
+                  style: CustomFont.regularMediumText.copyWith(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 22,
                   ),
-                  const SizedBox(height: 15),
-                  LoaderButton(
-                      radius: 6,
-                      color: Colors.deepOrange,
-                      btnText: 'Book',
-                      onTap: () async {
-                        try {
-                          Get.put(());
-                          final patientId = getbox.read(userId).toString();
-
-                          log('PatientId $patientId');
-                          await addLabTestToBooking(patientId, context);
-                        } catch (e) {
-                          return;
-                        }
-                      })
-                ],
-              ),
+                ),
+                const SizedBox(height: 10),
+                SmallText(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  text: "৳ ${rates.toString()}.00",
+                ),
+                const SizedBox(height: 15),
+                LoaderButton(
+                    radius: 6,
+                    color: Colors.deepOrange,
+                    btnText: 'Book',
+                    onTap: () async {
+                      final patientId = getbox.read(userId).toString();
+                      log('PatientId $patientId');
+                      addLabTestToBooking(patientId);
+                    })
+              ],
             ),
           ),
           const SizedBox(height: 20),
@@ -147,37 +139,35 @@ class LabTestDetailView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SmallText(fontSize: 15, text: "Total Price"),
-                  // const SizedBox(height: 1),
                   SmallText(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      text: rates.toString()),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    text: "৳ ${rates.toString()}.00",
+                  ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    child: LoaderButton(
-                        radius: 6,
-                        color: Colors.deepOrange,
-                        btnText: "Go to cart",
-                        onTap: () async {
-                          controller.addLabTestToCart(model);
-                        })),
+              SizedBox(
+                width: 150,
+                child: LoaderButton(
+                  radius: 6,
+                  color: Colors.deepOrange,
+                  btnText: "Go to cart",
+                  onTap: () async {
+                    controller.addLabTestToCart(model);
+                  },
+                ),
               )
             ],
           )),
     );
   }
 
-  Future<void> addLabTestToBooking(
-      String patientId, BuildContext context) async {
+  Future<void> addLabTestToBooking(String patientId) async {
     final data = {
       "user_id": getbox.read(userId).toString(),
-
-      "test_id": ["3"],
-      "price": "1200".toString(), //   "paitent_id": patientId,
+      "test_id": [model.id.toString()],
+      "price": model.rate.toString(),
+      //   "paitent_id": patientId,
       //   "patient_name": profileController.userModel.value!.name.toString(),
       //   "name": name,
       //   "rate": rate.toString(),
@@ -214,6 +204,8 @@ class LabTestDetailView extends StatelessWidget {
         throw 'Could not launch $url';
       }
     }
+
+    log(jsonEncode(response.data));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final url = response.data.toString();
@@ -302,47 +294,84 @@ class TestInfoWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            Text(comments.toString(),
-                textAlign: TextAlign.start,
-                style: CustomFont.regularTextPoppins
-                    .copyWith(fontWeight: FontWeight.w400, fontSize: 14)),
+            Container(
+              width: Get.width,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Text(comments.toString(),
+                  textAlign: TextAlign.start,
+                  style: CustomFont.regularTextPoppins
+                      .copyWith(fontWeight: FontWeight.w400, fontSize: 14)),
+            ),
             const SizedBox(height: 20),
-            Row(
+            Table(
+              columnWidths: const {
+                0: FixedColumnWidth(150.0),
+                1: FlexColumnWidth(),
+              },
+              border: TableBorder.all(
+                color: Colors.grey.shade300,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                TableRow(
                   children: [
-                    Text('Sample Required',
-                        style: CustomFont.regularTextPoppins.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
-                            color: Colors.grey.shade700)),
-                    const SizedBox(height: 20),
-                    Text('Preparation',
-                        style: CustomFont.regularTextPoppins.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
-                            color: Colors.grey.shade700)),
-                    const SizedBox(height: 20),
-                    Text('Home Collection?',
-                        style: CustomFont.regularTextPoppins.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
-                            color: Colors.grey.shade700)),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Title',
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Details",
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
                   ],
                 ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(sample != null ? sample.toString() : "No",
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Sample Required',
                           style: CustomFont.regularTextPoppins.copyWith(
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               color: Colors.grey.shade700)),
-                      const SizedBox(height: 20),
-                      Text(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(sample != null ? sample.toString() : "No",
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Preparation',
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
                           preparation != null
                               ? preparation.toString()
                               : 'No Special Preparation is required',
@@ -350,14 +379,28 @@ class TestInfoWidget extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               color: Colors.grey.shade700)),
-                      const SizedBox(height: 5),
-                      Text(homeCollection == 1 ? 'Yes' : 'No',
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Home Collection?',
                           style: CustomFont.regularTextPoppins.copyWith(
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               color: Colors.grey.shade700)),
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(homeCollection == 1 ? 'Yes' : 'No',
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
+                  ],
                 ),
               ],
             ),

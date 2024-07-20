@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -297,7 +294,7 @@ class _DoctorDetailViewState extends State<DoctorDetailView> {
         bottomNavigationBar: Obx(
           () {
             var data = Get.find<DoctorController>().availabilityList;
-            log("DRM255 ${jsonEncode(data)}");
+
             if (data.isEmpty) {
               return SizedBox(
                 child: Container(

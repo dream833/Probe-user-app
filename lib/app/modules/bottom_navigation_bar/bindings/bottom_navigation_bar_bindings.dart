@@ -4,8 +4,7 @@ import 'package:uddipan/app/modules/bottom_navigation_bar/controllers/bottom_nav
 class BottomNavigationBarBindings extends Bindings {
   @override
   void dependencies() {
-    // TODO: implement dependencies
-    Get.lazyPut<BottomNavigationBarControllers>(() => BottomNavigationBarControllers());
+    Get.lazyPut<BottomNavigationBarControllers>(
+        () => BottomNavigationBarControllers());
   }
-
 }

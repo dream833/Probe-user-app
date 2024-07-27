@@ -52,19 +52,21 @@ class AddReportView extends StatelessWidget {
                     }
                   } catch (e) {
                     // ignore: use_build_context_synchronously
-                    CustomMessage.errorMessage(context, 'Please Select PDF');
+                    CustomMessage.errorMessage('Please Select PDF');
                   }
                 },
                 child: Container(
                   height: 45,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: Colors.grey,
+                      color: controller.pickPDF.value == null
+                          ? Colors.grey
+                          : const Color(0xff06B198),
                       borderRadius: BorderRadius.circular(16)),
                   child: Center(
                       child: Obx(() => Text(
                             controller.pickPDF.value == null
-                                ? 'Select Report'
+                                ? 'Upload Report'
                                 : controller.pickPDF.value!.fileName,
                             style: CustomFont.mediumTextRaleway
                                 .copyWith(color: Colors.white),

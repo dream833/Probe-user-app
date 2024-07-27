@@ -1,9 +1,7 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:uddipan/app/modules/home/views/widget/specialist_categories.dart';
 import 'package:uddipan/app/modules/home/views/widget/top_rated_doctors_widget.dart';
 import 'package:uddipan/app/modules/notification/controllers/notification_controller.dart';
@@ -12,13 +10,9 @@ import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart'
 import 'package:uddipan/app/widget/Text/big_text.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
-import 'package:uddipan/app/widget/fast_cached_network_img.dart';
 import 'package:uddipan/constants/color_constant.dart';
-import 'package:uddipan/models/banner_model.dart';
 import 'package:uddipan/routes/app_pages.dart';
 import 'package:uddipan/utils/snippet.dart';
-
-import '../controllers/home_controller.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -48,87 +42,6 @@ class HomeView extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildSlider() {
-    final controller = Get.find<HomeController>();
-    controller.getBannerList();
-    return FutureBuilder(
-        future: controller.getBannerList(),
-        builder: (_, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return sliderShimmer();
-          }
-
-          return Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.15),
-                      offset: Offset(-1, 1),
-                      blurRadius: 10,
-                    )
-                  ],
-                ),
-                height: 130.h,
-                width: double.infinity,
-                child: PageView.builder(
-                  controller: controller.pageController,
-                  itemCount: controller.bannerList.length,
-                  onPageChanged: (index) {
-                    controller.currentPage.value = index;
-                  },
-                  itemBuilder: (context, index) {
-                    BannerModel? model = BannerModel.fromJson(
-                        controller.bannerList[index].toJson());
-                    return Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16.r),
-                          child: FastCachedImgWidget(
-                            url: model.image,
-                            height: 200,
-                            width: double.infinity,
-                            radius: 0,
-                          ),
-                        ),
-                        Positioned.fill(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(16.r),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 20,
-                          right: 10,
-                          left: 10,
-                          child: Center(
-                            child: SmoothPageIndicator(
-                              controller: controller.pageController,
-                              count: controller.bannerList.length,
-                              effect: ExpandingDotsEffect(
-                                dotHeight: 8,
-                                dotWidth: 10,
-                                dotColor: Colors.white,
-                                activeDotColor: appPrimaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        });
-  }
 }
 
 class CustomAppBarWidget extends StatefulWidget {
@@ -140,18 +53,17 @@ class CustomAppBarWidget extends StatefulWidget {
 
 class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
   late NotificationController controller;
-  late ProfileController profileController;
 
   @override
   void initState() {
     controller = Get.put(NotificationController());
     controller.getUnReadNotificationCount();
-    profileController = Get.put(ProfileController());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var profileController = Get.put(ProfileController());
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -168,16 +80,15 @@ class _CustomAppBarWidgetState extends State<CustomAppBarWidget> {
                 height: 50,
                 width: 50,
                 color: Colors.white,
-                child:
-                    Get.find<ProfileController>().userModel.value?.image != null
-                        ? Image.network(
-                            Get.find<ProfileController>()
-                                .userModel
-                                .value!
-                                .image
-                                .toString(),
-                          )
-                        : const Icon(Icons.person),
+                child: (profileController.image.value == "null")
+                    ? Image.network(
+                        profileController.image.value,
+                        fit: BoxFit.cover,
+                      )
+                    : const Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      ),
               ),
             ),
             const SizedBox(width: 12),

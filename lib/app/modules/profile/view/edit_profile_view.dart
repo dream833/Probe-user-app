@@ -19,6 +19,8 @@ import '../../../../models/division/division_model.dart';
 import '../../../../models/region/region_model.dart';
 import '../../../../models/thana/thana_model.dart';
 import '../../../../models/zone/zone_model.dart';
+import '../../../widget/display_image_widget.dart';
+
 import '../../../widget/search_dropdown.dart';
 
 class EditProfileView extends StatelessWidget {
@@ -45,15 +47,35 @@ class EditProfileView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Obx(() => Center(
-                //       child: ImagePickerWidget(
-                //         image: controller.profilePicture.value,
-                //         initialUrl: controller.image.value,
-                //         onImageSelected: (image) {
-                //           controller.setProfilePicture(image);
-                //         },
-                //       ),
-                //     )),
+                Obx(() => Visibility(
+                    visible: controller.isLoading.value,
+                    child: const LinearProgressIndicator())),
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      controller.pcikProfilePicture();
+                    },
+                    child: Obx(
+                      () => DisplayImageWidget(
+                        height: 90,
+                        width: 90,
+                        color: Colors.white,
+                        child: (controller.profileImage.value.path == "")
+                            ? (controller.image.value == "null")
+                                ? Image.network(
+                                    controller.image.value,
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Icon(
+                                    Icons.person,
+                                    size: 42,
+                                    color: Colors.black,
+                                  )
+                            : Image.file(controller.profileImage.value),
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 20.h),
                 Center(
                   child: SmallText(
@@ -204,7 +226,7 @@ class EditProfileView extends StatelessWidget {
                                 Region region = controller.regionList
                                     .where((e) => e.regionName == newValue)
                                     .first;
-                                print(region);
+
                                 controller.selectedRegionId.value =
                                     region.id ?? 0;
                                 log('Selected Region ID is =================> ${controller.selectedRegionId.value}');
@@ -424,7 +446,7 @@ class EditProfileView extends StatelessWidget {
                                     .first;
                                 controller.selectedThanaId.value =
                                     thana.id ?? 0;
-                                print(
+                                debugPrint(
                                     'Selected Thana ID is =============>  ${controller.selectedThanaId.value}');
 
                                 /// This code is for call the next drop down
@@ -503,7 +525,7 @@ class EditProfileView extends StatelessWidget {
                 LoaderButton(
                     btnText: 'Update Profile',
                     onTap: () async {
-                      await controller.updateUserProfile(context: context);
+                      await controller.updateUserProfile();
                     }),
                 SizedBox(height: 10.h),
               ],

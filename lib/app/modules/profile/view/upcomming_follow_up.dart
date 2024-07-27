@@ -11,6 +11,8 @@ class UpcommingFollowUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final doctorController = Get.put(DoctorController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -39,13 +41,11 @@ class UpcommingFollowUp extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),
                     padding: EdgeInsets.zero,
-                    itemCount: 5,
-                    // itemCount:
-                    //     Get.put(DoctorController()).list.length,
+                    itemCount: doctorController.doctorList.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
-                      final doctorController = Get.put(DoctorController());
-                      DoctorModel? doctorModel = doctorController.doctorList[index];
+                      DoctorModel? doctorModel =
+                          doctorController.doctorList[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8, horizontal: 8),

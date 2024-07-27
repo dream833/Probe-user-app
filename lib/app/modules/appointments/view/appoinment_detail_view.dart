@@ -35,7 +35,7 @@ class AppointmentDetailView extends StatelessWidget {
           IconButton(
             onPressed: () {
               controller.getAppointmentVideoId(appointmentId: appointment.id);
-              print('${controller.getVideoId.value} video id');
+
               String videoId = controller.getVideoId.value.toString();
               if (videoId.isNotEmpty) {
                 Get.to(() => VideoCallView(
@@ -78,44 +78,44 @@ class AppointmentDetailView extends StatelessWidget {
                   textColor: Colors.grey.shade700),
               SizedBox(height: 15.h),
 
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.15),
-                      offset: Offset(-1, 1),
-                      blurRadius: 10,
-                    )
-                  ],
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Payment Info',
-                            style: CustomFont.regularTextPoppins.copyWith(
-                                color: appColorPrimary,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(() => TransactionDetailView(
-                              transaction: appointment.transationModel!));
-                        },
-                        child: Row(
+              InkWell(
+                onTap: () {
+                  Get.to(() => TransactionDetailView(
+                      transaction: appointment.transationModel!));
+                },
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.15),
+                        offset: Offset(-1, 1),
+                        blurRadius: 10,
+                      )
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Payment Info',
+                              style: CustomFont.regularTextPoppins.copyWith(
+                                  color: appColorPrimary,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Row(
                           children: [
                             DisplayImageWidget(
                                 color: Colors.grey.shade400,
@@ -164,77 +164,83 @@ class AppointmentDetailView extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Status',
-                                  style: CustomFont.regularTextPoppins.copyWith(
-                                      color: appColorPrimary,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Online',
-                                  style: CustomFont.regularTextPoppins.copyWith(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w900),
-                                )
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Day',
-                                  style: CustomFont.regularTextPoppins.copyWith(
-                                      color: appColorPrimary,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Monday',
-                                  style: CustomFont.regularTextPoppins.copyWith(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w900),
-                                )
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Slot Time',
-                                  style: CustomFont.regularTextPoppins.copyWith(
-                                      color: appColorPrimary,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  '$startTimeFormatted : $endTimeFormatted ',
-                                  style: CustomFont.regularTextPoppins.copyWith(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w900),
-                                )
-                              ],
-                            ),
-                          ],
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Status',
+                                    style: CustomFont.regularTextPoppins
+                                        .copyWith(
+                                            color: appColorPrimary,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w800),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Online',
+                                    style: CustomFont.regularTextPoppins
+                                        .copyWith(
+                                            color: Colors.black,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w900),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Day',
+                                    style: CustomFont.regularTextPoppins
+                                        .copyWith(
+                                            color: appColorPrimary,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w800),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Monday',
+                                    style: CustomFont.regularTextPoppins
+                                        .copyWith(
+                                            color: Colors.black,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w900),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Slot Time',
+                                    style: CustomFont.regularTextPoppins
+                                        .copyWith(
+                                            color: appColorPrimary,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w800),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    '$startTimeFormatted : $endTimeFormatted ',
+                                    style: CustomFont.regularTextPoppins
+                                        .copyWith(
+                                            color: Colors.black,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w900),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -261,7 +267,7 @@ class AppointmentDetailView extends StatelessWidget {
                       onTap: () async {
                         await controller.getAppointmentVideoId(
                             appointmentId: appointment.id.toString());
-                        print('${controller.getVideoId.value} video id');
+                        debugPrint('${controller.getVideoId.value} video id');
                         if (controller.getVideoId.value.isNotEmpty) {
                           Get.to(() => VideoCallView(
                               callId: controller.getVideoId.value,

@@ -63,7 +63,8 @@ ThemeData getTheme() {
       headerBackgroundColor: appColorPrimary,
       // dividerColor: Colors.transparent,
       headerForegroundColor: Colors.white,
-      dayOverlayColor: MaterialStatePropertyAll(appColorPrimary),
+
+      dayOverlayColor: WidgetStatePropertyAll(appColorPrimary),
       dayStyle: const TextStyle(
         color: Colors.black,
         fontFamily: "monstserrat",
@@ -76,7 +77,7 @@ ThemeData getTheme() {
     ),
     colorScheme: ColorScheme.light(
       primary: appColorPrimary,
-      background: Colors.white,
+      surface: Colors.white,
     ),
   );
 }
@@ -141,7 +142,7 @@ class CustomFont {
     // height: 1.1,
   );
 
-    static final boldTextPoppins = GoogleFonts.poppins(
+  static final boldTextPoppins = GoogleFonts.poppins(
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
     fontSize: 25,
@@ -172,7 +173,7 @@ class CustomFont {
     letterSpacing: 0,
     // height: 1.1,
   );
-    static final boldTextRaleway = GoogleFonts.raleway(
+  static final boldTextRaleway = GoogleFonts.raleway(
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.normal,
     fontSize: 25,

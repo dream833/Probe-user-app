@@ -65,11 +65,11 @@ class ReportController extends GetxController {
   Future<void> addReport(BuildContext context) async {
     try {
       if (pickPDF.value == null) {
-        CustomMessage.errorMessage(context, 'Please Select PDF');
+        CustomMessage.errorMessage('Please Select PDF');
         return;
       }
       if (nameController.text.isEmpty || recordDateController.text.isEmpty) {
-        CustomMessage.errorMessage(context, 'Please fill all the fields');
+        CustomMessage.errorMessage('Please fill all the fields');
         return;
       }
       final url =
@@ -79,7 +79,7 @@ class ReportController extends GetxController {
         'report': url,
         'date': recordDateController.text
       };
-      log('$url');
+
       String token = getbox.read(userToken);
       final uri = Uri.parse('$baseurl/add/user_report');
       final response = await http.post(
@@ -87,7 +87,7 @@ class ReportController extends GetxController {
         body: data,
         headers: {'Authorization': 'Bearer $token'},
       );
-      log('$data');
+
       if (response.statusCode == 201) {
         getAllUserReports();
         await Future.delayed(const Duration(milliseconds: 100), () {
@@ -104,21 +104,17 @@ class ReportController extends GetxController {
       isReportListLoading.value = true;
       String token = getbox.read(userToken);
       int id = getbox.read(userId);
-      const baseurl =
-          "https://esplshowcase.in/storage/app/public/uploads/appuserFiles/";
 
       final uri = Uri.parse(
           'https://api.esplshowcase.in/api/get/user_report?user_id=$id');
-      log('$uri');
 
       final response = await http.get(
         uri,
         headers: {'Authorization': 'Bearer $token'},
       );
-      log("Data ======>${response.body}");
+
       if (response.statusCode == 200) {
         List<dynamic> list = json.decode(response.body);
-        print("list=====> $list");
         List<UserReportModel?> model =
             list.map((json) => UserReportModel.fromJson(json)).toList();
         reportList.assignAll(model);

@@ -317,7 +317,6 @@ class PickedPDF {
   PickedPDF({required this.file, required this.fileName});
 }
 
-
 Future<PickedPDF?> pickPDFFile() async {
   try {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -346,6 +345,6 @@ Future<void> customLaunch(String receiptUrl) async {
   if (await canLaunchUrl(url)) {
     await launchUrl(url);
   } else {
-    print(' could not launch $url');
+    debugPrint(' could not launch $url');
   }
 }

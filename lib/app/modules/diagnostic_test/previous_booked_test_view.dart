@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:uddipan/app/modules/diagnostic_test/controller/diagnostic_controller.dart';
+
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/constants/color_constant.dart';
-import 'package:uddipan/models/lab_test_model.dart';
+
 import 'package:uddipan/utils/snippet.dart';
 
 class PreviousBookedTest extends StatelessWidget {
@@ -80,10 +80,9 @@ class PreviousBookedTest extends StatelessWidget {
                                                 fontWeight: FontWeight.w600,
                                               ),
                                               const SizedBox(height: 4),
-                                              Text(
+                                              const Text(
                                                 "labTest.additionalDetails",
-                                                style: const TextStyle(
-                                                    fontSize: 12),
+                                                style: TextStyle(fontSize: 12),
                                               ),
                                               const SizedBox(height: 4),
                                               Row(
@@ -117,7 +116,7 @@ class PreviousBookedTest extends StatelessWidget {
                                                   const SizedBox(width: 5),
                                                 ],
                                               ),
-                                              Row(
+                                              const Row(
                                                 children: [
                                                   SmallText(
                                                     fontSize: 15,

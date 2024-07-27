@@ -5,10 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:uddipan/app/modules/e-shop/view/cart_view.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/models/lab_test_model.dart';
 import 'package:uddipan/models/medicine_model.dart';
 import 'package:uddipan/utils/custom_message.dart';
+import 'package:dio/dio.dart' as dio;
+
+import '../../../../constants/string_constant.dart';
 
 class EShopController extends GetxController {
   final isLabTestModelLoading = false.obs;
@@ -41,17 +45,42 @@ class EShopController extends GetxController {
     bookTestLab.add(model);
   }
 
-  Future<void> addLabTestToCart(LabTestModel? model) async {
-    if (cartLabTest.contains(model)) {
-      CustomMessage.showSnackBar('LabTest is already added',
-          backgroundColor: Colors.red);
-    } else {
-      totalAmount.value += model!.testCost;
-      cartLabTest.add(model);
+  Future<void> addLabTestToCart(dynamic model, String type) async {
+    String url = "https://api.esplshowcase.in/api/add-test";
+    var currentDateTime = DateTime.now();
+    var formattedDate =
+        "${currentDateTime.day.toString().padLeft(2, '0')}/${currentDateTime.month.toString().padLeft(2, '0')}/${currentDateTime.year.toString()}";
+    String token = getbox.read(userToken);
 
-      CustomMessage.showSuccessSnackBar('LabTest is added',
-          backgroundColor: appPrimaryColor);
-      update();
+    var body = (type == "profile")
+        ? {
+            "test_date": formattedDate,
+            "profile_id": [model.id.toString()]
+          }
+        : {
+            "test_id": [model.id.toString()],
+            "test_date": formattedDate,
+          };
+
+    var method = dio.Dio();
+    method.options.headers['Authorization'] = "Bearer $token";
+    var response = await method.post(
+      url,
+      data: body,
+      options: dio.Options(
+        validateStatus: (status) => true,
+        sendTimeout: const Duration(milliseconds: 300000),
+        receiveTimeout: const Duration(milliseconds: 300000),
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      CustomMessage.showSnackBar('Test is Added To the Cart',
+          backgroundColor: appColorPrimary, title: 'Cart');
+      Get.to(const CartView());
+    } else {
+      CustomMessage.showSuccessSnackBar('Error',
+          backgroundColor: Colors.red, title: 'Cart ');
     }
   }
 

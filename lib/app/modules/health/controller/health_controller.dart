@@ -65,7 +65,7 @@ class HealthController extends GetxController {
     log('AddFamily in health Controller');
     try {
       if (selectedMember.value.isEmpty) {
-        CustomMessage.errorMessage(context, 'Please Select Member');
+        CustomMessage.errorMessage('Please Select Member');
         return;
       }
       if (heightController.text.isEmpty ||
@@ -74,12 +74,12 @@ class HealthController extends GetxController {
           bloodGroupController.text.isEmpty ||
           sugarController.text.isEmpty ||
           recordDateController.text.isEmpty) {
-        CustomMessage.errorMessage(context, 'Please fill the fields');
+        CustomMessage.errorMessage('Please fill the fields');
         return;
       }
       // Check if blood group is valid
       if (!bloodGroups.contains(bloodGroupController.text)) {
-        CustomMessage.errorMessage(context, 'Invalid blood group');
+        CustomMessage.errorMessage('Invalid blood group');
         return;
       }
 
@@ -106,7 +106,7 @@ class HealthController extends GetxController {
         log('Error in addFamilyMemberHealth');
       }
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       log('Error in addFamilyMemberHealth');
     }
   }

@@ -7,12 +7,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:uddipan/app/modules/bottom_navigation_bar/view/bottom_navigation_bar_view.dart';
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
-import 'package:uddipan/app/modules/profile/controllers/profile_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/loader_button.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
-import 'package:uddipan/models/lab_test_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../constants/string_constant.dart';
@@ -20,7 +18,8 @@ import '../../../../utils/custom_message.dart';
 import '../../bottom_navigation_bar/controllers/bottom_navigation_bar_controllers.dart';
 
 class LabTestDetailView extends StatelessWidget {
-  final LabTestModel? model;
+  String type;
+  final dynamic model;
   final String? name;
   final String? method;
   final int? rates;
@@ -30,8 +29,9 @@ class LabTestDetailView extends StatelessWidget {
   final int? homeCollection;
   final String? preparation;
   //final
-  const LabTestDetailView(
+  LabTestDetailView(
       {super.key,
+      required this.type,
       this.model,
       this.name,
       this.method,
@@ -70,58 +70,50 @@ class LabTestDetailView extends StatelessWidget {
             preparation: preparation,
           ),
           const SizedBox(height: 20),
-          Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.15),
-                  offset: Offset(-1, 1),
-                  blurRadius: 10,
-                )
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Price',
-                      style: CustomFont.regularMediumText
-                          .copyWith(fontWeight: FontWeight.w500, fontSize: 16)),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      SmallText(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        text: rates.toString(),
-                      ),
-                      const SizedBox(width: 10),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  LoaderButton(
-                      radius: 6,
-                      color: Colors.deepOrange,
-                      btnText: 'Book',
-                      onTap: () async {
-                        try {
-                          Get.put(());
-                          final patientId = getbox.read(userId).toString();
-
-                          log('PatientId $patientId');
-                          await addLabTestToBooking(patientId, context);
-                        } catch (e) {
-                          return;
-                        }
-                      })
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
+          // Container(
+          //   padding: const EdgeInsets.all(20.0),
+          //   margin: const EdgeInsets.only(left: 16, right: 16),
+          //   width: double.infinity,
+          //   decoration: const BoxDecoration(
+          //     color: Colors.white,
+          //     boxShadow: [
+          //       BoxShadow(
+          //         color: Color.fromRGBO(0, 0, 0, 0.15),
+          //         offset: Offset(-1, 1),
+          //         blurRadius: 10,
+          //       )
+          //     ],
+          //   ),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Text(
+          //         'Price',
+          //         style: CustomFont.regularMediumText.copyWith(
+          //           fontWeight: FontWeight.w700,
+          //           fontSize: 22,
+          //         ),
+          //       ),
+          //       const SizedBox(height: 10),
+          //       SmallText(
+          //         fontSize: 18,
+          //         fontWeight: FontWeight.w500,
+          //         text: "৳ ${rates.toString()}.00",
+          //       ),
+          //       const SizedBox(height: 15),
+          //       LoaderButton(
+          //           radius: 6,
+          //           color: Colors.deepOrange,
+          //           btnText: 'Book',
+          //           onTap: () async {
+          //             final patientId = getbox.read(userId).toString();
+          //             log('PatientId $patientId');
+          //             addLabTestToBooking(patientId);
+          //           })
+          //     ],
+          //   ),
+          // ),
+          // const SizedBox(height: 20),
         ]),
       ),
       bottomNavigationBar: Container(
@@ -148,40 +140,35 @@ class LabTestDetailView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SmallText(fontSize: 15, text: "Total Price"),
-                  // const SizedBox(height: 1),
                   SmallText(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      text: rates.toString()),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    text: "৳ ${rates.toString()}.00",
+                  ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    child: LoaderButton(
-                        radius: 6,
-                        color: Colors.deepOrange,
-                        btnText: "Go to cart",
-                        onTap: () async {
-                          controller.addLabTestToCart(model);
-                        })),
+              SizedBox(
+                width: 150,
+                child: LoaderButton(
+                  radius: 6,
+                  color: Colors.deepOrange,
+                  btnText: "Add to cart",
+                  onTap: () async {
+                    controller.addLabTestToCart(model, type);
+                  },
+                ),
               )
             ],
           )),
     );
   }
 
-  Future<void> addLabTestToBooking(
-      String patientId, BuildContext context) async {
-    final profileController = Get.find<ProfileController>();
-    final labtestcontroller = Get.find<EShopController>();
-
+  Future<void> addLabTestToBooking(String patientId) async {
     final data = {
       "user_id": getbox.read(userId).toString(),
-
-      "test_id": ["3"],
-      "price": "1200".toString(), //   "paitent_id": patientId,
+      "test_id": [model.id.toString()],
+      "price": model.rate.toString(),
+      //   "paitent_id": patientId,
       //   "patient_name": profileController.userModel.value!.name.toString(),
       //   "name": name,
       //   "rate": rate.toString(),
@@ -194,11 +181,8 @@ class LabTestDetailView extends StatelessWidget {
       // };
     };
 
-    print(data);
     String token = getbox.read(userToken);
-    // String url = "https://api.esplshowcase.in/api/book-diagnostic-testing";
     String url = "https://api.esplshowcase.in/api/test-booking";
-    print("token $token");
 
     Dio dio = Dio();
     var response = await dio.post(url,
@@ -214,12 +198,14 @@ class LabTestDetailView extends StatelessWidget {
               "Accept": "application/json"
             }));
     Future<void> customLaunch(String url) async {
-      if (await canLaunch(url)) {
-        await launch(url);
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
       } else {
         throw 'Could not launch $url';
       }
     }
+
+    log(jsonEncode(response.data));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final url = response.data.toString();
@@ -234,7 +220,7 @@ class LabTestDetailView extends StatelessWidget {
       CustomMessage.showSuccessSnackBar("Redirecting to Payment");
     } else {
       debugPrint("${response.data} ${response.statusMessage}");
-      CustomMessage.errorMessage(context, 'Error ${response.statusCode}');
+      CustomMessage.errorMessage('Error ${response.statusCode}');
     }
   }
 }
@@ -308,47 +294,84 @@ class TestInfoWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            Text(comments.toString(),
-                textAlign: TextAlign.start,
-                style: CustomFont.regularTextPoppins
-                    .copyWith(fontWeight: FontWeight.w400, fontSize: 14)),
+            Container(
+              width: Get.width,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Text(comments.toString(),
+                  textAlign: TextAlign.start,
+                  style: CustomFont.regularTextPoppins
+                      .copyWith(fontWeight: FontWeight.w400, fontSize: 14)),
+            ),
             const SizedBox(height: 20),
-            Row(
+            Table(
+              columnWidths: const {
+                0: FixedColumnWidth(150.0),
+                1: FlexColumnWidth(),
+              },
+              border: TableBorder.all(
+                color: Colors.grey.shade300,
+                width: 1,
+                style: BorderStyle.solid,
+              ),
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                TableRow(
                   children: [
-                    Text('Sample Required',
-                        style: CustomFont.regularTextPoppins.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
-                            color: Colors.grey.shade700)),
-                    const SizedBox(height: 20),
-                    Text('Preparation',
-                        style: CustomFont.regularTextPoppins.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
-                            color: Colors.grey.shade700)),
-                    const SizedBox(height: 20),
-                    Text('Home Collection?',
-                        style: CustomFont.regularTextPoppins.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
-                            color: Colors.grey.shade700)),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Title',
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Details",
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
                   ],
                 ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(sample != null ? sample.toString() : "No",
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Sample Required',
                           style: CustomFont.regularTextPoppins.copyWith(
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               color: Colors.grey.shade700)),
-                      const SizedBox(height: 20),
-                      Text(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(sample != null ? sample.toString() : "No",
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Preparation',
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
                           preparation != null
                               ? preparation.toString()
                               : 'No Special Preparation is required',
@@ -356,14 +379,28 @@ class TestInfoWidget extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               color: Colors.grey.shade700)),
-                      const SizedBox(height: 5),
-                      Text(homeCollection == 1 ? 'Yes' : 'No',
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Home Collection?',
                           style: CustomFont.regularTextPoppins.copyWith(
                               fontWeight: FontWeight.w400,
                               fontSize: 13,
                               color: Colors.grey.shade700)),
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(homeCollection == 1 ? 'Yes' : 'No',
+                          style: CustomFont.regularTextPoppins.copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13,
+                              color: Colors.grey.shade700)),
+                    ),
+                  ],
                 ),
               ],
             ),

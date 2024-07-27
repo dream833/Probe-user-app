@@ -6,18 +6,17 @@ import 'package:uddipan/app/widget/Text/big_text.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/TextFromField/custom_text_form.dart';
 import 'package:uddipan/constants/color_constant.dart';
-import 'package:uddipan/routes/app_pages.dart';
 
 class ForgetPasswordView extends GetView<ForgetPasswordController> {
   const ForgetPasswordView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ForgetPasswordController>();
+    final controller = Get.put(ForgetPasswordController());
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
       appBar: AppBar(
-        title: const  Text('Forget Password'),
+        title: const Text('Forget Password'),
         backgroundColor: AppColor.secondaryGreen,
         elevation: 0,
         centerTitle: true,
@@ -26,28 +25,42 @@ class ForgetPasswordView extends GetView<ForgetPasswordController> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 40,),
+            const SizedBox(
+              height: 40,
+            ),
             const BigText(text: 'Forget your password'),
-            const SizedBox(height: 20,),
-            const SmallText(text: "Now it's very easy to recover your password"),
-            const SizedBox(height: 30,),
+            const SizedBox(
+              height: 20,
+            ),
+            const SmallText(
+                text: "Now it's very easy to recover your password"),
+            const SizedBox(
+              height: 30,
+            ),
             const BigText(
-              text: 'Write your email address we will send you a temporary password',
+              text:
+                  'Write your email address we will send you a temporary password',
               maxLine: 3,
             ),
-            const SizedBox(height: 20,),
-            CustomTextForm(controller: controller.forgetEmailController, hintText: 'Email',),
-
-            const SizedBox(height: 40,),
-
-            CustomButton(
-              onPress: () {
-                // controller.forgetEmailController.text = '';
-                Get.toNamed(Routes.bottomNavigationBar);
-              },
-              title: 'Recover Password',
+            const SizedBox(
+              height: 20,
+            ),
+            CustomTextForm(
+              controller: controller.forgetEmailController,
+              hintText: 'Email',
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Obx(
+              () => CustomButton(
+                onPress: () {
+                  controller.forgetPassword();
+                },
+                title: 'Recover Password',
+                isLoading: controller.isLoading.value,
+              ),
             ),
           ],
         ),
@@ -55,4 +68,3 @@ class ForgetPasswordView extends GetView<ForgetPasswordController> {
     );
   }
 }
-

@@ -27,9 +27,8 @@ import 'package:uddipan/utils/snippet.dart';
 import '../../appointments/controller/appointment_controller.dart';
 
 class BookAppointmentView extends StatefulWidget {
-  final doctorId;
   final AppoinmentModel? model;
-  const BookAppointmentView({super.key, required this.doctorId, this.model});
+  const BookAppointmentView({super.key, this.model});
 
   @override
   State<BookAppointmentView> createState() => _BookAppointmentViewState();

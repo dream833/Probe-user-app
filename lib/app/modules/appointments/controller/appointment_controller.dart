@@ -244,7 +244,7 @@ class AppointmentController extends GetxController {
       final uri = Uri.parse(
         '$baseurl/get/video_id?appointment_id=$appointmentId',
       );
-      // print("appointment $appointmentId");
+      // debugPrint("appointment $appointmentId");
       final response = await http.get(
         uri,
         headers: {
@@ -255,12 +255,9 @@ class AppointmentController extends GetxController {
         final result = jsonDecode(response.body);
 
         getVideoId.value = result['video_id'];
-        print("video id value ${getVideoId.value}");
       } else {
         debugPrint("error is ${response.body}");
       }
-
-      print(getVideoId.value);
     } catch (e) {
       log("Error fetching video id: $e");
     }
@@ -273,17 +270,16 @@ class AppointmentController extends GetxController {
       required String patientId}) async {
     try {
       if (patientController.text.isEmpty) {
-        CustomMessage.errorMessage(context, 'Please Enter Name');
+        CustomMessage.errorMessage('Please Enter Name');
         // ignore: unnecessary_null_comparison
         return;
       } else if (ageController.text.isEmpty) {
-        CustomMessage.errorMessage(context, 'Please Enter Age');
+        CustomMessage.errorMessage('Please Enter Age');
         return;
       } else if (phone.text.isEmpty) {
-        CustomMessage.errorMessage(context, 'Please Enter phone Number');
+        CustomMessage.errorMessage('Please Enter phone Number');
         return;
       } else {
-        print(selectedReportFileIds);
         var response = await networkApi.postApi(
           endpoint: 'appointments',
           data: {
@@ -321,7 +317,7 @@ class AppointmentController extends GetxController {
             Get.offAll(() => BottomNavigationBarView());
           });
         } else {
-          CustomMessage.errorMessage(context, 'Error');
+          CustomMessage.errorMessage('Error');
         }
       }
     } catch (e) {

@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uddipan/app/modules/diagnostic_test/new_booked_test_view.dart';
 import 'package:uddipan/app/modules/diagnostic_test/previous_booked_test_view.dart';
 import 'package:uddipan/constants/color_constant.dart';
 
 import '../../../widget/Text/small_text.dart';
-import '../../e-shop/controller/eshop_controller.dart';
 
 class DiagnosticTestView extends StatelessWidget {
   const DiagnosticTestView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final eshopController = Get.put(EShopController());
     return DefaultTabController(
       animationDuration: const Duration(milliseconds: 1000),
       length: 2,

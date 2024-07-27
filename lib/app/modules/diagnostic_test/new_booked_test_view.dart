@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:uddipan/app/modules/diagnostic_test/controller/diagnostic_controller.dart';
+
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
-import 'package:uddipan/app/modules/e-shop/view/lab_test_detail_view.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/constants/color_constant.dart';
@@ -16,7 +15,6 @@ class NewBookedTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(DiagnosticController());
     final eshopController = Get.put(EShopController());
     return Scaffold(
       body: SingleChildScrollView(
@@ -41,7 +39,7 @@ class NewBookedTest extends StatelessWidget {
                               eshopController.bookTestLab[index];
                           return GestureDetector(
                             onTap: () {
-                              Get.to(() => LabTestDetailView(model: labTest));
+                              // Get.to(() => LabTestDetailView(model: labTest));
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12),

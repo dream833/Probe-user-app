@@ -19,7 +19,7 @@ class EShopView extends GetView<EShopController> {
     final eshopController = Get.put(EShopController());
 
     eshopController.cartCount();
-    print('------E -Shop-------');
+    debugPrint('------E -Shop-------');
 
     return Scaffold(
       backgroundColor: Colors.white,

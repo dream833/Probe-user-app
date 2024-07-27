@@ -47,5 +47,4 @@ Future<void> fastCachedNetworkImageConfig() async {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log("Handling a background message: ${message.messageId}");
-
 }

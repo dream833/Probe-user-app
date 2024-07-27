@@ -7,6 +7,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:uddipan/app/modules/signup/views/signup_view.dart';
 import 'package:uddipan/constants/string_constant.dart';
 import 'package:uddipan/models/transaction_model.dart';
@@ -31,7 +32,9 @@ class ProfileController extends GetxController {
   final selectedDigitalCode = "".obs;
   final isProfileLoading = false.obs;
   final image = "".obs;
-  File? profilePicture; // = Rx<Uint8List?>(null);
+  var profileImage = File("").obs;
+  final ImagePicker picker = ImagePicker();
+
   final nameController = TextEditingController().obs;
   final emailController = TextEditingController().obs;
   final addressController = TextEditingController().obs;
@@ -59,6 +62,7 @@ class ProfileController extends GetxController {
   var selectedRegion = RxString('');
   final regionModel = RegionModel().obs;
   final regionList = <Region>[].obs;
+  var isLoading = false.obs;
 
   /// Branch
   final isBranchLoading = false.obs;
@@ -117,32 +121,22 @@ class ProfileController extends GetxController {
   }
 
   Future fetchRegion(int zoneId) async {
-    try {
-      final response =
-          await NetworkApiServices().fetchRegion(zoneId.toString());
-      if (response.statusCode == 200) {
-        // await Future.delayed(const Duration(seconds: 1));
-        final Map<String, dynamic> data = json.decode(response.body);
+    final response = await NetworkApiServices().fetchRegion(zoneId.toString());
+    if (response.statusCode == 200) {
+      // await Future.delayed(const Duration(seconds: 1));
+      final Map<String, dynamic> data = json.decode(response.body);
 
-        if (data['regions'] != null) {
-          final regionModel = RegionModel.fromJson(data);
+      if (data['regions'] != null) {
+        final regionModel = RegionModel.fromJson(data);
 
-          if (regionModel.regions != null) {
-            regionList.value = regionModel.regions!;
-            print(
-                'Region Length is ====================> ${regionList.length}');
-          }
-        } else {
-          throw Exception('Failed to load data');
+        if (regionModel.regions != null) {
+          regionList.value = regionModel.regions!;
         }
       } else {
-        print(response.statusCode);
-        print(response.body);
         throw Exception('Failed to load data');
       }
-    } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+    } else {
+      throw Exception('Failed to load data');
     }
   }
 
@@ -162,7 +156,7 @@ class ProfileController extends GetxController {
           if (branchModel.branches != null) {
             // Check if 'regions' in the model is not null
             branchList.value = branchModel.branches!;
-            print(
+            debugPrint(
                 'Branch Length is ====================> ${branchList.length}');
           }
         } else {
@@ -172,8 +166,8 @@ class ProfileController extends GetxController {
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -181,7 +175,7 @@ class ProfileController extends GetxController {
 
   Future fetchDistrict(int branchId) async {
     try {
-      print("Branch id is ======> $branchId");
+      debugPrint("Branch id is ======> $branchId");
       final response = await NetworkApiServices().fetchDistrict(1.toString());
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
@@ -191,20 +185,20 @@ class ProfileController extends GetxController {
 
           if (districtModel.districts != null) {
             districtList.value = districtModel.districts!;
-            print(
+            debugPrint(
                 'District Length is ====================> ${districtList.length}');
           }
         } else {
           throw Exception('Failed to load data');
         }
       } else {
-        print(response.body);
-        print(response.statusCode);
+        debugPrint(response.body);
+        debugPrint(response.statusCode);
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -235,7 +229,7 @@ class ProfileController extends GetxController {
   /// Fetch Thana
   Future fetchThana(int divisionId) async {
     try {
-      print("Division ID $divisionId");
+      debugPrint("Division ID $divisionId");
       final response =
           await NetworkApiServices().fetchThana(divisionId.toString());
       if (response.statusCode == 200) {
@@ -248,18 +242,19 @@ class ProfileController extends GetxController {
           if (thanaModel.thanas != null) {
             // Check if 'regions' in the model is not null
             thanaList.value = thanaModel.thanas!;
-            print('Thana Length is ====================> ${thanaList.length}');
+            debugPrint(
+                'Thana Length is ====================> ${thanaList.length}');
           }
         } else {
           throw Exception('Failed to load data');
         }
       } else {
-        print("Code ${response.statusCode}");
+        debugPrint("Code ${response.statusCode}");
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -276,8 +271,9 @@ class ProfileController extends GetxController {
 
           if (unionModel.unions != null) {
             unionList.value = unionModel.unions!;
-            print('Union Length is ====================> ${unionList.length}');
-            print(response.body);
+            debugPrint(
+                'Union Length is ====================> ${unionList.length}');
+            debugPrint(response.body);
           }
         } else {
           throw Exception('Failed to load data');
@@ -286,8 +282,8 @@ class ProfileController extends GetxController {
         throw Exception('Failed to load data');
       }
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
+      debugPrint('Error: $e');
+      debugPrint('Stack Trace: $stackTrace');
     }
   }
 
@@ -309,9 +305,12 @@ class ProfileController extends GetxController {
     getUserInfo();
   }
 
-  void setProfilePicture(File? newProfilePicture) {
-    profilePicture = newProfilePicture;
-    update();
+  void pcikProfilePicture() async {
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      profileImage(File(image.path));
+      uploadImage(profileImage.value);
+    }
   }
 
   AudioPlayer audioPlayer = AudioPlayer();
@@ -323,10 +322,10 @@ class ProfileController extends GetxController {
       var response = await networkApiServices.getApi(endpoint: 'users/profile');
 
       if (response.statusCode == 200) {
-        userModel.value = UserModel.fromMap(response.data);
+        userModel(UserModel.fromMap(response.data));
         name.value = userModel.value!.name.toString();
         image.value = userModel.value!.image.toString();
-        print('---------------------- ${image.value}--');
+        debugPrint('---------------------- ${image.value}--');
         phoneNumber.value = userModel.value!.phoneNumber.toString();
         nameController.value.text = userModel.value!.name.toString();
         emailController.value.text = userModel.value!.email.toString();
@@ -347,29 +346,57 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> updateUserProfile({required BuildContext context}) async {
+  Future<String?> uploadImage(File imageFile) async {
+    isLoading(true);
+    const uploadUrl = 'https://api.esplshowcase.in/api/upload/files';
+    var request = http.MultipartRequest('POST', Uri.parse(uploadUrl));
+    request.files
+        .add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+    var response = await request.send();
+    isLoading(false);
+
+    if (response.statusCode == 200) {
+      var responseData = await response.stream.bytesToString();
+      var jsonResponse = jsonDecode(responseData);
+
+      if (jsonResponse['url'].toString() != "null") {
+        CustomMessage.showSuccessSnackBar("Image Uploaded");
+        updateUserProfile();
+      } else {
+        CustomMessage.showSnackBar("Image Upload Failed",
+            backgroundColor: Colors.red.withOpacity(0.7));
+      }
+
+      return jsonResponse['url'];
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> updateUserProfile() async {
     final apiUrl = '$baseurl/users/profile';
     final token = getbox.read(userToken);
+    final controller = Get.find<ProfileController>();
     String? imgUrl;
-    const url = 'https://api.esplshowcase.in/api/upload/files';
-    if (profilePicture != null) {
-      imgUrl = '$url/${nameController.value.text}';
-    }
+
+    imgUrl = await uploadImage(profileImage.value);
+
     Map<String, String> requestBody = {
-      'name': nameController.value.text,
-      'phone_number': phoneController.value.text,
-      'countryCode': selectedCountryCode.value,
-      'zone_id': selectedZoneId.toString(),
-      'region_id': selectedRegionId.toString(),
-      'branch_id': selectedBranchId.toString(),
-      'district_id': selectedDistrictId.toString(),
-      'division_id': selectedDivisionId.toString(),
-      'thana_id': selectedThanaId.toString(),
-      'union_id': selectedUnionId.toString(),
-      'digitalCode': selectedDigitalCode.value,
-      'present_address': addressController.value.text,
-      'pin': pinController.value.text ?? '',
-      'image': imgUrl ?? image.value
+      'name': controller.nameController.value.text,
+      'phone_number': controller.phoneController.value.text,
+      'countryCode': controller.selectedCountryCode.value,
+      'zone_id': controller.selectedZoneId.toString(),
+      'region_id': controller.selectedRegionId.toString(),
+      'branch_id': controller.selectedBranchId.toString(),
+      'district_id': controller.selectedDistrictId.toString(),
+      'division_id': controller.selectedDivisionId.toString(),
+      'thana_id': controller.selectedThanaId.toString(),
+      'union_id': controller.selectedUnionId.toString(),
+      'digitalCode': controller.selectedDigitalCode.value,
+      'present_address': controller.addressController.value.text,
+      'pin': controller.pinController.value.text,
+      // 'image': imgUrl ?? controller.image.value
     };
 
     try {
@@ -405,11 +432,12 @@ class ProfileController extends GetxController {
       endpoint: 'users/logout',
     );
     if (response.statusCode == 200) {
-      getbox.write(userLogin, false);
-      getbox.write(userEmail, "");
-      getbox.write(userId, "");
-      getbox.write(isUserLoggedIN, false);
-      getbox.write(userToken, "");
+      getbox.remove(userLogin);
+      getbox.remove(userEmail);
+      getbox.remove(userId);
+      getbox.remove(isUserLoggedIN);
+      getbox.remove(userToken);
+
       AppLoading.closeLoadingDialog();
 
       Future.delayed(const Duration(milliseconds: 500), () {
@@ -435,18 +463,18 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200) {
         var responseBody = await response.stream.bytesToString();
         var parsedResponse = json.decode(responseBody);
-        print(parsedResponse);
+        debugPrint(parsedResponse);
         String? fileUrl = parsedResponse['data']['file'];
         log('file url $fileUrl');
         return fileUrl;
       } else {
         var responseBody = await response.stream.bytesToString();
         var parsedResponse = json.decode(responseBody);
-        print(parsedResponse);
+        debugPrint(parsedResponse);
         return '';
       }
     } catch (e) {
-      CustomMessage.errorMessage(context, 'Please Enter Name');
+      CustomMessage.errorMessage('Please Enter Name');
       return '';
     }
   }
@@ -474,7 +502,7 @@ class ProfileController extends GetxController {
       }
     } catch (e) {
       // ignore: use_build_context_synchronously
-      CustomMessage.errorMessage(context, e.toString());
+      CustomMessage.errorMessage(e.toString());
     }
   }
 }

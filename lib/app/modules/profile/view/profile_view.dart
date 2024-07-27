@@ -1,4 +1,4 @@
-import 'package:audioplayers/src/source.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,7 +29,7 @@ class ProfileView extends GetView<ProfileController> {
     final controller = Get.put(ProfileController());
 
     Future<void> playAudioFromAsset(String assetPath) async {
-      await controller.audioPlayer.play(UrlSource(assetPath));
+      await controller.audioPlayer.play(AssetSource(assetPath));
     }
 
     onRefresh() async {
@@ -40,7 +40,7 @@ class ProfileView extends GetView<ProfileController> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const CustomAppBar(),
+      appBar: CustomAppBar(),
       body: RefreshIndicator(
         onRefresh: onRefresh,
         child: ListView(
@@ -183,14 +183,14 @@ class ProfileView extends GetView<ProfileController> {
                     },
                     text: 'Transactions'),
                 const SizedBox(height: 10),
-                _buildListTile(
-                    icon: FontAwesomeIcons.handshakeSimple,
-                    iconSize: 19,
-                    onTap: () {
-                      Get.to(() => const ConsultationView());
-                    },
-                    text: 'Consultations'),
-                const SizedBox(height: 10),
+                // _buildListTile(
+                //     icon: FontAwesomeIcons.handshakeSimple,
+                //     iconSize: 19,
+                //     onTap: () {
+                //       Get.to(() => const ConsultationView());
+                //     },
+                //     text: 'Consultations'),
+                // const SizedBox(height: 10),
                 _buildListTile(
                     icon: FontAwesomeIcons.lock,
                     iconSize: 19,
@@ -244,31 +244,14 @@ class ProfileView extends GetView<ProfileController> {
       ),
     );
   }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      backgroundColor: AppColor.mainBackgroundColor,
-      title: Text(
-        'Profile',
-        style: TextStyle(
-          color: AppColor.black,
-        ),
-      ),
-      // backgroundColor: AppColor.white,
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      iconTheme: IconThemeData(
-        color: AppColor.black,
-      ),
-    );
-  }
 }
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  CustomAppBar({super.key});
 
   @override
   Size get preferredSize => Size.fromHeight(130.h);
+  var profileController = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -294,15 +277,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Colors.white,
                   height: 70.h,
                   width: 70.w,
-                  child: Image(
-                    image: NetworkImage(
-                      Get.find<ProfileController>()
-                          .userModel
-                          .value!
-                          .image
-                          .toString(),
-                    ),
-                  ),
+                  child: (profileController.image.value == "null")
+                      ? Image.network(
+                          profileController.image.value,
+                          fit: BoxFit.cover,
+                        )
+                      : const Icon(
+                          Icons.person,
+                          color: Colors.black,
+                        ),
                 ),
               ),
               const SizedBox(

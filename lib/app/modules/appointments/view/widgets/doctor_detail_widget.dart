@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:uddipan/app/modules/doctor/view/doctor_details_view.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
-import 'package:uddipan/app/widget/custom_rating_widget.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/image_contant.dart';
 import 'package:uddipan/constants/theme_constant.dart';

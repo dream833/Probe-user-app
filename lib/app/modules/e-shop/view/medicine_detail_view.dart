@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
+
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/display_image_widget.dart';
 import 'package:uddipan/app/widget/loader_button.dart';
 import 'package:uddipan/constants/color_constant.dart';
-import 'package:uddipan/constants/theme_constant.dart';
 
 import 'package:uddipan/models/medicine_model.dart';
 import 'package:uddipan/utils/snippet.dart';
@@ -16,7 +14,6 @@ class MedicineDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eshopController = Get.put(EShopController());
     return Scaffold(
         appBar: AppBar(
           title: SmallText(
@@ -109,12 +106,7 @@ class MedicineDetailView extends StatelessWidget {
                 LoaderButton(
                     color: appColorPrimary,
                     btnText: 'Add To Cart',
-                    onTap: () async {
-                      if (model != null) {
-                        bool isProduct = eshopController.addProduct(model!);
-                        
-                      }
-                    }),
+                    onTap: () async {}),
                 const SizedBox(height: 25),
               ],
             ),
@@ -142,44 +134,6 @@ class MedicineDetailView extends StatelessWidget {
           child: Align(alignment: Alignment.centerLeft, child: Text(data)),
         ),
       ],
-    );
-  }
-
-  Container _medicineInfo(
-      {required String title, required String data, required IconData icon}) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.15),
-            offset: Offset(-1, 1),
-            blurRadius: 10,
-          )
-        ],
-      ),
-      child: ListTile(
-        title: SmallText(
-            text: title,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            textColor: Colors.black),
-        subtitle: Text(data,
-            style: CustomFont.regularText.copyWith(
-                fontSize: 12,
-                color: Colors.grey.shade700,
-                fontWeight: FontWeight.w500)),
-        leading: CircleAvatar(
-          backgroundColor: appPrimaryColor,
-          radius: 18,
-          child: CircleAvatar(
-            backgroundColor: appPrimaryColor,
-            radius: 18,
-            child: Icon(icon, color: Colors.white, size: 20),
-          ),
-        ),
-      ),
     );
   }
 }

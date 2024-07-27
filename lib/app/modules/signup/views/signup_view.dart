@@ -268,7 +268,7 @@ class SignupView extends GetView<SignupController> {
                   //                 Region region = controller.regionList
                   //                     .where((e) => e.regionName == newValue)
                   //                     .first;
-                  //                 print(region);
+                  //                 debugPrint(region);
                   //                 controller.selectedRegionId.value =
                   //                     region.id ?? 0;
                   //                 log('Selected Region ID is =================> ${controller.selectedRegionId.value}');
@@ -541,7 +541,7 @@ class SignupView extends GetView<SignupController> {
                   //                     .first;
                   //                 controller.selectedUnionId.value =
                   //                     union.id ?? 0;
-                  //                 // print(
+                  //                 // debugPrint(
                   //                 //     'Selected Union ID is =============>  ${controller.selectedUnionId?.value}');
 
                   //                 /// This code is for call the next drop down
@@ -563,7 +563,7 @@ class SignupView extends GetView<SignupController> {
                   LoaderButton(
                       btnText: 'Sign Up',
                       onTap: () async {
-                        await controller.userRegistration(context);
+                        controller.signUp();
                       }),
                   SizedBox(height: 15.h),
                 ],

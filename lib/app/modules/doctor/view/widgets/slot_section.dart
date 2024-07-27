@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:uddipan/app/modules/doctor/controller/doctor_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
-import 'package:uddipan/app/widget/custom_textfield.dart';
+
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
 import 'package:uddipan/models/availability_model.dart';
@@ -83,81 +85,96 @@ class _SlotSectionState extends State<SlotSection> {
                       String formatEndTime =
                           formatTime(availabilityModel.endTime!);
 
-                      return GestureDetector(
-                        onTap: () {
-                          doctorController.selectAvailability(index);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color.fromRGBO(0, 0, 0, 0.15),
-                                  offset: Offset(-1, 1),
-                                  blurRadius: 10,
-                                )
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          SmallText(
-                                            text: capitalizeFirstLetter(
-                                                availabilityModel.day),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            textColor: Colors.blueGrey,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          SmallText(
-                                            text: availabilityModel.type
-                                                .toString(),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500,
-                                            textColor: Colors.blueGrey,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 7),
-                                      SmallText(
-                                        text:
-                                            '$formatStartTime : $formatEndTime',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                        textColor: Colors.black,
-                                      ),
-                                      const SizedBox(height: 7),
-                                      SmallText(
-                                        text:
-                                            "Price: ${availabilityModel.price.toString()}",
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                        textColor: Colors.black,
-                                      ),
-                                    ],
-                                  ),
-                                  Obx(() => Icon(
-                                        Icons.check,
-                                        color: doctorController
-                                                    .selectedIndex.value ==
-                                                index
-                                            ? appColorPrimary
-                                            : Colors.transparent,
-                                      ))
+                      bool isOldData() {
+                        var currentTime = DateTime.now();
+
+                        var formatedTIme =
+                            DateFormat('HH:mm:ss').format(currentTime);
+                        if (availabilityModel.endTime!.compareTo(formatedTIme) <
+                            0) {
+                          return false;
+                        }
+                        return true;
+                      }
+
+                      return Visibility(
+                        visible: isOldData(),
+                        child: GestureDetector(
+                          onTap: () {
+                            doctorController.selectAvailability(index);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.15),
+                                    offset: Offset(-1, 1),
+                                    blurRadius: 10,
+                                  )
                                 ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 8),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SmallText(
+                                              text: capitalizeFirstLetter(
+                                                  availabilityModel.day),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              textColor: Colors.blueGrey,
+                                            ),
+                                            const SizedBox(width: 4),
+                                            SmallText(
+                                              text: availabilityModel.type
+                                                  .toString(),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w500,
+                                              textColor: Colors.blueGrey,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 7),
+                                        SmallText(
+                                          text:
+                                              '$formatStartTime : $formatEndTime',
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          textColor: Colors.black,
+                                        ),
+                                        const SizedBox(height: 7),
+                                        SmallText(
+                                          text:
+                                              "Price: ${availabilityModel.price.toString()}",
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          textColor: Colors.black,
+                                        ),
+                                      ],
+                                    ),
+                                    Obx(() => Icon(
+                                          Icons.check,
+                                          color: doctorController
+                                                      .selectedIndex.value ==
+                                                  index
+                                              ? appColorPrimary
+                                              : Colors.transparent,
+                                        ))
+                                  ],
+                                ),
                               ),
                             ),
                           ),

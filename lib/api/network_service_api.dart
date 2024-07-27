@@ -42,26 +42,20 @@ class NetworkApiServices {
     final token = getbox.read(userToken);
     final url = '$baseurl/$endpoint';
 
-    try {
-      final response = await dio.put(
-        url,
-        data: data,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-          followRedirects: true,
-          maxRedirects: 5,
-        ),
-      );
-      log('Status code: ${response.statusCode} on URL: $url Response Data ${response.data}');
+    final response = await dio.put(
+      url,
+      data: data,
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        followRedirects: true,
+        maxRedirects: 5,
+      ),
+    );
+    log('Status code: ${response.statusCode} on URL: $url Response Data ${response.data}');
 
-      return response;
-    } catch (e, stackTrace) {
-      log("Error is ===========> $e");
-      print(stackTrace);
-      rethrow;
-    }
+    return response;
   }
 
   Future<Response<dynamic>> getApi({
@@ -84,7 +78,7 @@ class NetworkApiServices {
         ),
       );
       log('Status code: ${response.statusCode} on URL: $url ');
-      print(response.data);
+
       return response;
     } catch (e) {
       log("Error is ===========> $e");

@@ -26,7 +26,7 @@ class ConsultationView extends StatelessWidget {
         children: [
           _buildListTile(
               text: 'Past Consultations',
-              icon: FontAwesomeIcons.history,
+              icon: FontAwesomeIcons.clockRotateLeft,
               iconSize: 19,
               onTap: () {
                 Get.to(() => const PastConsultationView());

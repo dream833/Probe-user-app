@@ -99,13 +99,14 @@ class LabTestView extends StatelessWidget {
                         ),
                       ),
                       sectionTitle('Diagnostic Tests'),
-                      Obx(() => testSection(tests.value.diagnosticTestNames)),
+                      Obx(() =>
+                          testSection(tests.value.diagnosticTestNames, 'test')),
                       sectionTitle('Diagnostic Packages'),
-                      Obx(() =>
-                          testSection(tests.value.diagnosticPackageNames)),
+                      Obx(() => testSection(
+                          tests.value.diagnosticPackageNames, 'package')),
                       sectionTitle('Diagnostic Profiles'),
-                      Obx(() =>
-                          testSection(tests.value.diagnosticProfileNames)),
+                      Obx(() => testSection(
+                          tests.value.diagnosticProfileNames, 'profile')),
                     ],
                   ),
                 ),
@@ -134,7 +135,7 @@ class LabTestView extends StatelessWidget {
     );
   }
 
-  Widget testSection(List? testList) {
+  Widget testSection(List? testList, String type) {
     return SizedBox(
       height: 210,
       child: ListView.builder(
@@ -148,9 +149,9 @@ class LabTestView extends StatelessWidget {
               onTap: () {
                 Get.to(
                   LabTestDetailView(
+                    type: type,
                     comments: test?.comments ?? '',
                     homeCollection: test.homeCollection ?? 0,
-                    method: test?.method ?? '',
                     model: test,
                     name: test?.name ?? '',
                     preparation: test?.preparation,

@@ -183,14 +183,14 @@ class ProfileView extends GetView<ProfileController> {
                     },
                     text: 'Transactions'),
                 const SizedBox(height: 10),
-                _buildListTile(
-                    icon: FontAwesomeIcons.handshakeSimple,
-                    iconSize: 19,
-                    onTap: () {
-                      Get.to(() => const ConsultationView());
-                    },
-                    text: 'Consultations'),
-                const SizedBox(height: 10),
+                // _buildListTile(
+                //     icon: FontAwesomeIcons.handshakeSimple,
+                //     iconSize: 19,
+                //     onTap: () {
+                //       Get.to(() => const ConsultationView());
+                //     },
+                //     text: 'Consultations'),
+                // const SizedBox(height: 10),
                 _buildListTile(
                     icon: FontAwesomeIcons.lock,
                     iconSize: 19,

@@ -79,7 +79,7 @@ class ReportController extends GetxController {
         'report': url,
         'date': recordDateController.text
       };
-      log('$url');
+
       String token = getbox.read(userToken);
       final uri = Uri.parse('$baseurl/add/user_report');
       final response = await http.post(
@@ -87,7 +87,7 @@ class ReportController extends GetxController {
         body: data,
         headers: {'Authorization': 'Bearer $token'},
       );
-      log('$data');
+
       if (response.statusCode == 201) {
         getAllUserReports();
         await Future.delayed(const Duration(milliseconds: 100), () {
@@ -107,13 +107,12 @@ class ReportController extends GetxController {
 
       final uri = Uri.parse(
           'https://api.esplshowcase.in/api/get/user_report?user_id=$id');
-      log('$uri');
 
       final response = await http.get(
         uri,
         headers: {'Authorization': 'Bearer $token'},
       );
-      log("Data ======>${response.body}");
+
       if (response.statusCode == 200) {
         List<dynamic> list = json.decode(response.body);
         List<UserReportModel?> model =

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
@@ -40,6 +41,7 @@ class _PrescriptionListViewState extends State<PrescriptionListView> {
         'https://api.esplshowcase.in/api/user/prescriptions/user?user_id=$patientId';
 
     final response = await http.get(Uri.parse(url), headers: headers);
+    log("DRM25\n${response.body}");
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

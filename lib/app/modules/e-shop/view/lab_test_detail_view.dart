@@ -11,7 +11,6 @@ import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/loader_button.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
-import 'package:uddipan/models/lab_test_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../constants/string_constant.dart';
@@ -19,6 +18,7 @@ import '../../../../utils/custom_message.dart';
 import '../../bottom_navigation_bar/controllers/bottom_navigation_bar_controllers.dart';
 
 class LabTestDetailView extends StatelessWidget {
+  String type;
   final dynamic model;
   final String? name;
   final String? method;
@@ -29,8 +29,9 @@ class LabTestDetailView extends StatelessWidget {
   final int? homeCollection;
   final String? preparation;
   //final
-  const LabTestDetailView(
+  LabTestDetailView(
       {super.key,
+      required this.type,
       this.model,
       this.name,
       this.method,
@@ -69,50 +70,50 @@ class LabTestDetailView extends StatelessWidget {
             preparation: preparation,
           ),
           const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(20.0),
-            margin: const EdgeInsets.only(left: 16, right: 16),
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.15),
-                  offset: Offset(-1, 1),
-                  blurRadius: 10,
-                )
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Price',
-                  style: CustomFont.regularMediumText.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 22,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SmallText(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  text: "৳ ${rates.toString()}.00",
-                ),
-                const SizedBox(height: 15),
-                LoaderButton(
-                    radius: 6,
-                    color: Colors.deepOrange,
-                    btnText: 'Book',
-                    onTap: () async {
-                      final patientId = getbox.read(userId).toString();
-                      log('PatientId $patientId');
-                      addLabTestToBooking(patientId);
-                    })
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
+          // Container(
+          //   padding: const EdgeInsets.all(20.0),
+          //   margin: const EdgeInsets.only(left: 16, right: 16),
+          //   width: double.infinity,
+          //   decoration: const BoxDecoration(
+          //     color: Colors.white,
+          //     boxShadow: [
+          //       BoxShadow(
+          //         color: Color.fromRGBO(0, 0, 0, 0.15),
+          //         offset: Offset(-1, 1),
+          //         blurRadius: 10,
+          //       )
+          //     ],
+          //   ),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Text(
+          //         'Price',
+          //         style: CustomFont.regularMediumText.copyWith(
+          //           fontWeight: FontWeight.w700,
+          //           fontSize: 22,
+          //         ),
+          //       ),
+          //       const SizedBox(height: 10),
+          //       SmallText(
+          //         fontSize: 18,
+          //         fontWeight: FontWeight.w500,
+          //         text: "৳ ${rates.toString()}.00",
+          //       ),
+          //       const SizedBox(height: 15),
+          //       LoaderButton(
+          //           radius: 6,
+          //           color: Colors.deepOrange,
+          //           btnText: 'Book',
+          //           onTap: () async {
+          //             final patientId = getbox.read(userId).toString();
+          //             log('PatientId $patientId');
+          //             addLabTestToBooking(patientId);
+          //           })
+          //     ],
+          //   ),
+          // ),
+          // const SizedBox(height: 20),
         ]),
       ),
       bottomNavigationBar: Container(
@@ -151,9 +152,9 @@ class LabTestDetailView extends StatelessWidget {
                 child: LoaderButton(
                   radius: 6,
                   color: Colors.deepOrange,
-                  btnText: "Go to cart",
+                  btnText: "Add to cart",
                   onTap: () async {
-                    controller.addLabTestToCart(model);
+                    controller.addLabTestToCart(model, type);
                   },
                 ),
               )
@@ -181,7 +182,6 @@ class LabTestDetailView extends StatelessWidget {
     };
 
     String token = getbox.read(userToken);
-    // String url = "https://api.esplshowcase.in/api/book-diagnostic-testing";
     String url = "https://api.esplshowcase.in/api/test-booking";
 
     Dio dio = Dio();

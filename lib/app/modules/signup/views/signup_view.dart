@@ -563,7 +563,7 @@ class SignupView extends GetView<SignupController> {
                   LoaderButton(
                       btnText: 'Sign Up',
                       onTap: () async {
-                        await controller.userRegistration(context);
+                        controller.signUp();
                       }),
                   SizedBox(height: 15.h),
                 ],

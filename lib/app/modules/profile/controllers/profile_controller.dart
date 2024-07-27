@@ -359,7 +359,7 @@ class ProfileController extends GetxController {
     if (response.statusCode == 200) {
       var responseData = await response.stream.bytesToString();
       var jsonResponse = jsonDecode(responseData);
-      log("DRM25 ${jsonResponse['url']}");
+
       if (jsonResponse['url'].toString() != "null") {
         CustomMessage.showSuccessSnackBar("Image Uploaded");
         updateUserProfile();
@@ -396,7 +396,7 @@ class ProfileController extends GetxController {
       'digitalCode': controller.selectedDigitalCode.value,
       'present_address': controller.addressController.value.text,
       'pin': controller.pinController.value.text,
-      'image': imgUrl ?? controller.image.value
+      // 'image': imgUrl ?? controller.image.value
     };
 
     try {
@@ -432,11 +432,12 @@ class ProfileController extends GetxController {
       endpoint: 'users/logout',
     );
     if (response.statusCode == 200) {
-      getbox.write(userLogin, false);
-      getbox.write(userEmail, "");
-      getbox.write(userId, "");
-      getbox.write(isUserLoggedIN, false);
-      getbox.write(userToken, "");
+      getbox.remove(userLogin);
+      getbox.remove(userEmail);
+      getbox.remove(userId);
+      getbox.remove(isUserLoggedIN);
+      getbox.remove(userToken);
+
       AppLoading.closeLoadingDialog();
 
       Future.delayed(const Duration(milliseconds: 500), () {

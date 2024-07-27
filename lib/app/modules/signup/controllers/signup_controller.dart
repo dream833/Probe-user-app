@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -371,7 +372,7 @@ class SignupController extends GetxController {
     }
   }
 
-  userRegistration(context) async {
+  userRegistration() async {
     isLoading.value = true;
     try {
       if (nameController.text.isEmpty ||
@@ -533,5 +534,40 @@ class SignupController extends GetxController {
       log(e.type.toString());
       CustomMessage.errorMessage(e.toString());
     }
+  }
+
+  void signUp() {
+    if (nameController.text.isEmpty) {
+      CustomMessage.showSnackBar('Name is required',
+          backgroundColor: Colors.red.withOpacity(0.7));
+      return;
+    }
+    if (emailController.text.isEmpty) {
+      CustomMessage.showSnackBar('Email is required',
+          backgroundColor: Colors.red.withOpacity(0.7));
+      return;
+    }
+    if (phoneController.text.isEmpty) {
+      CustomMessage.showSnackBar('Phone is required',
+          backgroundColor: Colors.red.withOpacity(0.7));
+      return;
+    }
+    if (passwordController.text.isEmpty) {
+      CustomMessage.showSnackBar('Password is required',
+          backgroundColor: Colors.red.withOpacity(0.7));
+      return;
+    }
+    if (confirmPasswordController.text.isEmpty) {
+      CustomMessage.showSnackBar('Confirm Password is required',
+          backgroundColor: Colors.red.withOpacity(0.7));
+      return;
+    }
+    if (passwordController.text != confirmPasswordController.text) {
+      CustomMessage.showSnackBar('Password does not match',
+          backgroundColor: Colors.red.withOpacity(0.7));
+      return;
+    }
+
+    userRegistration();
   }
 }

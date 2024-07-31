@@ -77,7 +77,7 @@ class EShopController extends GetxController {
     if (response.statusCode == 200) {
       CustomMessage.showSnackBar('Test is Added To the Cart',
           backgroundColor: appColorPrimary, title: 'Cart');
-      Get.to(const CartView());
+      Get.off(const CartView());
     } else {
       CustomMessage.showSuccessSnackBar('Error',
           backgroundColor: Colors.red, title: 'Cart ');

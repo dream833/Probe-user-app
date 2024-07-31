@@ -43,7 +43,7 @@ dependencies:
   firebase_messaging: ^14.7.11
   flutter_local_notifications: ^16.3.2
   file_picker: ^6.1.1
-  url_launcher: ^6.2.4
+  url_launcher: ^6.3.0
   date_picker_timeline: ^1.2.5
   flutter_cached_pdfview: ^0.4.2
   uri: ^1.0.0

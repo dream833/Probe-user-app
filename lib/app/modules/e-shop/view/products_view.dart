@@ -116,7 +116,7 @@ class ProductsView extends StatelessWidget {
                                     SmallText(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500,
-                                      text: "\$ ${medicine.price.toString()}",
+                                      text: "৳ ${medicine.price.toString()}",
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
@@ -146,8 +146,6 @@ class ProductsView extends StatelessWidget {
           ],
         ),
       ),
-   
-   
     );
   }
 }

@@ -396,7 +396,7 @@ class ProfileController extends GetxController {
       'digitalCode': controller.selectedDigitalCode.value,
       'present_address': controller.addressController.value.text,
       'pin': controller.pinController.value.text,
-      // 'image': imgUrl ?? controller.image.value
+      'image': imgUrl ?? controller.image.value
     };
 
     try {

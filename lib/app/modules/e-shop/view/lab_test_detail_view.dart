@@ -162,67 +162,6 @@ class LabTestDetailView extends StatelessWidget {
           )),
     );
   }
-
-  Future<void> addLabTestToBooking(String patientId) async {
-    final data = {
-      "user_id": getbox.read(userId).toString(),
-      "test_id": [model.id.toString()],
-      "price": model.rate.toString(),
-      //   "paitent_id": patientId,
-      //   "patient_name": profileController.userModel.value!.name.toString(),
-      //   "name": name,
-      //   "rate": rate.toString(),
-      //   "sample": sample ?? 'No sample needed',
-      //   "homeCollection": homeCollection.toString(),
-      //   "method": method ?? 'No method specified',
-      //   "timeframe": timeframe ?? 'No timeframe specified',
-      //   "comments": comments ?? 'No additional comments',
-      //   "preparation": preparation ?? 'No preparation specified',
-      // };
-    };
-
-    String token = getbox.read(userToken);
-    String url = "https://api.esplshowcase.in/api/test-booking";
-
-    Dio dio = Dio();
-    var response = await dio.post(url,
-        data: json.encode(data),
-        options: Options(
-            followRedirects: false,
-            validateStatus: (status) {
-              return status! < 500;
-            },
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer $token',
-              "Accept": "application/json"
-            }));
-    Future<void> customLaunch(String url) async {
-      if (await canLaunchUrl(Uri.parse(url))) {
-        await launchUrl(Uri.parse(url));
-      } else {
-        throw 'Could not launch $url';
-      }
-    }
-
-    log(jsonEncode(response.data));
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final url = response.data.toString();
-
-      await customLaunch(url);
-      Future.delayed(const Duration(milliseconds: 200), () {
-        final controller = Get.find<BottomNavigationBarControllers>();
-        controller.selectedIndex.value = 1;
-
-        Get.offAll(() => BottomNavigationBarView());
-      });
-      CustomMessage.showSuccessSnackBar("Redirecting to Payment");
-    } else {
-      debugPrint("${response.data} ${response.statusMessage}");
-      CustomMessage.errorMessage('Error ${response.statusCode}');
-    }
-  }
 }
 
 class TestInfoWidget extends StatelessWidget {

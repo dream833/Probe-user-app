@@ -1,12 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-
 import 'package:uddipan/app/widget/Text/small_text.dart';
 
 import '../../../../drm_codes/controller/cart_controller.dart';
-import '../../../widget/display_image_widget.dart';
-import '../../../widget/loader_button.dart';
 
 class CartView extends StatelessWidget {
   const CartView({super.key});
@@ -28,30 +27,48 @@ class CartView extends StatelessWidget {
       body: Obx(
         () => Stack(
           children: [
-            ((cartController.testCartModel.value.prescriptions ?? []).isEmpty)
-                ? const Center(
+            FutureBuilder(
+              future: cartController.getcart(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                var prescriptionData =
+                    cartController.cartmodel.value.prescriptions;
+                List<Map<String, dynamic>> myMergedData = [];
+
+                cartController.cartmodel.value.prescriptions?.diagnosticPackages
+                    ?.forEach((data) {
+                  data["type"] = "package";
+                  myMergedData.add(data);
+                });
+
+                cartController.cartmodel.value.prescriptions?.diagnosticTests
+                    ?.forEach((tempdata) {
+                  var data = jsonDecode(jsonEncode(tempdata));
+                  data["type"] = "test";
+                  myMergedData.add(data);
+                });
+
+                cartController.cartmodel.value.prescriptions?.diagnosticProfiles
+                    ?.forEach((tempdata) {
+                  var data = jsonDecode(jsonEncode(tempdata));
+                  data["type"] = "profile";
+                  myMergedData.add(data);
+                });
+
+                if (myMergedData.isEmpty) {
+                  return const Center(
                     child: Text('No Item In Cart'),
-                  )
-                : ListView.builder(
-                    itemCount: cartController
-                        .testCartModel.value.prescriptions?.length,
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: myMergedData.length,
                     itemBuilder: (context, index) {
-                      var indexPrescription = cartController
-                          .testCartModel.value.prescriptions![index];
-
-                      List carData = [];
-
-                      if ((indexPrescription.diagnosticPackages ?? [])
-                          .isNotEmpty) {
-                        carData = indexPrescription.diagnosticPackages as List;
-                      } else if ((cartController.testCartModel.value
-                                  .prescriptions![index].diagnosticProfiles ??
-                              [])
-                          .isNotEmpty) {
-                        carData = indexPrescription.diagnosticProfiles as List;
-                      } else {
-                        carData = indexPrescription.diagnosticTests as List;
-                      }
+                      var data = myMergedData[index];
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,7 +100,7 @@ class CartView extends StatelessWidget {
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: SmallText(
-                                              text: carData[0].name,
+                                              text: data["name"] ?? "EMPTY",
                                               textAlign: TextAlign.left,
                                               fontSize: 17,
                                               fontWeight: FontWeight.bold,
@@ -145,7 +162,7 @@ class CartView extends StatelessWidget {
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         text:
-                                                            "৳ ${carData[0].rate.toString()}",
+                                                            "৳ ${(data["rate"] ?? '0').toString()}",
                                                       ),
                                                       const SizedBox(width: 4),
                                                     ],
@@ -163,8 +180,10 @@ class CartView extends StatelessWidget {
                                 const Spacer(),
                                 InkWell(
                                   onTap: () {
-                                    cartController.deleteCartItem(
-                                        indexPrescription.id.toString());
+                                    cartController.removeTestFromCart(
+                                      cartID: prescriptionData?.id.toString(),
+                                      itemID: (data["id"] ?? 0).toString(),
+                                    );
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.all(16),
@@ -188,7 +207,10 @@ class CartView extends StatelessWidget {
                         ],
                       );
                     },
-                  ),
+                  );
+                }
+              },
+            ),
             Visibility(
               visible: cartController.isLoading.value,
               child: Container(
@@ -197,7 +219,7 @@ class CartView extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -223,7 +245,3 @@ class CartView extends StatelessWidget {
     );
   }
 }
-
-/*
-
-*/ 

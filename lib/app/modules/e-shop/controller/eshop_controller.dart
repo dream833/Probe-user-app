@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,6 @@ import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/models/lab_test_model.dart';
 import 'package:uddipan/models/medicine_model.dart';
 import 'package:uddipan/utils/custom_message.dart';
-import 'package:dio/dio.dart' as dio;
 
 import '../../../../constants/string_constant.dart';
 
@@ -50,6 +50,7 @@ class EShopController extends GetxController {
     var currentDateTime = DateTime.now();
     var formattedDate =
         "${currentDateTime.day.toString().padLeft(2, '0')}/${currentDateTime.month.toString().padLeft(2, '0')}/${currentDateTime.year.toString()}";
+
     String token = getbox.read(userToken);
 
     var body = (type == "profile")
@@ -57,10 +58,15 @@ class EShopController extends GetxController {
             "test_date": formattedDate,
             "profile_id": [model.id.toString()]
           }
-        : {
-            "test_id": [model.id.toString()],
-            "test_date": formattedDate,
-          };
+        : (type == "test")
+            ? {
+                "test_id": [model.id.toString()],
+                "test_date": formattedDate,
+              }
+            : {
+                "package_id": [model.id.toString()],
+                "test_date": formattedDate,
+              };
 
     var method = dio.Dio();
     method.options.headers['Authorization'] = "Bearer $token";

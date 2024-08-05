@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -426,10 +425,24 @@ class SignupController extends GetxController {
           Get.offAllNamed(Routes.LOGIN);
         });
       } else {
-        Future.delayed(const Duration(milliseconds: 100), () {
-          CustomMessage.showSnackBar("Registration Failed");
-          log("${response.body} \n ${response.reasonPhrase} \n ${response.statusCode} ");
-        });
+        Future.delayed(
+          const Duration(milliseconds: 100),
+          () {
+            final responseData = jsonDecode(response.body);
+            log("Souvik Response data: \n$responseData");
+
+            if (responseData.containsKey('errors')) {
+              final errorMessageMapData = responseData['errors'];
+              for (var key in errorMessageMapData.keys) {
+                var msg = errorMessageMapData[key][0];
+                log(" Souvik Error message: \n$msg");
+                Fluttertoast.showToast(msg: msg);
+              }
+            } else {
+              log("Souvik No errors found in the response.");
+            }
+          },
+        );
       }
     } catch (ex) {
       Fluttertoast.showToast(msg: ex.toString());

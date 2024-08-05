@@ -1,21 +1,11 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:uddipan/app/modules/bottom_navigation_bar/view/bottom_navigation_bar_view.dart';
 import 'package:uddipan/app/modules/e-shop/controller/eshop_controller.dart';
 import 'package:uddipan/app/widget/Text/small_text.dart';
 import 'package:uddipan/app/widget/loader_button.dart';
 import 'package:uddipan/constants/color_constant.dart';
 import 'package:uddipan/constants/theme_constant.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../constants/string_constant.dart';
-import '../../../../utils/custom_message.dart';
-import '../../bottom_navigation_bar/controllers/bottom_navigation_bar_controllers.dart';
 
 class LabTestDetailView extends StatelessWidget {
   String type;
